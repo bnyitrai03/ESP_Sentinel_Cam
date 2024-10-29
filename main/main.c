@@ -44,6 +44,10 @@
 #endif
 
 #include "esp_camera.h"
+#include "esp_wifi.h"
+#include "esp_event.h"
+#include "nvs_flash.h"
+#include <esp_http_server.h>
 
 #define BOARD_WROVER_KIT 1
 
@@ -70,7 +74,9 @@
 
 #endif
 
-static const char *TAG = "example:take_picture";
+static const char *TAG = "main_app";
+#define WIFI_SSID "TP-Link_36C8"
+#define WIFI_PASS "05817207"
 
 
 static camera_config_t camera_config = {
@@ -98,12 +104,12 @@ static camera_config_t camera_config = {
     .ledc_channel = LEDC_CHANNEL_0,
 
     .pixel_format = PIXFORMAT_JPEG, //YUV422,GRAYSCALE,RGB565,JPEG
-    .frame_size =  FRAMESIZE_UXGA,    //QQVGA-UXGA, For ESP32, do not use sizes above QVGA when not JPEG. The performance of the ESP32-S series has improved a lot, but JPEG mode always gives better frame rates.
+    .frame_size =  FRAMESIZE_QHD,    //QQVGA-UXGA, For ESP32, do not use sizes above QVGA when not JPEG. The performance of the ESP32-S series has improved a lot, but JPEG mode always gives better frame rates.
 
-    .jpeg_quality = 12, //0-63, for OV series camera sensors, lower number means higher quality
+    .jpeg_quality = 5, //0-63, for OV series camera sensors, lower number means higher quality
     .fb_count = 2,       //When jpeg mode is used, if fb_count more than one, the driver will work in continuous mode.
     .fb_location = CAMERA_FB_IN_PSRAM,
-    .grab_mode = CAMERA_GRAB_WHEN_EMPTY,
+    .grab_mode = CAMERA_GRAB_LATEST,
 };
 
 static esp_err_t init_camera(void)
@@ -119,21 +125,74 @@ static esp_err_t init_camera(void)
     return ESP_OK;
 }
 
+// Initialize Wi-Fi
+static void wifi_init(void) {
+    esp_netif_init();
+    esp_event_loop_create_default();
+    esp_netif_create_default_wifi_sta();
+    wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
+    esp_wifi_init(&cfg);
+
+    wifi_config_t wifi_config = {};
+    strncpy((char *)wifi_config.sta.ssid, WIFI_SSID, sizeof(wifi_config.sta.ssid));
+    strncpy((char *)wifi_config.sta.password, WIFI_PASS, sizeof(wifi_config.sta.password));
+
+    esp_wifi_set_mode(WIFI_MODE_STA);
+    esp_wifi_set_config(WIFI_IF_STA, &wifi_config);
+    esp_wifi_start();
+
+    // Wait for Wi-Fi connection
+    ESP_LOGI(TAG, "Connecting to WiFi...");
+    esp_wifi_connect();
+}
+
+
+// HTTP GET handler for "/capture"
+esp_err_t capture_handler(httpd_req_t *req) {
+    camera_fb_t *pic = esp_camera_fb_get();
+    if (!pic) {
+        ESP_LOGE(TAG, "Failed to capture image");
+        httpd_resp_send_500(req);
+        return ESP_FAIL;
+    }
+
+    // Set content type and send the image
+    httpd_resp_set_type(req, "image/jpeg");
+    esp_err_t res = httpd_resp_send(req, (const char *)pic->buf, pic->len);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+    esp_camera_fb_return(pic);
+    return res;
+}
+
+// Start the HTTP server
+static esp_err_t start_camera_http_server(void) {
+    httpd_config_t config = HTTPD_DEFAULT_CONFIG();
+    httpd_handle_t server = NULL;
+
+    if (httpd_start(&server, &config) == ESP_OK) {
+        httpd_uri_t capture_uri = {
+            .uri = "/capture",
+            .method = HTTP_GET,
+            .handler = capture_handler,
+            .user_ctx = NULL};
+        httpd_register_uri_handler(server, &capture_uri);
+    }
+    return ESP_OK;
+}
+
 void app_main(void)
 {
+    esp_err_t ret = nvs_flash_init();
+    if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
+        ESP_ERROR_CHECK(nvs_flash_erase());
+        ret = nvs_flash_init();
+    }
+    ESP_ERROR_CHECK(ret);
     if(ESP_OK != init_camera()) {
         return;
     }
 
-    while (1)
-    {
-        ESP_LOGI(TAG, "Taking picture...");
-        camera_fb_t *pic = esp_camera_fb_get();
-
-        // use pic->buf to access the image
-        ESP_LOGI(TAG, "Picture taken! Its size was: %zu bytes", pic->len);
-        esp_camera_fb_return(pic);
-
-        vTaskDelay(5000 / portTICK_RATE_MS);
-    }
+    wifi_init();
+    start_camera_http_server();
+    ESP_LOGI(TAG, "HTTP server started! Access /capture to view the latest image.");
 }
