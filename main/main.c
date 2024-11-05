@@ -1,39 +1,10 @@
-/**
- * This example takes a picture every 5s and print its size on serial monitor.
- */
-
-// =============================== SETUP ======================================
-
-// 1. Board setup (Uncomment):
-// #define BOARD_WROVER_KIT
-// #define BOARD_ESP32CAM_AITHINKER
-
-/**
- * 2. Kconfig setup
- *
- * If you have a Kconfig file, copy the content from
- *  https://github.com/espressif/esp32-camera/blob/master/Kconfig into it.
- * In case you haven't, copy and paste this Kconfig file inside the src directory.
- * This Kconfig file has definitions that allows more control over the camera and
- * how it will be initialized.
- */
-
-/**
- * 3. Enable PSRAM on sdkconfig:
- *
- * CONFIG_ESP32_SPIRAM_SUPPORT=y
- *
- * More info on
- * https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/kconfig.html#config-esp32-spiram-support
- */
-
-// ================================ CODE ======================================
-
 #include <esp_log.h>
 #include <esp_system.h>
 #include <nvs_flash.h>
 #include <sys/param.h>
 #include <string.h>
+#include "esp_netif.h"
+#include "protocol_examples_common.h"
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -47,7 +18,10 @@
 #include "esp_wifi.h"
 #include "esp_event.h"
 #include "nvs_flash.h"
-#include <esp_http_server.h>
+#include "mqtt_client.h"
+#include "mbedtls/base64.h"
+
+#include "secret.h"
 
 #define BOARD_WROVER_KIT 1
 
@@ -75,9 +49,8 @@
 #endif
 
 static const char *TAG = "main_app";
-#define WIFI_SSID "TP-Link_36C8"
-#define WIFI_PASS "05817207"
-
+static EventGroupHandle_t wifi_event_group;
+const int WIFI_CONNECTED_BIT = BIT0;
 
 static camera_config_t camera_config = {
     .pin_pwdn = CAM_PIN_PWDN,
@@ -98,8 +71,8 @@ static camera_config_t camera_config = {
     .pin_href = CAM_PIN_HREF,
     .pin_pclk = CAM_PIN_PCLK,
 
-    //XCLK 20MHz or 10MHz for OV2640 double FPS (Experimental)
-    .xclk_freq_hz = 20000000,
+    //XCLK 1MHz or 10MHz
+    .xclk_freq_hz = 10000000,
     .ledc_timer = LEDC_TIMER_0,
     .ledc_channel = LEDC_CHANNEL_0,
 
@@ -107,7 +80,7 @@ static camera_config_t camera_config = {
     .frame_size =  FRAMESIZE_QHD,    //QQVGA-UXGA, For ESP32, do not use sizes above QVGA when not JPEG. The performance of the ESP32-S series has improved a lot, but JPEG mode always gives better frame rates.
 
     .jpeg_quality = 5, //0-63, for OV series camera sensors, lower number means higher quality
-    .fb_count = 2,       //When jpeg mode is used, if fb_count more than one, the driver will work in continuous mode.
+    .fb_count = 1,       //When jpeg mode is used, if fb_count more than one, the driver will work in continuous mode.
     .fb_location = CAMERA_FB_IN_PSRAM,
     .grab_mode = CAMERA_GRAB_LATEST,
 };
@@ -125,13 +98,35 @@ static esp_err_t init_camera(void)
     return ESP_OK;
 }
 
+
 // Initialize Wi-Fi
+static void event_handler(void* arg, esp_event_base_t event_base,
+                         int32_t event_id, void* event_data)
+{
+    if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_START) {
+        esp_wifi_connect();
+    } else if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_DISCONNECTED) {
+        ESP_LOGI(TAG, "Retry connecting to the AP");
+        esp_wifi_connect();
+        xEventGroupClearBits(wifi_event_group, WIFI_CONNECTED_BIT);
+    } else if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP) {
+        ip_event_got_ip_t* event = (ip_event_got_ip_t*) event_data;
+        ESP_LOGI(TAG, "Got IP:" IPSTR, IP2STR(&event->ip_info.ip));
+        xEventGroupSetBits(wifi_event_group, WIFI_CONNECTED_BIT);
+    }
+}
+
 static void wifi_init(void) {
+    wifi_event_group = xEventGroupCreate();
+    
     esp_netif_init();
     esp_event_loop_create_default();
     esp_netif_create_default_wifi_sta();
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
     esp_wifi_init(&cfg);
+
+    esp_event_handler_instance_register(WIFI_EVENT, ESP_EVENT_ANY_ID, &event_handler, NULL, NULL);
+    esp_event_handler_instance_register(IP_EVENT, IP_EVENT_STA_GOT_IP, &event_handler, NULL, NULL);
 
     wifi_config_t wifi_config = {};
     strncpy((char *)wifi_config.sta.ssid, WIFI_SSID, sizeof(wifi_config.sta.ssid));
@@ -141,47 +136,69 @@ static void wifi_init(void) {
     esp_wifi_set_config(WIFI_IF_STA, &wifi_config);
     esp_wifi_start();
 
-    // Wait for Wi-Fi connection
-    ESP_LOGI(TAG, "Connecting to WiFi...");
-    esp_wifi_connect();
+    ESP_LOGI(TAG, "Waiting for WiFi connection...");
 }
 
-
-// HTTP GET handler for "/capture"
-esp_err_t capture_handler(httpd_req_t *req) {
-    camera_fb_t *pic = esp_camera_fb_get();
-    if (!pic) {
-        ESP_LOGE(TAG, "Failed to capture image");
-        httpd_resp_send_500(req);
-        return ESP_FAIL;
-    }
-
-    // Set content type and send the image
-    httpd_resp_set_type(req, "image/jpeg");
-    esp_err_t res = httpd_resp_send(req, (const char *)pic->buf, pic->len);
-    vTaskDelay(100 / portTICK_PERIOD_MS);
-    esp_camera_fb_return(pic);
-    return res;
-}
-
-// Start the HTTP server
-static esp_err_t start_camera_http_server(void) {
-    httpd_config_t config = HTTPD_DEFAULT_CONFIG();
-    httpd_handle_t server = NULL;
-
-    if (httpd_start(&server, &config) == ESP_OK) {
-        httpd_uri_t capture_uri = {
-            .uri = "/capture",
-            .method = HTTP_GET,
-            .handler = capture_handler,
-            .user_ctx = NULL};
-        httpd_register_uri_handler(server, &capture_uri);
-    }
-    return ESP_OK;
-}
-
-void app_main(void)
+static void log_error_if_nonzero(const char *message, int error_code)
 {
+    if (error_code != 0) {
+        ESP_LOGE(TAG, "Last error %s: 0x%x", message, error_code);
+    }
+}
+
+/*
+ * @brief Event handler registered to receive MQTT events
+ *
+ *  This function is called by the MQTT client event loop.
+ *
+ * @param handler_args user data registered to the event.
+ * @param base Event base for the handler(always MQTT Base in this example).
+ * @param event_id The id for the received event.
+ * @param event_data The data for the event, esp_mqtt_event_handle_t.
+ */
+static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event_id, void *event_data)
+{
+    ESP_LOGD(TAG, "Event dispatched from event loop base=%s, event_id=%" PRIi32 "", base, event_id);
+    esp_mqtt_event_handle_t event = event_data;
+    switch ((esp_mqtt_event_id_t)event_id) {
+    case MQTT_EVENT_CONNECTED:
+        ESP_LOGI(TAG, "MQTT_EVENT_CONNECTED");
+        break;
+    case MQTT_EVENT_DISCONNECTED:
+        ESP_LOGI(TAG, "MQTT_EVENT_DISCONNECTED");
+        break;
+
+    case MQTT_EVENT_SUBSCRIBED:
+        ESP_LOGI(TAG, "MQTT_EVENT_SUBSCRIBED, msg_id=%d", event->msg_id);
+        break;
+    case MQTT_EVENT_UNSUBSCRIBED:
+        ESP_LOGI(TAG, "MQTT_EVENT_UNSUBSCRIBED, msg_id=%d", event->msg_id);
+        break;
+    case MQTT_EVENT_PUBLISHED:
+        ESP_LOGI(TAG, "MQTT_EVENT_PUBLISHED, msg_id=%d", event->msg_id);
+        break;
+    case MQTT_EVENT_DATA:
+        ESP_LOGI(TAG, "MQTT_EVENT_DATA");
+        printf("TOPIC=%.*s\r\n", event->topic_len, event->topic);
+        printf("DATA=%.*s\r\n", event->data_len, event->data);
+        break;
+    case MQTT_EVENT_ERROR:
+        ESP_LOGI(TAG, "MQTT_EVENT_ERROR");
+        if (event->error_handle->error_type == MQTT_ERROR_TYPE_TCP_TRANSPORT) {
+            log_error_if_nonzero("reported from esp-tls", event->error_handle->esp_tls_last_esp_err);
+            log_error_if_nonzero("reported from tls stack", event->error_handle->esp_tls_stack_err);
+            log_error_if_nonzero("captured as transport's socket errno",  event->error_handle->esp_transport_sock_errno);
+            ESP_LOGI(TAG, "Last errno string (%s)", strerror(event->error_handle->esp_transport_sock_errno));
+
+        }
+        break;
+    default:
+        ESP_LOGI(TAG, "Other event id:%d", event->event_id);
+        break;
+    }
+}
+
+void app_main(void){
     esp_err_t ret = nvs_flash_init();
     if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
         ESP_ERROR_CHECK(nvs_flash_erase());
@@ -193,6 +210,63 @@ void app_main(void)
     }
 
     wifi_init();
-    start_camera_http_server();
-    ESP_LOGI(TAG, "HTTP server started! Access /capture to view the latest image.");
+    // Wait for WiFi connection
+    EventBits_t bits = xEventGroupWaitBits(wifi_event_group,
+            WIFI_CONNECTED_BIT,
+            pdFALSE,
+            pdFALSE,
+            portMAX_DELAY);
+            
+    if (bits & WIFI_CONNECTED_BIT) {
+        ESP_LOGI(TAG, "WiFi Connected, starting MQTT...");
+    }
+
+    esp_mqtt_client_config_t mqtt_cfg = {
+        .broker.address.hostname = "192.168.0.232",
+        .broker.address.transport =MQTT_TRANSPORT_OVER_TCP,
+        .broker.address.port = 1883,
+    };
+    esp_mqtt_client_handle_t client = esp_mqtt_client_init(&mqtt_cfg);
+    /* The last argument may be used to pass data to the event handler, in this example mqtt_event_handler */
+    esp_mqtt_client_register_event(client, ESP_EVENT_ANY_ID, mqtt_event_handler, NULL);
+    esp_mqtt_client_start(client);
+
+    ESP_LOGI(TAG, "[APP] Free memory: %" PRIu32 " bytes", esp_get_free_heap_size());
+
+    while(1){
+        camera_fb_t *pic = esp_camera_fb_get();
+        if (!pic) {
+            ESP_LOGE(TAG, "Failed to capture image");
+            return;
+        }
+
+        // Convert the camera frame buffer to a base64 encoded string
+        size_t out_len = ((pic->len + 2) / 3) * 4 + 1;
+        char* base64 = (char*) malloc(out_len);
+        if (base64 == NULL) {
+            ESP_LOGE(TAG, "Failed to allocate memory for base64 encoding");
+            esp_camera_fb_return(pic);
+            return;
+        }
+
+        int len = mbedtls_base64_encode((unsigned char*)base64, out_len, &out_len, pic->buf, pic->len);
+        if (len < 0) {
+            ESP_LOGE(TAG, "Base64 encoding failed");
+            free(base64);
+            esp_camera_fb_return(pic);
+            return;
+        }
+        ESP_LOGI(TAG, "Encoded succesfully!");
+        ESP_LOGI(TAG, "[APP] Free memory before fb: %" PRIu32 " bytes", esp_get_free_heap_size());
+        esp_camera_fb_return(pic);
+        ESP_LOGI(TAG, "[APP] after fb: %" PRIu32 " bytes", esp_get_free_heap_size());
+
+        // Publish the base64 encoded string to the MQTT topic
+        esp_mqtt_client_publish(client, "mqtt/rpi/image", base64, len, 1, 0);
+        ESP_LOGI(TAG, "Message published!");
+
+        free(base64);
+
+        vTaskDelay(10000 / portTICK_PERIOD_MS);
+    }
 }
