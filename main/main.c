@@ -20,6 +20,7 @@
 #include "nvs_flash.h"
 #include "mqtt_client.h"
 #include "mbedtls/base64.h"
+#include "driver/temperature_sensor.h"
 
 #include "secret.h"
 
@@ -80,7 +81,7 @@ static camera_config_t camera_config = {
     .frame_size =  FRAMESIZE_QHD,    //QQVGA-UXGA, For ESP32, do not use sizes above QVGA when not JPEG. The performance of the ESP32-S series has improved a lot, but JPEG mode always gives better frame rates.
 
     .jpeg_quality = 5, //0-63, for OV series camera sensors, lower number means higher quality
-    .fb_count = 1,       //When jpeg mode is used, if fb_count more than one, the driver will work in continuous mode.
+    .fb_count = 2,       //When jpeg mode is used, if fb_count more than one, the driver will work in continuous mode.
     .fb_location = CAMERA_FB_IN_PSRAM,
     .grab_mode = CAMERA_GRAB_LATEST,
 };
@@ -233,6 +234,14 @@ void app_main(void){
 
     ESP_LOGI(TAG, "[APP] Free memory: %" PRIu32 " bytes", esp_get_free_heap_size());
 
+    ESP_LOGI(TAG, "Install temperature sensor, expected temp ranger range: 20~80 ℃");
+    temperature_sensor_handle_t temp_sensor = NULL;
+    temperature_sensor_config_t temp_sensor_config = TEMPERATURE_SENSOR_CONFIG_DEFAULT(20, 80);
+    ESP_ERROR_CHECK(temperature_sensor_install(&temp_sensor_config, &temp_sensor));
+    ESP_LOGI(TAG, "Enable temperature sensor");
+    ESP_ERROR_CHECK(temperature_sensor_enable(temp_sensor));
+    float tsens_value;
+
     while(1){
         camera_fb_t *pic = esp_camera_fb_get();
         if (!pic) {
@@ -257,6 +266,10 @@ void app_main(void){
             return;
         }
         ESP_LOGI(TAG, "Encoded succesfully!");
+
+        ESP_ERROR_CHECK(temperature_sensor_get_celsius(temp_sensor, &tsens_value));
+        ESP_LOGI(TAG, "Temperature value %.02f ℃", tsens_value);
+
         ESP_LOGI(TAG, "[APP] Free memory before fb: %" PRIu32 " bytes", esp_get_free_heap_size());
         esp_camera_fb_return(pic);
         ESP_LOGI(TAG, "[APP] after fb: %" PRIu32 " bytes", esp_get_free_heap_size());
