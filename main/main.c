@@ -31,21 +31,21 @@
 
 #define CAM_PIN_PWDN  -1
 #define CAM_PIN_RESET  -1
-#define CAM_PIN_XCLK  GPIO_NUM_15
-#define CAM_PIN_SIOD GPIO_NUM_4
-#define CAM_PIN_SIOC GPIO_NUM_5
+#define CAM_PIN_XCLK  GPIO_NUM_15 //XC
+#define CAM_PIN_SIOD GPIO_NUM_4 //SDA
+#define CAM_PIN_SIOC GPIO_NUM_5 //SCL
 
-#define CAM_PIN_D7  GPIO_NUM_16 //Y9
-#define CAM_PIN_D6  GPIO_NUM_17 //Y8
-#define CAM_PIN_D5  GPIO_NUM_18 //Y7
-#define CAM_PIN_D4  GPIO_NUM_12 //Y6
-#define CAM_PIN_D3  GPIO_NUM_10 //Y5
-#define CAM_PIN_D2  GPIO_NUM_8 //Y4
-#define CAM_PIN_D1  GPIO_NUM_9 //Y3
-#define CAM_PIN_D0  GPIO_NUM_11 //Y2
-#define CAM_PIN_VSYNC  GPIO_NUM_6
-#define CAM_PIN_HREF  GPIO_NUM_7
-#define CAM_PIN_PCLK  GPIO_NUM_13
+#define CAM_PIN_D7  GPIO_NUM_16 //D9
+#define CAM_PIN_D6  GPIO_NUM_17 //D8
+#define CAM_PIN_D5  GPIO_NUM_18 //D7
+#define CAM_PIN_D4  GPIO_NUM_12 //D6
+#define CAM_PIN_D3  GPIO_NUM_10 //D5
+#define CAM_PIN_D2  GPIO_NUM_8 //D4
+#define CAM_PIN_D1  GPIO_NUM_9 //D3
+#define CAM_PIN_D0  GPIO_NUM_11 //D2
+#define CAM_PIN_VSYNC  GPIO_NUM_6 //VS
+#define CAM_PIN_HREF  GPIO_NUM_7 //HS
+#define CAM_PIN_PCLK  GPIO_NUM_13 //PC
 
 #endif
 
@@ -206,9 +206,9 @@ void app_main(void){
         ret = nvs_flash_init();
     }
     ESP_ERROR_CHECK(ret);
-    if(ESP_OK != init_camera()) {
+    /* if(ESP_OK != init_camera()) {
         return;
-    }
+    } */
 
     wifi_init();
     // Wait for WiFi connection
@@ -224,7 +224,7 @@ void app_main(void){
 
     esp_mqtt_client_config_t mqtt_cfg = {
         .broker.address.hostname = "192.168.0.232",
-        .broker.address.transport =MQTT_TRANSPORT_OVER_TCP,
+        .broker.address.transport = MQTT_TRANSPORT_OVER_TCP,
         .broker.address.port = 1883,
     };
     esp_mqtt_client_handle_t client = esp_mqtt_client_init(&mqtt_cfg);
@@ -243,7 +243,7 @@ void app_main(void){
     float tsens_value;
 
     while(1){
-        camera_fb_t *pic = esp_camera_fb_get();
+        /* camera_fb_t *pic = esp_camera_fb_get();
         if (!pic) {
             ESP_LOGE(TAG, "Failed to capture image");
             return;
@@ -265,20 +265,19 @@ void app_main(void){
             esp_camera_fb_return(pic);
             return;
         }
-        ESP_LOGI(TAG, "Encoded succesfully!");
+        ESP_LOGI(TAG, "Encoded succesfully!"); */
 
         ESP_ERROR_CHECK(temperature_sensor_get_celsius(temp_sensor, &tsens_value));
         ESP_LOGI(TAG, "Temperature value %.02f ℃", tsens_value);
 
         ESP_LOGI(TAG, "[APP] Free memory before fb: %" PRIu32 " bytes", esp_get_free_heap_size());
-        esp_camera_fb_return(pic);
-        ESP_LOGI(TAG, "[APP] after fb: %" PRIu32 " bytes", esp_get_free_heap_size());
+        //esp_camera_fb_return(pic);
 
         // Publish the base64 encoded string to the MQTT topic
-        esp_mqtt_client_publish(client, "mqtt/rpi/image", base64, len, 1, 0);
+        esp_mqtt_client_publish(client, "mqtt/rpi/image", "Hello World!", 0, 1, 0);
         ESP_LOGI(TAG, "Message published!");
 
-        free(base64);
+        //free(base64);
 
         vTaskDelay(10000 / portTICK_PERIOD_MS);
     }

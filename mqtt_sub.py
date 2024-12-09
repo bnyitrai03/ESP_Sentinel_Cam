@@ -36,16 +36,9 @@ def subscribe(client: mqtt_client.Client):
         time = datetime.now(pytz.utc).strftime("%Y-%m-%d %H-%M-%S")
 
         try:
-            """ # Parse the JSON message
-            payload = json.loads(msg.payload)
-
-            # Extract timestamp and image data
-            image_base64 = payload['image']
-            cpu_temp = payload['cpuTemp']
-            battery_temp = payload['batteryTemp']
-            battery_percentage = payload['batteryCharge'] """
-
-            # Decode the Base64 image data
+            message= msg.payload
+            logging.info(message)
+            """ # Decode the Base64 image data
             image_data = base64.b64decode(msg.payload)
             image = Image.open(io.BytesIO(image_data))
             
@@ -54,11 +47,7 @@ def subscribe(client: mqtt_client.Client):
             image.save(output_image_path)
             logging.info(f"Received and saved image as {output_image_path}")
             logging.info(f"Image size: {image._size}")
-            logging.info(f"Time received: {time}")
-
-            """ logging.info(f"The cpu temperature is: {cpu_temp} °C")
-            logging.info(f"The battery temperature is: {battery_temp} °C")
-            logging.info(f"The battery percentage is: {battery_percentage} %") """
+            logging.info(f"Time received: {time}") """
 
         except Exception as e:
             logging.error(f"Failed to process image: {e}")
