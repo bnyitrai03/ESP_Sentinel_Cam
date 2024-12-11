@@ -36,18 +36,23 @@ def subscribe(client: mqtt_client.Client):
         time = datetime.now(pytz.utc).strftime("%Y-%m-%d %H-%M-%S")
 
         try:
-            message= msg.payload
-            logging.info(message)
-            """ # Decode the Base64 image data
-            image_data = base64.b64decode(msg.payload)
-            image = Image.open(io.BytesIO(image_data))
+            # Decode the Base64 image data
+            # image_data = base64.b64decode(msg.payload)
+            logging.info(f"Payload length: {len(msg.payload)}")
+            # Log payload sample (only the first 20 bytes for brevity)
+            logging.info(f"Payload sample: {msg.payload[:20]}")
+            # Check if the payload starts and ends correctly
+            if not (msg.payload.startswith(b'\xff\xd8') and msg.payload.endswith(b'\xff\xd9')):
+                logging.error("Payload does not contain a valid JPEG file structure.")
+            image = Image.open(io.BytesIO(msg.payload))
+            image.verify()  # Verify image integrity
             
             # Save directly to a file
             output_image_path = f"images/image_{time}.jpg"
             image.save(output_image_path)
             logging.info(f"Received and saved image as {output_image_path}")
             logging.info(f"Image size: {image._size}")
-            logging.info(f"Time received: {time}") """
+            logging.info(f"Time received: {time}")
 
         except Exception as e:
             logging.error(f"Failed to process image: {e}")

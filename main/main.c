@@ -24,28 +24,28 @@
 
 #include "secret.h"
 
-#define BOARD_WROVER_KIT 1
+#define DEVKIT_C1 1
 
 // WROVER-KIT PIN Map
-#ifdef BOARD_WROVER_KIT
+#ifdef DEVKIT_C1
 
-#define CAM_PIN_PWDN  -1
-#define CAM_PIN_RESET  -1
-#define CAM_PIN_XCLK  GPIO_NUM_15 //XC
-#define CAM_PIN_SIOD GPIO_NUM_4 //SDA
-#define CAM_PIN_SIOC GPIO_NUM_5 //SCL
+#define CAM_PIN_PWDN  GPIO_NUM_38
+#define CAM_PIN_RESET  GPIO_NUM_39
+#define CAM_PIN_XCLK  GPIO_NUM_4 //XC
+#define CAM_PIN_SIOD GPIO_NUM_15 //SDA
+#define CAM_PIN_SIOC GPIO_NUM_16 //SCL
 
-#define CAM_PIN_D7  GPIO_NUM_16 //D9
-#define CAM_PIN_D6  GPIO_NUM_17 //D8
-#define CAM_PIN_D5  GPIO_NUM_18 //D7
-#define CAM_PIN_D4  GPIO_NUM_12 //D6
-#define CAM_PIN_D3  GPIO_NUM_10 //D5
-#define CAM_PIN_D2  GPIO_NUM_8 //D4
-#define CAM_PIN_D1  GPIO_NUM_9 //D3
-#define CAM_PIN_D0  GPIO_NUM_11 //D2
-#define CAM_PIN_VSYNC  GPIO_NUM_6 //VS
-#define CAM_PIN_HREF  GPIO_NUM_7 //HS
-#define CAM_PIN_PCLK  GPIO_NUM_13 //PC
+#define CAM_PIN_D7  GPIO_NUM_21 //D9
+#define CAM_PIN_D6  GPIO_NUM_47 //D8
+#define CAM_PIN_D5  GPIO_NUM_48 //D7
+#define CAM_PIN_D4  GPIO_NUM_45 //D6
+#define CAM_PIN_D3  GPIO_NUM_0 //D5
+#define CAM_PIN_D2  GPIO_NUM_17 //D4
+#define CAM_PIN_D1  GPIO_NUM_18 //D3
+#define CAM_PIN_D0  GPIO_NUM_8 //D2
+#define CAM_PIN_VSYNC  GPIO_NUM_7 //VS
+#define CAM_PIN_HREF  GPIO_NUM_6 //HS
+#define CAM_PIN_PCLK  GPIO_NUM_5 //PC
 
 #endif
 
@@ -78,10 +78,10 @@ static camera_config_t camera_config = {
     .ledc_channel = LEDC_CHANNEL_0,
 
     .pixel_format = PIXFORMAT_JPEG, //YUV422,GRAYSCALE,RGB565,JPEG
-    .frame_size =  FRAMESIZE_QHD,    //QQVGA-UXGA, For ESP32, do not use sizes above QVGA when not JPEG. The performance of the ESP32-S series has improved a lot, but JPEG mode always gives better frame rates.
+    .frame_size =  FRAMESIZE_HD,    //QQVGA-UXGA, For ESP32, do not use sizes above QVGA when not JPEG. The performance of the ESP32-S series has improved a lot, but JPEG mode always gives better frame rates.
 
-    .jpeg_quality = 5, //0-63, for OV series camera sensors, lower number means higher quality
-    .fb_count = 2,       //When jpeg mode is used, if fb_count more than one, the driver will work in continuous mode.
+    .jpeg_quality = 1, //0-63, for OV series camera sensors, lower number means higher quality
+    .fb_count = 1,       //When jpeg mode is used, if fb_count more than one, the driver will work in continuous mode.
     .fb_location = CAMERA_FB_IN_PSRAM,
     .grab_mode = CAMERA_GRAB_LATEST,
 };
@@ -206,9 +206,9 @@ void app_main(void){
         ret = nvs_flash_init();
     }
     ESP_ERROR_CHECK(ret);
-    /* if(ESP_OK != init_camera()) {
+    if(ESP_OK != init_camera()) {
         return;
-    } */
+    }
 
     wifi_init();
     // Wait for WiFi connection
@@ -243,14 +243,14 @@ void app_main(void){
     float tsens_value;
 
     while(1){
-        /* camera_fb_t *pic = esp_camera_fb_get();
+        camera_fb_t *pic = esp_camera_fb_get();
         if (!pic) {
             ESP_LOGE(TAG, "Failed to capture image");
             return;
         }
 
         // Convert the camera frame buffer to a base64 encoded string
-        size_t out_len = ((pic->len + 2) / 3) * 4 + 1;
+        /* size_t out_len = ((pic->len + 2) / 3) * 4 + 1;
         char* base64 = (char*) malloc(out_len);
         if (base64 == NULL) {
             ESP_LOGE(TAG, "Failed to allocate memory for base64 encoding");
@@ -271,13 +271,12 @@ void app_main(void){
         ESP_LOGI(TAG, "Temperature value %.02f ℃", tsens_value);
 
         ESP_LOGI(TAG, "[APP] Free memory before fb: %" PRIu32 " bytes", esp_get_free_heap_size());
-        //esp_camera_fb_return(pic);
-
         // Publish the base64 encoded string to the MQTT topic
-        esp_mqtt_client_publish(client, "mqtt/rpi/image", "Hello World!", 0, 1, 0);
+        esp_mqtt_client_publish(client, "mqtt/rpi/image",pic->buf, 0, 1, 0);
         ESP_LOGI(TAG, "Message published!");
 
         //free(base64);
+        esp_camera_fb_return(pic);
 
         vTaskDelay(10000 / portTICK_PERIOD_MS);
     }
