@@ -37,15 +37,12 @@ def subscribe(client: mqtt_client.Client):
 
         try:
             # Decode the Base64 image data
-            # image_data = base64.b64decode(msg.payload)
+            image_data = base64.b64decode(msg.payload)
             logging.info(f"Payload length: {len(msg.payload)}")
-            # Log payload sample (only the first 20 bytes for brevity)
-            logging.info(f"Payload sample: {msg.payload[:20]}")
-            # Check if the payload starts and ends correctly
-            if not (msg.payload.startswith(b'\xff\xd8') and msg.payload.endswith(b'\xff\xd9')):
+            if not (image_data.startswith(b'\xff\xd8') and image_data.endswith(b'\xff\xd9')):
                 logging.error("Payload does not contain a valid JPEG file structure.")
-            image = Image.open(io.BytesIO(msg.payload))
-            image.verify()  # Verify image integrity
+            temp = io.BytesIO(image_data)
+            image = Image.open(temp)
             
             # Save directly to a file
             output_image_path = f"images/image_{time}.jpg"

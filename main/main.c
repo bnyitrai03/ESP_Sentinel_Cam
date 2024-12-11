@@ -29,8 +29,8 @@
 // WROVER-KIT PIN Map
 #ifdef DEVKIT_C1
 
-#define CAM_PIN_PWDN  GPIO_NUM_38
-#define CAM_PIN_RESET  GPIO_NUM_39
+#define CAM_PIN_PWDN  -1 //GPIO_NUM_38
+#define CAM_PIN_RESET -1 //GPIO_NUM_39
 #define CAM_PIN_XCLK  GPIO_NUM_4 //XC
 #define CAM_PIN_SIOD GPIO_NUM_15 //SDA
 #define CAM_PIN_SIOC GPIO_NUM_16 //SCL
@@ -73,14 +73,14 @@ static camera_config_t camera_config = {
     .pin_pclk = CAM_PIN_PCLK,
 
     //XCLK 1MHz or 10MHz
-    .xclk_freq_hz = 10000000,
+    .xclk_freq_hz = 24000000,
     .ledc_timer = LEDC_TIMER_0,
     .ledc_channel = LEDC_CHANNEL_0,
 
     .pixel_format = PIXFORMAT_JPEG, //YUV422,GRAYSCALE,RGB565,JPEG
     .frame_size =  FRAMESIZE_HD,    //QQVGA-UXGA, For ESP32, do not use sizes above QVGA when not JPEG. The performance of the ESP32-S series has improved a lot, but JPEG mode always gives better frame rates.
 
-    .jpeg_quality = 1, //0-63, for OV series camera sensors, lower number means higher quality
+    .jpeg_quality = 4, //0-63, for OV series camera sensors, lower number means higher quality
     .fb_count = 1,       //When jpeg mode is used, if fb_count more than one, the driver will work in continuous mode.
     .fb_location = CAMERA_FB_IN_PSRAM,
     .grab_mode = CAMERA_GRAB_LATEST,
@@ -240,24 +240,54 @@ void app_main(void){
     ESP_ERROR_CHECK(temperature_sensor_install(&temp_sensor_config, &temp_sensor));
     ESP_LOGI(TAG, "Enable temperature sensor");
     ESP_ERROR_CHECK(temperature_sensor_enable(temp_sensor));
-    float tsens_value;
+    // float tsens_value;
 
     while(1){
+        vTaskDelay(10000 / portTICK_PERIOD_MS);
         camera_fb_t *pic = esp_camera_fb_get();
         if (!pic) {
             ESP_LOGE(TAG, "Failed to capture image");
             return;
         }
+        ESP_LOGI(TAG, "Image size is %d bytes", pic->len);
 
-        // Convert the camera frame buffer to a base64 encoded string
-        /* size_t out_len = ((pic->len + 2) / 3) * 4 + 1;
+        /*  The calculation ((pic->len + 2) / 3) * 4 + 1 does this precisely:
+            pic->len is the original image size
+            + 2 ensures proper rounding for the last block
+            / 3 converts 3-byte groups
+            * 4 expands each 3-byte group to 4 base64 characters
+            + 1 adds space for null termination
+            For example:
+            Original 300 KB image → ~400 KB base64 representation
+            1 MB image → ~1.33 MB base64 representation
+        */
+        size_t out_len = ((pic->len + 2) / 3) * 4 + 1;
         char* base64 = (char*) malloc(out_len);
         if (base64 == NULL) {
             ESP_LOGE(TAG, "Failed to allocate memory for base64 encoding");
             esp_camera_fb_return(pic);
             return;
         }
+        ESP_LOGI(TAG, "Base64 size is %d bytes", (int)out_len);
+        int len = mbedtls_base64_encode((unsigned char*)base64, out_len, &out_len, pic->buf, pic->len);
+        if (len < 0) {
+            ESP_LOGE(TAG, "Base64 encoding failed");
+            free(base64);
+            esp_camera_fb_return(pic);
+            return;
+        }
+        ESP_LOGI(TAG, "Encoded succesfully!");
 
+       /*  // Convert the camera frame buffer to a base64 encoded string
+        size_t out_len = 0;
+        mbedtls_base64_encode(NULL, 0, &out_len, pic->buf, pic->len);
+        ESP_LOGI(TAG, "Base64 image is: %d bytes", out_len);
+        char* base64 = (char*) malloc(out_len);
+        if (base64 == NULL) {
+            ESP_LOGE(TAG, "Failed to allocate memory for base64 encoding");
+            esp_camera_fb_return(pic);
+            return;
+        }
         int len = mbedtls_base64_encode((unsigned char*)base64, out_len, &out_len, pic->buf, pic->len);
         if (len < 0) {
             ESP_LOGE(TAG, "Base64 encoding failed");
@@ -267,17 +297,15 @@ void app_main(void){
         }
         ESP_LOGI(TAG, "Encoded succesfully!"); */
 
-        ESP_ERROR_CHECK(temperature_sensor_get_celsius(temp_sensor, &tsens_value));
-        ESP_LOGI(TAG, "Temperature value %.02f ℃", tsens_value);
+        /*  ESP_ERROR_CHECK(temperature_sensor_get_celsius(temp_sensor, &tsens_value));
+        ESP_LOGI(TAG, "Temperature value %.02f ℃", tsens_value); */
 
         ESP_LOGI(TAG, "[APP] Free memory before fb: %" PRIu32 " bytes", esp_get_free_heap_size());
         // Publish the base64 encoded string to the MQTT topic
-        esp_mqtt_client_publish(client, "mqtt/rpi/image",pic->buf, 0, 1, 0);
+        esp_mqtt_client_publish(client, "mqtt/rpi/image", base64, len, 2, 0);
         ESP_LOGI(TAG, "Message published!");
 
-        //free(base64);
+        free(base64);
         esp_camera_fb_return(pic);
-
-        vTaskDelay(10000 / portTICK_PERIOD_MS);
     }
 }
