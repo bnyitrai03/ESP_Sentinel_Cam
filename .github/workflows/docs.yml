@@ -1,0 +1,46 @@
+name: Build and Deploy Docs
+
+on:
+  push:
+    branches:
+      - main  # or your default branch name
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install esp-docs sphinx breathe sphinx-copybutton
+          sudo apt-get update
+          sudo apt-get install -y doxygen
+
+      - name: Clean build directory
+        working-directory: docs
+        run: |
+          rm -rf _build
+
+      - name: Build documentation
+        working-directory: docs
+        run: |
+          doxygen Doxyfile
+          build-docs -l en build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/_build/en/generic/html
+          force_orphan: true
+          enable_jekyll: false

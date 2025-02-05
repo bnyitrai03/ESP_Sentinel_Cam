@@ -1,0 +1,106 @@
+.TH "Camera" 3 "ESP_SENTINEL_CAM" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Camera \- Handles the camera\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <camera\&.h>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "esp_err_t \fBstart\fP ()"
+.br
+.RI "Starts the camera\&. "
+.ti -1c
+.RI "esp_err_t \fBtake_image\fP ()"
+.br
+.RI "Takes image\&. "
+.ti -1c
+.RI "const char * \fBget_image_data\fP ()"
+.br
+.RI "Gets the contents of the frame buffer of the captured image\&. "
+.ti -1c
+.RI "size_t \fBget_image_size\fP ()"
+.br
+.RI "Gets image size\&. "
+.ti -1c
+.RI "void \fBreturn_fb\fP ()"
+.br
+.RI "Returns the frame buffer\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Handles the camera\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "const char * Camera::get_image_data ()\fR [inline]\fP"
+
+.PP
+Gets the contents of the frame buffer of the captured image\&. 
+.PP
+\fBReturns\fP
+.RS 4
+
+.IP "\(bu" 2
+Frame buffer\&. In case of failure it returns a nullptr\&. 
+.PP
+.RE
+.PP
+
+.SS "size_t Camera::get_image_size ()\fR [inline]\fP"
+
+.PP
+Gets image size\&. 
+.PP
+\fBReturns\fP
+.RS 4
+
+.IP "\(bu" 2
+The size of the frame buffer\&. 
+.PP
+.RE
+.PP
+
+.SS "esp_err_t Camera::start ()"
+
+.PP
+Starts the camera\&. A more indepth description could be added here if needed\&.
+
+.PP
+\fBReturns\fP
+.RS 4
+.IP "\(bu" 2
+ESP_OK : camera initialized successfully
+.IP "\(bu" 2
+ESP_FAIL : couldn't initialize camera
+.IP "\(bu" 2
+ESP_ERR_NOT_SUPPORTED : JPEG format not supported on this sensor 
+.PP
+.RE
+.PP
+
+.SS "esp_err_t Camera::take_image ()"
+
+.PP
+Takes image\&. 
+.PP
+\fBReturns\fP
+.RS 4
+
+.IP "\(bu" 2
+ESP_OK : captured image
+.IP "\(bu" 2
+ESP_FAIL : couldn't take image 
+.PP
+.RE
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for ESP_SENTINEL_CAM from the source code\&.

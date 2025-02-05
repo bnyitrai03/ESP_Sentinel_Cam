@@ -1,0 +1,264 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="camera_8h" kind="file" language="C++">
+    <compoundname>camera.h</compoundname>
+    <includes local="yes">esp_camera.h</includes>
+    <incdepgraph>
+      <node id="1">
+        <label>C:/test/test/components/camera/include/camera.h</label>
+        <link refid="camera_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>esp_camera.h</label>
+      </node>
+    </incdepgraph>
+    <innerclass refid="class_camera" prot="public">Camera</innerclass>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="camera_8h_1ac6ba9797866eb0bbd34cad17bbec8963" prot="public" static="no">
+        <name>CAM_PIN_PWDN</name>
+        <initializer>-1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>GPIO_NUM_38 </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/test/test/components/camera/include/camera.h" line="3" column="9" bodyfile="C:/test/test/components/camera/include/camera.h" bodystart="3" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="camera_8h_1a01cfe37e742860a4bab27f413cac6256" prot="public" static="no">
+        <name>CAM_PIN_RESET</name>
+        <initializer>-1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>GPIO_NUM_39 </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/test/test/components/camera/include/camera.h" line="4" column="9" bodyfile="C:/test/test/components/camera/include/camera.h" bodystart="4" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="camera_8h_1ab033bfe6acb2e8489842d0c676a24829" prot="public" static="no">
+        <name>CAM_PIN_XCLK</name>
+        <initializer>GPIO_NUM_4</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>XC </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/test/test/components/camera/include/camera.h" line="5" column="9" bodyfile="C:/test/test/components/camera/include/camera.h" bodystart="5" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="camera_8h_1a0737a0d8c9fab228d60740e0601d8855" prot="public" static="no">
+        <name>CAM_PIN_SIOD</name>
+        <initializer>GPIO_NUM_15</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>SDA </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/test/test/components/camera/include/camera.h" line="6" column="9" bodyfile="C:/test/test/components/camera/include/camera.h" bodystart="6" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="camera_8h_1a8304a9f5f389bfff008ec819326d5993" prot="public" static="no">
+        <name>CAM_PIN_SIOC</name>
+        <initializer>GPIO_NUM_16</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>SCL </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/test/test/components/camera/include/camera.h" line="7" column="9" bodyfile="C:/test/test/components/camera/include/camera.h" bodystart="7" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="camera_8h_1a140a48794b1b871f93b54892756f702c" prot="public" static="no">
+        <name>CAM_PIN_D7</name>
+        <initializer>GPIO_NUM_21</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>D9 </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/test/test/components/camera/include/camera.h" line="9" column="9" bodyfile="C:/test/test/components/camera/include/camera.h" bodystart="9" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="camera_8h_1ae793722813bdf0cccb00c5a61ab6ca7d" prot="public" static="no">
+        <name>CAM_PIN_D6</name>
+        <initializer>GPIO_NUM_47</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>D8 </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/test/test/components/camera/include/camera.h" line="10" column="9" bodyfile="C:/test/test/components/camera/include/camera.h" bodystart="10" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="camera_8h_1a33c5b0b4213744780dcad7a4eaa44d55" prot="public" static="no">
+        <name>CAM_PIN_D5</name>
+        <initializer>GPIO_NUM_48</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>D7 </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/test/test/components/camera/include/camera.h" line="11" column="9" bodyfile="C:/test/test/components/camera/include/camera.h" bodystart="11" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="camera_8h_1aa83b50b2abe56aaef676545fd72e6d65" prot="public" static="no">
+        <name>CAM_PIN_D4</name>
+        <initializer>GPIO_NUM_45</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>D6 </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/test/test/components/camera/include/camera.h" line="12" column="9" bodyfile="C:/test/test/components/camera/include/camera.h" bodystart="12" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="camera_8h_1af9fde698eafdf2f7d9054a8219340144" prot="public" static="no">
+        <name>CAM_PIN_D3</name>
+        <initializer>GPIO_NUM_0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>D5 </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/test/test/components/camera/include/camera.h" line="13" column="9" bodyfile="C:/test/test/components/camera/include/camera.h" bodystart="13" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="camera_8h_1af714c463efd883394ce3f3c3349f2cdd" prot="public" static="no">
+        <name>CAM_PIN_D2</name>
+        <initializer>GPIO_NUM_17</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>D4 </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/test/test/components/camera/include/camera.h" line="14" column="9" bodyfile="C:/test/test/components/camera/include/camera.h" bodystart="14" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="camera_8h_1a5d86ac3c8646f39aa63bf8621771799e" prot="public" static="no">
+        <name>CAM_PIN_D1</name>
+        <initializer>GPIO_NUM_18</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>D3 </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/test/test/components/camera/include/camera.h" line="15" column="9" bodyfile="C:/test/test/components/camera/include/camera.h" bodystart="15" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="camera_8h_1ad01ad0c3cb8a549add333d53f667ac86" prot="public" static="no">
+        <name>CAM_PIN_D0</name>
+        <initializer>GPIO_NUM_8</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>D2 </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/test/test/components/camera/include/camera.h" line="16" column="9" bodyfile="C:/test/test/components/camera/include/camera.h" bodystart="16" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="camera_8h_1a2445a99da2723c741f7fc8836394814d" prot="public" static="no">
+        <name>CAM_PIN_VSYNC</name>
+        <initializer>GPIO_NUM_7</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>VS </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/test/test/components/camera/include/camera.h" line="17" column="9" bodyfile="C:/test/test/components/camera/include/camera.h" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="camera_8h_1aa8c4bb79121b6f1648c3eccbd18ecb9d" prot="public" static="no">
+        <name>CAM_PIN_HREF</name>
+        <initializer>GPIO_NUM_6</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>HS </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/test/test/components/camera/include/camera.h" line="18" column="9" bodyfile="C:/test/test/components/camera/include/camera.h" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="camera_8h_1a5ae9bde4afbaad90e5ccd1cf7f7891c8" prot="public" static="no">
+        <name>CAM_PIN_PCLK</name>
+        <initializer>GPIO_NUM_5</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>PC </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/test/test/components/camera/include/camera.h" line="19" column="9" bodyfile="C:/test/test/components/camera/include/camera.h" bodystart="19" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&quot;esp_camera.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>CAM_PIN_PWDN<sp/>-1<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>CAM_PIN_RESET<sp/>-1<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>CAM_PIN_XCLK<sp/>GPIO_NUM_4<sp/><sp/></highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>CAM_PIN_SIOD<sp/>GPIO_NUM_15<sp/></highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>CAM_PIN_SIOC<sp/>GPIO_NUM_16<sp/></highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>CAM_PIN_D7<sp/>GPIO_NUM_21<sp/><sp/><sp/></highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>CAM_PIN_D6<sp/>GPIO_NUM_47<sp/><sp/><sp/></highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>CAM_PIN_D5<sp/>GPIO_NUM_48<sp/><sp/><sp/></highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>CAM_PIN_D4<sp/>GPIO_NUM_45<sp/><sp/><sp/></highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>CAM_PIN_D3<sp/>GPIO_NUM_0<sp/><sp/><sp/><sp/></highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>CAM_PIN_D2<sp/>GPIO_NUM_17<sp/><sp/><sp/></highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>CAM_PIN_D1<sp/>GPIO_NUM_18<sp/><sp/><sp/></highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>CAM_PIN_D0<sp/>GPIO_NUM_8<sp/><sp/><sp/><sp/></highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>CAM_PIN_VSYNC<sp/>GPIO_NUM_7<sp/></highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>CAM_PIN_HREF<sp/>GPIO_NUM_6<sp/><sp/></highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>CAM_PIN_PCLK<sp/>GPIO_NUM_5<sp/><sp/></highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24" refid="class_camera" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">Camera<sp/>{</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/>Camera();</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/>~Camera()<sp/>{<sp/>esp_camera_fb_return(_fb);<sp/>}</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>there<sp/>needs<sp/>to<sp/>be<sp/>a<sp/>delay<sp/>before<sp/>taking<sp/>the<sp/>first<sp/>image</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>to<sp/>guarantee<sp/>sufficient<sp/>exposition<sp/>time</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42" refid="class_camera_1a80b419f1102e21b82d9af1fd3de5c5b1" refkind="member"><highlight class="normal"><sp/><sp/>esp_err_t<sp/><ref refid="class_camera_1a80b419f1102e21b82d9af1fd3de5c5b1" kindref="member">start</ref>();<sp/></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51" refid="class_camera_1a419d00aae7f10718037a0b6ceeea5886" refkind="member"><highlight class="normal"><sp/><sp/>esp_err_t<sp/><ref refid="class_camera_1a419d00aae7f10718037a0b6ceeea5886" kindref="member">take_image</ref>();<sp/></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59" refid="class_camera_1a6c86148ed08829c37cc41663b3e64558" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*<ref refid="class_camera_1a6c86148ed08829c37cc41663b3e64558" kindref="member">get_image_data</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">reinterpret_cast&lt;</highlight><highlight class="keyword">const<sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(_fb-&gt;buf);</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69" refid="class_camera_1a1bb5dcbd3726be5e8c2ab117210df450" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="class_camera_1a1bb5dcbd3726be5e8c2ab117210df450" kindref="member">get_image_size</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_fb-&gt;len;<sp/>}</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74" refid="class_camera_1a934e6aec49b59a6f85e821f472a34ed6" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_camera_1a934e6aec49b59a6f85e821f472a34ed6" kindref="member">return_fb</ref>()<sp/>{<sp/>esp_camera_fb_return(_fb);<sp/>}</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/>camera_config_t<sp/>_config;<sp/></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/>camera_fb_t<sp/>*_fb<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="79"><highlight class="normal">};</highlight></codeline>
+    </programlisting>
+    <location file="C:/test/test/components/camera/include/camera.h"/>
+  </compounddef>
+</doxygen>
