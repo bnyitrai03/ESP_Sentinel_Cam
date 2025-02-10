@@ -5,4 +5,4 @@
 **/dependencies.lock
 **/secret.h
 **/managed_components
-**/camera.h
+**/pins.h
