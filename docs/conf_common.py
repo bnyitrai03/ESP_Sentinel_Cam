@@ -26,5 +26,4 @@ language = 'en'
 todo_include_todos = True
 html_static_path = []
 
-# Theme settings
 html_baseurl = f'https://leventenyiri.github.io/{github_repo}/'

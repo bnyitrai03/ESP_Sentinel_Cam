@@ -37,6 +37,7 @@ def subscribe(client: mqtt_client.Client):
 
         try:
             image = Image.frombytes("L", (2560, 1600), msg.payload)
+            image = Image.frombytes("L", (2560, 1600), msg.payload)
             #image = Image.open(io.BytesIO(msg.payload))
             
             # Save directly to a file
