@@ -8,7 +8,7 @@ import io
 from datetime import datetime
 import pytz
 
-broker = "192.168.68.115"
+broker = "192.168.68.108"
 port = 1883
 topic = "mqtt/rpi/image"
 logging.basicConfig(level=logging.DEBUG,
@@ -36,6 +36,7 @@ def subscribe(client: mqtt_client.Client):
         time = datetime.now(pytz.utc).strftime("%Y-%m-%d %H-%M-%S")
 
         try:
+            image = Image.frombytes("L", (2560, 1600), msg.payload)
             image = Image.frombytes("L", (2560, 1600), msg.payload)
             #image = Image.open(io.BytesIO(msg.payload))
             
