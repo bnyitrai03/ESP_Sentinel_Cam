@@ -4,3 +4,4 @@
 **/dependencies.lock
 **/secret.h
 **/managed_components
+**/pins.h

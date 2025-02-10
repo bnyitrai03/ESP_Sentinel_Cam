@@ -28,7 +28,7 @@ Camera::Camera() {
       .ledc_channel = LEDC_CHANNEL_0,
 
       .pixel_format = PIXFORMAT_GRAYSCALE, // PIXFORMAT_GRAYSCALE
-      .frame_size = FRAMESIZE_QHD,
+      .frame_size = FRAMESIZE_WQXGA,
 
       .jpeg_quality = 4, // 0-63
       .fb_count = 1, // When jpeg mode is used, if fb_count more than one, the
