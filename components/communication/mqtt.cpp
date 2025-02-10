@@ -19,7 +19,7 @@ MQTT::MQTT() {
           {
               .address =
                   {
-                      .hostname = "192.168.0.232",
+                      .hostname = "192.168.68.115",
                       .transport = MQTT_TRANSPORT_OVER_TCP,
                       .port = 1883,
                   },
