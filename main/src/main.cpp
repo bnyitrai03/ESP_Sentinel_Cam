@@ -7,7 +7,7 @@
 /* #include "driver/i2c_master.h"
 #include "driver/temperature_sensor.h" */
 
-// #include <ArduinoJson.h>
+#include <ArduinoJson.h>
 
 #ifndef portTICK_RATE_MS
 #define portTICK_RATE_MS portTICK_PERIOD_MS
@@ -52,20 +52,12 @@ extern "C" void app_main(void) {
   ESP_LOGI(TAG, "Largest free block in PSRAM: %d",
            heap_caps_get_largest_free_block(MALLOC_CAP_SPIRAM));
 
-  /* ESP_LOGI(TAG,
-           "Install temperature sensor, expected temp ranger range: 20~80 ℃");
-  temperature_sensor_handle_t temp_sensor = NULL;
-  temperature_sensor_config_t temp_sensor_config =
-      TEMPERATURE_SENSOR_CONFIG_DEFAULT(20, 80);
-  ESP_ERROR_CHECK(
-      temperature_sensor_install(&temp_sensor_config, &temp_sensor));
-  ESP_LOGI(TAG, "Enable temperature sensor");
-  ESP_ERROR_CHECK(temperature_sensor_enable(temp_sensor));
-  float tsens_value;
- */
+  time_t now;
+  time(&now);
+  ESP_LOGI(TAG, "Unix Epoch Time: %lld", (unsigned long long)now);
 
   while (1) {
-    vTaskDelay(1000 / portTICK_PERIOD_MS);
+    vTaskDelay(5000 / portTICK_PERIOD_MS);
 
     cam.take_image();
     mqtt.publish("mqtt/rpi/image", cam.get_image_data(), cam.get_image_size());
