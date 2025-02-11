@@ -1,29 +1,29 @@
 # python 3.11
 from paho.mqtt import client as mqtt_client
-import base64
 import logging
 import json
 from PIL import Image
-import io
-from datetime import datetime
-import pytz
 
-broker = "192.168.68.108"
+broker = "192.168.0.232"
 port = 1883
-topic = "mqtt/rpi/image"
+topic = "image"
+ack_topic = "acknowledge"
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S',
                     handlers=[logging.StreamHandler()])
 
-logging.Formatter.converter = lambda *args: datetime.now(pytz.utc).timetuple()
+# Global variables to track state
+expecting_image = False
+last_timestamp = None
+
 
 def connect_mqtt() -> mqtt_client.Client:
     def on_connect(client, userdata, flags, rc, properties=None):
         if rc == 0:
-            print("Connected to MQTT Broker!")
+            logging.info("Connected to MQTT Broker!")
         else:
-            print(f"Failed to connect, return code {rc}")
+            logging.error(f"Failed to connect, return code {rc}")
 
     client = mqtt_client.Client(mqtt_client.CallbackAPIVersion.VERSION2)
     client.enable_logger()
@@ -31,25 +31,47 @@ def connect_mqtt() -> mqtt_client.Client:
     client.connect(broker, port)
     return client
 
+
 def subscribe(client: mqtt_client.Client):
     def on_message(client, userdata, msg):
-        time = datetime.now(pytz.utc).strftime("%Y-%m-%d %H-%M-%S")
-
+        global expecting_image, last_timestamp
         try:
-            image = Image.frombytes("L", (2560, 1600), msg.payload)
-            image = Image.frombytes("L", (2560, 1600), msg.payload)
-            #image = Image.open(io.BytesIO(msg.payload))
-            
-            # Save directly to a file
-            output_image_path = f"images/image_{time}.jpg"
-            image.save(output_image_path)
-            logging.info(f"Received and saved image as {output_image_path}")
-            logging.info(f"Image size: {image._size}")
-            logging.info(f"Time received: {time}")
+            # Attempt to decode JSON metadata
+            payload = msg.payload.decode('utf-8').strip()
+            doc = json.loads(payload)
+            if 'timestamp' in doc and 'size' in doc:
+                timestamp = doc['timestamp'][:19]
+                logging.info(
+                    f"Received metadata: Timestamp={timestamp}, Size={doc['size']}")
+                client.publish(ack_topic, timestamp, qos=2)
+                logging.info(f"Sent ACK for timestamp: {timestamp}")
 
-        except Exception as e:
-            logging.error(f"Failed to process image: {e}")
-            logging.error(f"Payload: {msg.payload[:100]}...")
+                expecting_image = True
+                last_timestamp = timestamp
+                return
+        except (UnicodeDecodeError, json.JSONDecodeError):
+            pass  # Not a JSON message
+
+        if expecting_image:
+            try:
+                if not last_timestamp:
+                    logging.error("Image received but no timestamp available")
+                    return
+                safe_timestamp = last_timestamp.replace(
+                    ":", "-").replace("T", "_")
+                output_path = f"images/image_{safe_timestamp}.jpg"
+
+                image = Image.frombytes("L", (2560, 1600), msg.payload)
+                image.save(output_path)
+                logging.info(f"Saved image to {output_path}")
+                expecting_image = False
+                last_timestamp = None
+            except Exception as e:
+                logging.error(f"Failed to process image: {e}")
+                expecting_image = False
+                last_timestamp = None
+        else:
+            logging.warning("Unexpected message: Not expecting image data")
 
     client.subscribe(topic)
     client.on_message = on_message

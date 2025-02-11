@@ -8,9 +8,12 @@ esp_mqtt_client_handle_t MQTT::_client;
 char MQTT::_logBuff[256];
 std::string MQTT::_configack_topic;
 std::string MQTT::_configrecv_topic;
+std::string MQTT::_sendack_topic;
 std::string MQTT::_log_topic;
 std::string MQTT::_image_topic;
 int MQTT::_qos;
+char MQTT::_expected_timestamp[TIMESTAMP_SIZE];
+SemaphoreHandle_t MQTT::_ack_semaphore = xSemaphoreCreateBinary();
 
 MQTT::MQTT() {
   // These should be read from NVS
@@ -19,7 +22,7 @@ MQTT::MQTT() {
           {
               .address =
                   {
-                      .hostname = "192.168.68.108",
+                      .hostname = "192.168.0.232",
                       .transport = MQTT_TRANSPORT_OVER_TCP,
                       .port = 1883,
                   },
@@ -47,15 +50,10 @@ MQTT::MQTT() {
   // also topics and qos ??
   _configack_topic = "configack";
   _configrecv_topic = "configrecv";
+  _sendack_topic = "acknowledge";
   _log_topic = "log";
-  _image_topic = "mqtt/rpi/image";
+  _image_topic = "image";
   _qos = 2;
-}
-
-void MQTT::log_error_if_nonzero(const char *message, int error_code) {
-  if (error_code != 0) {
-    ESP_LOGE(TAG, "%s: %d", message, error_code);
-  }
 }
 
 int MQTT::remote_log_handler(const char *fmt, va_list args) {
@@ -73,6 +71,7 @@ void MQTT::event_handler(void *handler_args, esp_event_base_t base,
   switch (event_id) {
   case MQTT_EVENT_CONNECTED:
     esp_log_set_vprintf(remote_log_handler);
+    subscribe(_sendack_topic);
     break;
   case MQTT_EVENT_DISCONNECTED:
     break;
@@ -83,6 +82,9 @@ void MQTT::event_handler(void *handler_args, esp_event_base_t base,
   case MQTT_EVENT_PUBLISHED:
     break;
   case MQTT_EVENT_DATA:
+    if (strncmp(event->topic, _sendack_topic.c_str(), event->topic_len) == 0) {
+      handle_sendack_message(event->topic, event->data, event->data_len);
+    }
     break;
   case MQTT_EVENT_ERROR:
     break;
@@ -96,10 +98,31 @@ void MQTT::start() {
   esp_mqtt_client_start(_client);
 }
 
-void MQTT::publish(const char *topic, const char *data, size_t len) {
+void MQTT::publish(const char *topic, const char *data, uint32_t len) {
   esp_mqtt_client_publish(_client, topic, data, len, _qos, false);
 }
 
 void MQTT::subscribe(const std::string &topic) {
   esp_mqtt_client_subscribe(_client, topic.c_str(), _qos);
+}
+
+bool MQTT::wait_for_sendack(const char *timestamp) {
+  snprintf(_expected_timestamp, sizeof(_expected_timestamp), "%s", timestamp);
+  return xSemaphoreTake(_ack_semaphore, pdMS_TO_TICKS(5000)) == pdTRUE;
+}
+
+void MQTT::handle_sendack_message(const char *topic, const char *data,
+                                  uint32_t len) {
+  char received_timestamp[TIMESTAMP_SIZE] = {0};
+  strncpy(received_timestamp, data, sizeof(received_timestamp) - 1);
+
+  if (strcmp(received_timestamp, _expected_timestamp) == 0) {
+    xSemaphoreGive(_ack_semaphore);
+    ESP_LOGI(TAG, "Received matching acknowledgement timestamp: %s",
+             received_timestamp);
+  } else {
+    ESP_LOGE(TAG, "Received non-matching timestamp!");
+    ESP_LOGE(TAG, "Received timestamp: %s", received_timestamp);
+    ESP_LOGE(TAG, "Expected timestamp: %s", _expected_timestamp);
+  }
 }

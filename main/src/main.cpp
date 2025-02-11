@@ -52,16 +52,30 @@ extern "C" void app_main(void) {
   ESP_LOGI(TAG, "Largest free block in PSRAM: %d",
            heap_caps_get_largest_free_block(MALLOC_CAP_SPIRAM));
 
-  time_t now;
-  time(&now);
-  ESP_LOGI(TAG, "Unix Epoch Time: %lld", (unsigned long long)now);
-
   while (1) {
     vTaskDelay(5000 / portTICK_PERIOD_MS);
-
     cam.take_image();
-    mqtt.publish("mqtt/rpi/image", cam.get_image_data(), cam.get_image_size());
-    ESP_LOGI(TAG, "Message published!");
+
+    time_t now;
+    time(&now);
+    struct tm timeinfo;
+    gmtime_r(&now, &timeinfo); // Convert to UTC time
+    char timestamp[TIMESTAMP_SIZE] = {0};
+    strftime(timestamp, sizeof(timestamp), "%Y-%m-%dT%H:%M:%SZ", &timeinfo);
+
+    JsonDocument doc;
+    std::string output;
+    doc["timestamp"] = timestamp;
+    doc["size"] = cam.get_image_size();
+    serializeJson(doc, output);
+    mqtt.publish("image", output.c_str(), output.size());
+    if (mqtt.wait_for_sendack(timestamp)) {
+      // Acknowledgement timestamp matches, proceed with sending image
+      mqtt.publish("image", cam.get_image_data(), cam.get_image_size());
+      ESP_LOGI(TAG, "Image published!");
+    } else {
+      ESP_LOGE(TAG, "No matching timestamp received, skipping image publish!");
+    }
     cam.return_fb();
   }
 }
