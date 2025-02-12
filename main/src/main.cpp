@@ -1,19 +1,17 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include <ArduinoJson.h>
 #include <esp_log.h>
 #include <esp_system.h>
 #include <nvs_flash.h>
 #include <sys/param.h>
-/* #include "driver/i2c_master.h"
-#include "driver/temperature_sensor.h" */
-
-#include <ArduinoJson.h>
 
 #ifndef portTICK_RATE_MS
 #define portTICK_RATE_MS portTICK_PERIOD_MS
 #endif
 
 #include "camera.h"
+#include "error_handler.h"
 #include "mqtt.h"
 #include "secret.h"
 #include "wifi.h"
@@ -70,7 +68,7 @@ extern "C" void app_main(void) {
     serializeJson(doc, output);
     mqtt.publish("image", output.c_str(), output.size());
     if (mqtt.wait_for_sendack(timestamp)) {
-      // Acknowledgement timestamp matches, proceed with sending image
+      // Timestamp matches, proceed with sending image
       mqtt.publish("image", cam.get_image_data(), cam.get_image_size());
       ESP_LOGI(TAG, "Image published!");
     } else {

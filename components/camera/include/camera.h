@@ -1,8 +1,8 @@
 #include "esp_camera.h"
 #include "pins.h"
-//comment
+// comment
 /**
- * @brief Handles the camera
+ * @brief Handles the OV5640 camera
  */
 class Camera {
 public:
@@ -15,12 +15,11 @@ public:
   /**
    * @brief Starts the camera
    *
-   * A more indepth description could be added here if needed.
+   *
    *
    * @return
    *     - ESP_OK : camera initialized successfully
    *     - ESP_FAIL : couldn't initialize camera
-   *     - ESP_ERR_NOT_SUPPORTED : JPEG format not supported on this sensor
    */
   esp_err_t start();
 
@@ -37,7 +36,7 @@ public:
    * @brief Gets the contents of the frame buffer of the captured image
    *
    * @return
-   *     - Frame buffer. In case of failure it returns a nullptr.
+   *     - Frame buffer of the captured image
    */
   const char *get_image_data() {
     return reinterpret_cast<const char *>(_fb->buf);
@@ -52,7 +51,7 @@ public:
   uint32_t get_image_size() { return _fb->len; }
 
   /**
-   * @brief Returns the frame buffer
+   * @brief Returns the frame buffer to enable the next image capture
    */
   void return_fb() { esp_camera_fb_return(_fb); }
 

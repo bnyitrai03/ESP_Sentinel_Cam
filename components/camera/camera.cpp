@@ -1,4 +1,5 @@
 #include "camera.h"
+#include "error_handler.h"
 #include <esp_log.h>
 
 constexpr auto *TAG = "Camera";
@@ -36,6 +37,7 @@ Camera::Camera() {
       .fb_location = CAMERA_FB_IN_PSRAM,
       .grab_mode = CAMERA_GRAB_LATEST,
   };
+  set_camera_deinit_callback([]() { esp_camera_deinit(); });
 }
 
 esp_err_t Camera::start() {

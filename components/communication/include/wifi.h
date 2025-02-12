@@ -16,6 +16,5 @@ private:
                            int32_t event_id, void *event_data);
   static EventGroupHandle_t _wifi_event_group;
   static const int WIFI_CONNECTED_BIT = BIT0;
-  std::string _ssid;
-  std::string _password;
+  static bool _connected;
 };

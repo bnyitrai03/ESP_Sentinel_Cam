@@ -41,4 +41,5 @@ private:
   static int _qos;
   static char _expected_timestamp[TIMESTAMP_SIZE];
   static SemaphoreHandle_t _ack_semaphore;
+  static bool _connected;
 };

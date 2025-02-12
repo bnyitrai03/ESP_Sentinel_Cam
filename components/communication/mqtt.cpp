@@ -1,4 +1,5 @@
 #include "mqtt.h"
+#include "error_handler.h"
 #include "esp_log.h"
 
 constexpr auto *TAG = "MQTT";
@@ -14,6 +15,7 @@ std::string MQTT::_image_topic;
 int MQTT::_qos;
 char MQTT::_expected_timestamp[TIMESTAMP_SIZE];
 SemaphoreHandle_t MQTT::_ack_semaphore = xSemaphoreCreateBinary();
+bool MQTT::_connected = false;
 
 MQTT::MQTT() {
   // These should be read from NVS
@@ -54,6 +56,8 @@ MQTT::MQTT() {
   _log_topic = "log";
   _image_topic = "image";
   _qos = 2;
+
+  set_mqtt_deinit_callback([]() { esp_mqtt_client_destroy(_client); });
 }
 
 int MQTT::remote_log_handler(const char *fmt, va_list args) {
@@ -74,6 +78,9 @@ void MQTT::event_handler(void *handler_args, esp_event_base_t base,
     subscribe(_sendack_topic);
     break;
   case MQTT_EVENT_DISCONNECTED:
+    if (_connected) {
+      esp_mqtt_client_reconnect(_client);
+    }
     break;
   case MQTT_EVENT_SUBSCRIBED:
     break;
@@ -95,7 +102,11 @@ void MQTT::start() {
   _client = esp_mqtt_client_init(&_config);
   esp_mqtt_client_register_event(_client, (esp_mqtt_event_id_t)ESP_EVENT_ANY_ID,
                                  event_handler, NULL);
-  esp_mqtt_client_start(_client);
+  if (esp_mqtt_client_start(_client) != ESP_OK) {
+    ESP_LOGE(TAG, "Failed to start MQTT client");
+    restart();
+  }
+  _connected = true;
 }
 
 void MQTT::publish(const char *topic, const char *data, uint32_t len) {
