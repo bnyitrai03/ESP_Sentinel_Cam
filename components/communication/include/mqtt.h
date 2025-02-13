@@ -3,7 +3,6 @@
 
 #define TIMESTAMP_SIZE 20
 
-// TODO: Implement error handling and initialization
 class MQTT {
 public:
   MQTT();
@@ -34,8 +33,8 @@ private:
   static esp_mqtt_client_handle_t _client;
   static char _logBuff[256];
   static std::string _configack_topic;
-  static std::string _configrecv_topic;
-  static std::string _sendack_topic;
+  static std::string _health_report_topic;
+  static std::string _imageack_topic;
   static std::string _log_topic;
   static std::string _image_topic;
   static int _qos;

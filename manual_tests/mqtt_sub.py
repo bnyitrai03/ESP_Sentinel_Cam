@@ -7,7 +7,7 @@ from PIL import Image
 broker = "192.168.0.232"
 port = 1883
 topic = "image"
-ack_topic = "acknowledge"
+ack_topic = "image_ack"
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S',

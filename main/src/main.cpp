@@ -3,7 +3,6 @@
 #include <ArduinoJson.h>
 #include <esp_log.h>
 #include <esp_system.h>
-#include <nvs_flash.h>
 #include <sys/param.h>
 
 #ifndef portTICK_RATE_MS
@@ -14,27 +13,35 @@
 #include "error_handler.h"
 #include "mqtt.h"
 #include "secret.h"
+#include "storage.h"
 #include "wifi.h"
 
 constexpr auto *TAG = "main_app";
 
 extern "C" void app_main(void) {
-  esp_err_t ret = nvs_flash_init();
-  if (ret == ESP_ERR_NVS_NO_FREE_PAGES ||
-      ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
-    ESP_ERROR_CHECK(nvs_flash_erase());
-    ret = nvs_flash_init();
-  }
-  ESP_ERROR_CHECK(ret);
-
   ESP_LOGI(TAG, "Free PSRAM before init: %d",
            heap_caps_get_free_size(MALLOC_CAP_SPIRAM));
   ESP_LOGI(TAG, "Largest free block in PSRAM: %d",
            heap_caps_get_largest_free_block(MALLOC_CAP_SPIRAM));
 
+  Storage storage;
+  // ------ Static config values ------------------
+  Storage::write("ssid", WIFI_SSID);
+  Storage::write("password", WIFI_PASS);
+
+  Storage::write("mqttAddress", MQTT_BROKER_IP);
+  Storage::write("mqttUser", MQTT_USERNAME);
+  Storage::write("mqttPassword", MQTT_PASSWORD);
+  Storage::write("imageTopic", IMAGE_TOPIC);
+  Storage::write("imageAckTopic", IMAGE_ACK_TOPIC);
+  Storage::write("healthReportTopic", HEALTH_REPORT_TOPIC);
+  Storage::write("healthReportRespTopic", HEALTH_REPORT_RESP_TOPIC);
+  Storage::write("logTopic", LOG_TOPIC);
+  // -----------------------------------------------
+
   Wifi wifi;
   wifi.init();
-  wifi.connect(WIFI_SSID, WIFI_PASS);
+  wifi.connect();
 
   // Disable lib logging else remote logging dies
   esp_log_level_set("mqtt5_client", ESP_LOG_NONE);

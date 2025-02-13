@@ -16,3 +16,5 @@ void set_camera_deinit_callback(DeinitCallback callback);
  *     - Nothing as the device restarts
  */
 void restart();
+
+void deinit_components();

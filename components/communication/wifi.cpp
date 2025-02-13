@@ -4,6 +4,7 @@
 #include "esp_netif_sntp.h"
 #include "esp_sntp.h"
 #include "esp_wifi.h"
+#include "storage.h"
 #include "string.h"
 #include <cstring>
 
@@ -12,7 +13,15 @@ constexpr auto *TAG = "WiFi";
 EventGroupHandle_t Wifi::_wifi_event_group = nullptr;
 bool Wifi::_connected = false;
 
-Wifi::Wifi() { _wifi_event_group = xEventGroupCreate(); }
+Wifi::Wifi() {
+  _wifi_event_group = xEventGroupCreate();
+  set_wifi_deinit_callback([]() {
+    _connected = false;
+    esp_wifi_disconnect();
+    esp_wifi_stop();
+    esp_wifi_deinit();
+  });
+}
 
 Wifi::~Wifi() { vEventGroupDelete(_wifi_event_group); }
 
@@ -30,19 +39,23 @@ void Wifi::init() {
                                       &Wifi::eventHandler, NULL, NULL);
   esp_event_handler_instance_register(IP_EVENT, IP_EVENT_STA_GOT_IP,
                                       &Wifi::eventHandler, NULL, NULL);
-  set_wifi_deinit_callback([]() {
-    _connected = false;
-    esp_wifi_disconnect();
-    esp_wifi_stop();
-    esp_wifi_deinit();
-  });
 }
 
-void Wifi::connect(const std::string &ssid, const std::string &password) {
+void Wifi::connect() {
   wifi_config_t wifi_config = {};
-  strncpy((char *)wifi_config.sta.ssid, ssid.c_str(),
-          sizeof(wifi_config.sta.ssid));
-  strncpy((char *)wifi_config.sta.password, password.c_str(),
+  char ssid[32] = {0};
+  char password[64] = {0};
+
+  if (Storage::read("ssid", ssid, sizeof(ssid)) != ESP_OK) {
+    ESP_LOGE(TAG, "Failed to read SSID from storage!");
+    restart();
+  }
+  if (Storage::read("password", password, sizeof(password)) != ESP_OK) {
+    ESP_LOGE(TAG, "Failed to read password from storage!");
+    restart();
+  }
+  strncpy((char *)wifi_config.sta.ssid, ssid, sizeof(wifi_config.sta.ssid));
+  strncpy((char *)wifi_config.sta.password, password,
           sizeof(wifi_config.sta.password));
 
   esp_wifi_set_mode(WIFI_MODE_STA);

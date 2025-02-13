@@ -26,6 +26,11 @@ void restart() {
   esp_log_level_set("*",
                     ESP_LOG_NONE); // Disable logging to prevent crashing
 
+  deinit_components();
+  esp_restart();
+}
+
+void deinit_components() {
   if (camera_deinit_callback) {
     camera_deinit_callback();
   }
@@ -35,5 +40,4 @@ void restart() {
   if (wifi_deinit_callback) {
     wifi_deinit_callback();
   }
-  esp_restart();
 }

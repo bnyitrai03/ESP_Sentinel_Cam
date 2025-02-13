@@ -8,8 +8,8 @@ esp_mqtt_client_config_t MQTT::_config;
 esp_mqtt_client_handle_t MQTT::_client;
 char MQTT::_logBuff[256];
 std::string MQTT::_configack_topic;
-std::string MQTT::_configrecv_topic;
-std::string MQTT::_sendack_topic;
+std::string MQTT::_health_report_topic;
+std::string MQTT::_imageack_topic;
 std::string MQTT::_log_topic;
 std::string MQTT::_image_topic;
 int MQTT::_qos;
@@ -18,6 +18,7 @@ SemaphoreHandle_t MQTT::_ack_semaphore = xSemaphoreCreateBinary();
 bool MQTT::_connected = false;
 
 MQTT::MQTT() {
+  set_mqtt_deinit_callback([]() { esp_mqtt_client_destroy(_client); });
   // These should be read from NVS
   _config = {
       .broker =
@@ -51,13 +52,11 @@ MQTT::MQTT() {
 
   // also topics and qos ??
   _configack_topic = "configack";
-  _configrecv_topic = "configrecv";
-  _sendack_topic = "acknowledge";
+  _health_report_topic = "configrecv";
+  _imageack_topic = "image_ack";
   _log_topic = "log";
   _image_topic = "image";
   _qos = 2;
-
-  set_mqtt_deinit_callback([]() { esp_mqtt_client_destroy(_client); });
 }
 
 int MQTT::remote_log_handler(const char *fmt, va_list args) {
@@ -75,7 +74,7 @@ void MQTT::event_handler(void *handler_args, esp_event_base_t base,
   switch (event_id) {
   case MQTT_EVENT_CONNECTED:
     esp_log_set_vprintf(remote_log_handler);
-    subscribe(_sendack_topic);
+    subscribe(_imageack_topic);
     break;
   case MQTT_EVENT_DISCONNECTED:
     if (_connected) {
@@ -89,7 +88,7 @@ void MQTT::event_handler(void *handler_args, esp_event_base_t base,
   case MQTT_EVENT_PUBLISHED:
     break;
   case MQTT_EVENT_DATA:
-    if (strncmp(event->topic, _sendack_topic.c_str(), event->topic_len) == 0) {
+    if (strncmp(event->topic, _imageack_topic.c_str(), event->topic_len) == 0) {
       handle_sendack_message(event->topic, event->data, event->data_len);
     }
     break;

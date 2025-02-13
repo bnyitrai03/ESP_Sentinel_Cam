@@ -54,6 +54,6 @@ esp_err_t Camera::take_image() {
     ESP_LOGE(TAG, "Failed to capture image"); // Exception handling
     return ESP_FAIL;
   }
-  ESP_LOGI(TAG, "Image size is %d bytes", _fb->len);
+  ESP_LOGI(TAG, "Image taken!");
   return ESP_OK;
 }
