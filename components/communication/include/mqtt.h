@@ -2,6 +2,7 @@
 #include <string>
 
 #define TIMESTAMP_SIZE 20
+#define NAME_SIZE 64
 
 class MQTT {
 public:
@@ -25,18 +26,22 @@ private:
    */
   static void event_handler(void *handler_args, esp_event_base_t base,
                             int32_t event_id, void *event_data);
-  static void subscribe(const std::string &topic);
+  static void subscribe(const char *topic);
   static void handle_sendack_message(const char *topic, const char *data,
                                      uint32_t len);
 
   static esp_mqtt_client_config_t _config;
   static esp_mqtt_client_handle_t _client;
+  static char _hostname[NAME_SIZE];
+  static char _username[NAME_SIZE];
+  static char _password[NAME_SIZE];
+
+  static char _configack_topic[NAME_SIZE];
+  static char _health_report_topic[NAME_SIZE];
+  static char _image_topic[NAME_SIZE];
+  static char _imageack_topic[NAME_SIZE];
+  static char _log_topic[NAME_SIZE];
   static char _logBuff[256];
-  static std::string _configack_topic;
-  static std::string _health_report_topic;
-  static std::string _imageack_topic;
-  static std::string _log_topic;
-  static std::string _image_topic;
   static int _qos;
   static char _expected_timestamp[TIMESTAMP_SIZE];
   static SemaphoreHandle_t _ack_semaphore;

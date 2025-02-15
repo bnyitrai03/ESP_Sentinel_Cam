@@ -1,39 +1,63 @@
 #include "mqtt.h"
 #include "error_handler.h"
 #include "esp_log.h"
+#include "storage.h"
 
 constexpr auto *TAG = "MQTT";
 
 esp_mqtt_client_config_t MQTT::_config;
 esp_mqtt_client_handle_t MQTT::_client;
-char MQTT::_logBuff[256];
-std::string MQTT::_configack_topic;
-std::string MQTT::_health_report_topic;
-std::string MQTT::_imageack_topic;
-std::string MQTT::_log_topic;
-std::string MQTT::_image_topic;
-int MQTT::_qos;
+char MQTT::_hostname[NAME_SIZE] = {0};
+char MQTT::_username[NAME_SIZE] = {0};
+char MQTT::_password[NAME_SIZE] = {0};
+char MQTT::_logBuff[256] = {0};
+char MQTT::_configack_topic[NAME_SIZE] = {0};
+char MQTT::_health_report_topic[NAME_SIZE] = {0};
+char MQTT::_imageack_topic[NAME_SIZE] = {0};
+char MQTT::_log_topic[NAME_SIZE] = {0};
+char MQTT::_image_topic[NAME_SIZE] = {0};
+int MQTT::_qos = 2;
 char MQTT::_expected_timestamp[TIMESTAMP_SIZE];
 SemaphoreHandle_t MQTT::_ack_semaphore = xSemaphoreCreateBinary();
 bool MQTT::_connected = false;
 
 MQTT::MQTT() {
   set_mqtt_deinit_callback([]() { esp_mqtt_client_destroy(_client); });
-  // These should be read from NVS
+
+  if (Storage::read("mqttAddress", _hostname, sizeof(_hostname)) != ESP_OK ||
+      Storage::read("mqttUser", _username, sizeof(_username)) != ESP_OK ||
+      Storage::read("mqttPassword", _password, sizeof(_password)) != ESP_OK) {
+    ESP_LOGE(TAG, "Failed to read MQTT credentials from storage!");
+    restart();
+  }
+
+  if (Storage::read("configAckTopic", _configack_topic,
+                    sizeof(_configack_topic)) != ESP_OK ||
+      Storage::read("healthRepTopic", _health_report_topic,
+                    sizeof(_health_report_topic)) != ESP_OK ||
+      Storage::read("imageAckTopic", _imageack_topic,
+                    sizeof(_imageack_topic)) != ESP_OK ||
+      Storage::read("logTopic", _log_topic, sizeof(_log_topic)) != ESP_OK ||
+      Storage::read("imageTopic", _image_topic, sizeof(_image_topic)) !=
+          ESP_OK) {
+    ESP_LOGE(TAG, "Failed to read MQTT topics from storage!");
+    restart();
+  }
+
   _config = {
       .broker =
           {
               .address =
                   {
-                      .hostname = "192.168.0.232",
+                      .hostname = _hostname,
                       .transport = MQTT_TRANSPORT_OVER_TCP,
                       .port = 1883,
                   },
           },
-      .credentials = {.username = "user",
+      .credentials = {.username = _username,
                       .authentication =
                           {
-                              .password = "password",
+                              .password = _password,
                           }},
       .session =
           {
@@ -49,14 +73,6 @@ MQTT::MQTT() {
               .protocol_ver = MQTT_PROTOCOL_V_5,
           },
   };
-
-  // also topics and qos ??
-  _configack_topic = "configack";
-  _health_report_topic = "configrecv";
-  _imageack_topic = "image_ack";
-  _log_topic = "log";
-  _image_topic = "image";
-  _qos = 2;
 }
 
 int MQTT::remote_log_handler(const char *fmt, va_list args) {
@@ -64,7 +80,7 @@ int MQTT::remote_log_handler(const char *fmt, va_list args) {
   vprintf(fmt, args);
   // assembles the remote log message
   int size = vsnprintf(_logBuff, 256, fmt, args);
-  esp_mqtt_client_publish(_client, _log_topic.c_str(), _logBuff, size, _qos, 0);
+  esp_mqtt_client_publish(_client, _log_topic, _logBuff, size, _qos, 0);
   return size;
 }
 
@@ -88,7 +104,7 @@ void MQTT::event_handler(void *handler_args, esp_event_base_t base,
   case MQTT_EVENT_PUBLISHED:
     break;
   case MQTT_EVENT_DATA:
-    if (strncmp(event->topic, _imageack_topic.c_str(), event->topic_len) == 0) {
+    if (strncmp(event->topic, _imageack_topic, event->topic_len) == 0) {
       handle_sendack_message(event->topic, event->data, event->data_len);
     }
     break;
@@ -112,8 +128,8 @@ void MQTT::publish(const char *topic, const char *data, uint32_t len) {
   esp_mqtt_client_publish(_client, topic, data, len, _qos, false);
 }
 
-void MQTT::subscribe(const std::string &topic) {
-  esp_mqtt_client_subscribe(_client, topic.c_str(), _qos);
+void MQTT::subscribe(const char *topic) {
+  esp_mqtt_client_subscribe(_client, topic, _qos);
 }
 
 bool MQTT::wait_for_sendack(const char *timestamp) {

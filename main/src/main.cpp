@@ -34,8 +34,8 @@ extern "C" void app_main(void) {
   Storage::write("mqttPassword", MQTT_PASSWORD);
   Storage::write("imageTopic", IMAGE_TOPIC);
   Storage::write("imageAckTopic", IMAGE_ACK_TOPIC);
-  Storage::write("healthReportTopic", HEALTH_REPORT_TOPIC);
-  Storage::write("healthReportRespTopic", HEALTH_REPORT_RESP_TOPIC);
+  Storage::write("healthRepTopic", HEALTH_REPORT_TOPIC);
+  Storage::write("configAckTopic", HEALTH_REPORT_RESP_TOPIC);
   Storage::write("logTopic", LOG_TOPIC);
   // -----------------------------------------------
 
