@@ -21,7 +21,8 @@ PROJECT_NAME = "ESP_SENTINEL_CAM"
 ## and used to include in API reference documentation
 
 INPUT = \
-    $(PROJECT_PATH)/components/camera/include/camera.h
+    $(PROJECT_PATH)/components/camera/include/camera.h \
+    $(PROJECT_PATH)/components/error_handler/include/error_handler.h
 
 
 ## Get warnings for functions that have no documentation for their parameters or return value

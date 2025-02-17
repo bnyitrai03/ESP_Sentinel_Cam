@@ -9,3 +9,4 @@ ESP_SENTINEL_CAM
     documentation/index
     todolist
 
+.. include-build-file:: inc/error_handler.inc
