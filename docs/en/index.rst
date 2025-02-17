@@ -7,6 +7,7 @@ ESP_SENTINEL_CAM
     :hidden:
 
     documentation/index
+    components/index
     todolist
 
-.. include-build-file:: inc/error_handler.inc
+
