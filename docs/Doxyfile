@@ -22,7 +22,12 @@ PROJECT_NAME = "ESP_SENTINEL_CAM"
 
 INPUT = \
     $(PROJECT_PATH)/components/camera/include/camera.h \
-    $(PROJECT_PATH)/components/error_handler/include/error_handler.h
+    $(PROJECT_PATH)/components/error_handler/include/error_handler.h \
+    $(PROJECT_PATH)/components/storage/include/storage.h \
+    $(PROJECT_PATH)/components/storage/include/config.h \
+    $(PROJECT_PATH)/components/mytime/include/mytime.h \
+    $(PROJECT_PATH)/components/communication/include/mqtt.h \
+    $(PROJECT_PATH)/components/communication/include/wifi.h
 
 
 ## Get warnings for functions that have no documentation for their parameters or return value

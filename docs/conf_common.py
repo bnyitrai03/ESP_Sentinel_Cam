@@ -27,5 +27,3 @@ todo_include_todos = True
 html_static_path = []
 
 html_baseurl = f'https://bnyitrai03.github.io/{github_repo}/'
-
-html_baseurl = f'https://bnyitrai03.github.io/{github_repo}/'

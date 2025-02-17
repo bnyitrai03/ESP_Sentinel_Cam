@@ -178,6 +178,3 @@ If you add ``.. todolist::`` to a reST file, the directive will be replaced by a
 .. note::
     You dont have to do this, I've already created a TODO list directory. Just throughout the documentation wherever you want to, add ``.. todo::``-s and they will accumulate there, with information about their locations too.
     They will also appear in the same place where you put the ``.. todo::``.
-
-.. todo::
-    Example TODO
