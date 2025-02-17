@@ -1,42 +1,65 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include <ArduinoJson.h>
 #include <esp_log.h>
 #include <esp_system.h>
-#include <nvs_flash.h>
 #include <sys/param.h>
-/* #include "driver/i2c_master.h"
-#include "driver/temperature_sensor.h" */
-
-// #include <ArduinoJson.h>
 
 #ifndef portTICK_RATE_MS
 #define portTICK_RATE_MS portTICK_PERIOD_MS
 #endif
 
 #include "camera.h"
+#include "config.h"
+#include "error_handler.h"
 #include "mqtt.h"
+#include "mytime.h"
 #include "secret.h"
+#include "storage.h"
 #include "wifi.h"
 
 constexpr auto *TAG = "main_app";
 
 extern "C" void app_main(void) {
-  esp_err_t ret = nvs_flash_init();
-  if (ret == ESP_ERR_NVS_NO_FREE_PAGES ||
-      ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
-    ESP_ERROR_CHECK(nvs_flash_erase());
-    ret = nvs_flash_init();
-  }
-  ESP_ERROR_CHECK(ret);
-
   ESP_LOGI(TAG, "Free PSRAM before init: %d",
            heap_caps_get_free_size(MALLOC_CAP_SPIRAM));
   ESP_LOGI(TAG, "Largest free block in PSRAM: %d",
            heap_caps_get_largest_free_block(MALLOC_CAP_SPIRAM));
 
+  Storage storage;
+  // ------ Static config values ------------------
+  Storage::write("ssid", WIFI_SSID);
+  Storage::write("password", WIFI_PASS);
+
+  Storage::write("mqttAddress", MQTT_BROKER_IP);
+  Storage::write("mqttUser", MQTT_USERNAME);
+  Storage::write("mqttPassword", MQTT_PASSWORD);
+  Storage::write("imageTopic", IMAGE_TOPIC);
+  Storage::write("imageAckTopic", IMAGE_ACK_TOPIC);
+  Storage::write("healthRepTopic", HEALTH_REPORT_TOPIC);
+  Storage::write("configAckTopic", HEALTH_REPORT_RESP_TOPIC);
+  Storage::write("logTopic", LOG_TOPIC);
+
+  // ------ Dynamic config values ------------------
+  {
+    JsonDocument doc;
+    char config[512];
+    doc["uuid"] = "8D8AC610-566D-4EF0-9C22-186B2A5ED793";
+    JsonArray timing = doc["timing"].to<JsonArray>();
+    JsonObject timing_0 = timing.add<JsonObject>();
+    timing_0["period"] = 40;
+    timing_0["start"] = "00:00:00";
+    timing_0["end"] = "23:59:59";
+    serializeJson(doc, config);
+    Storage::write("static_config", config);
+  }
+  // -----------------------------------------------
+
+  Config config;
+
   Wifi wifi;
   wifi.init();
-  wifi.connect(WIFI_SSID, WIFI_PASS);
+  wifi.connect();
 
   // Disable lib logging else remote logging dies
   esp_log_level_set("mqtt5_client", ESP_LOG_NONE);
@@ -52,24 +75,26 @@ extern "C" void app_main(void) {
   ESP_LOGI(TAG, "Largest free block in PSRAM: %d",
            heap_caps_get_largest_free_block(MALLOC_CAP_SPIRAM));
 
-  /* ESP_LOGI(TAG,
-           "Install temperature sensor, expected temp ranger range: 20~80 ℃");
-  temperature_sensor_handle_t temp_sensor = NULL;
-  temperature_sensor_config_t temp_sensor_config =
-      TEMPERATURE_SENSOR_CONFIG_DEFAULT(20, 80);
-  ESP_ERROR_CHECK(
-      temperature_sensor_install(&temp_sensor_config, &temp_sensor));
-  ESP_LOGI(TAG, "Enable temperature sensor");
-  ESP_ERROR_CHECK(temperature_sensor_enable(temp_sensor));
-  float tsens_value;
- */
-
   while (1) {
-    vTaskDelay(1000 / portTICK_PERIOD_MS);
-
+    vTaskDelay(5000 / portTICK_PERIOD_MS);
     cam.take_image();
-    mqtt.publish("mqtt/rpi/image", cam.get_image_data(), cam.get_image_size());
-    ESP_LOGI(TAG, "Message published!");
+
+    char timestamp[TIMESTAMP_SIZE] = {0};
+    Time::get_utc_timestamp(timestamp, sizeof(timestamp));
+
+    JsonDocument doc;
+    std::string output;
+    doc["timestamp"] = timestamp;
+    doc["size"] = cam.get_image_size();
+    serializeJson(doc, output);
+    mqtt.publish("image", output.c_str(), output.size());
+    if (mqtt.wait_for_sendack(timestamp)) {
+      // Timestamp matches, proceed with sending image
+      mqtt.publish("image", cam.get_image_data(), cam.get_image_size());
+      ESP_LOGI(TAG, "Image published!");
+    } else {
+      ESP_LOGE(TAG, "No matching timestamp received, skipping image publish!");
+    }
     cam.return_fb();
   }
 }

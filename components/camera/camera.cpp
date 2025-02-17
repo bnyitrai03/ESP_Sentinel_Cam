@@ -1,4 +1,5 @@
 #include "camera.h"
+#include "error_handler.h"
 #include <esp_log.h>
 
 constexpr auto *TAG = "Camera";
@@ -36,6 +37,7 @@ Camera::Camera() {
       .fb_location = CAMERA_FB_IN_PSRAM,
       .grab_mode = CAMERA_GRAB_LATEST,
   };
+  set_camera_deinit_callback([]() { esp_camera_deinit(); });
 }
 
 esp_err_t Camera::start() {
@@ -52,6 +54,6 @@ esp_err_t Camera::take_image() {
     ESP_LOGE(TAG, "Failed to capture image"); // Exception handling
     return ESP_FAIL;
   }
-  ESP_LOGI(TAG, "Image size is %d bytes", _fb->len);
+  ESP_LOGI(TAG, "Image taken!");
   return ESP_OK;
 }
