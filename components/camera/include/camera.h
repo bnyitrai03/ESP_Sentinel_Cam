@@ -46,7 +46,7 @@ public:
    * @brief Gets image size
    *
    * @return
-   *     - The size of the frame buffer.
+   *     - The size of the captured image
    */
   uint32_t get_image_size() { return _fb->len; }
 
@@ -56,6 +56,15 @@ public:
   void return_fb() { esp_camera_fb_return(_fb); }
 
 private:
-  camera_fb_t *_fb = nullptr; /*!< Frame buffer */
-  camera_config_t _config;    /*!< Config variable */
+  /**
+   * @brief Frame buffer containing the captured image
+   * @private
+   */
+  camera_fb_t *_fb = nullptr;
+
+  /**
+   * @brief Configuration of the camera
+   * @private
+   */
+  camera_config_t _config;
 };
