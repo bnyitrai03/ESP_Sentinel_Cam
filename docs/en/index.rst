@@ -1,7 +1,7 @@
 ESP_SENTINEL_CAM
 ================
 
-**Documentation for the AITIA starling project.** TEST_NEW
+**Documentation for the AITIA starling project.**
 
 .. toctree::
     :hidden:
