@@ -73,4 +73,4 @@ For example:
 API Reference
 -------------
 
-.. include-build-file:: inc/camera.inc
+Removed example because of build conflict
