@@ -18,7 +18,7 @@ html_context['github_version'] = 'main'
 # Project information
 project = github_repo
 author = 'Levente Nyiri, Bence Nyitrai'
-copyright = '2024, ' + author
+copyright = '2025, ' + author
 
 # Documentation settings
 languages = ['en']
@@ -26,4 +26,4 @@ language = 'en'
 todo_include_todos = True
 html_static_path = []
 
-html_baseurl = f'https://leventenyiri.github.io/{github_repo}/'
+html_baseurl = f'https://bnyitrai03.github.io/{github_repo}/'
