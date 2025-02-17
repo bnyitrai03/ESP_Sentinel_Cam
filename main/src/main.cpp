@@ -10,8 +10,10 @@
 #endif
 
 #include "camera.h"
+#include "config.h"
 #include "error_handler.h"
 #include "mqtt.h"
+#include "mytime.h"
 #include "secret.h"
 #include "storage.h"
 #include "wifi.h"
@@ -37,7 +39,23 @@ extern "C" void app_main(void) {
   Storage::write("healthRepTopic", HEALTH_REPORT_TOPIC);
   Storage::write("configAckTopic", HEALTH_REPORT_RESP_TOPIC);
   Storage::write("logTopic", LOG_TOPIC);
+
+  // ------ Dynamic config values ------------------
+  {
+    JsonDocument doc;
+    char config[512];
+    doc["uuid"] = "8D8AC610-566D-4EF0-9C22-186B2A5ED793";
+    JsonArray timing = doc["timing"].to<JsonArray>();
+    JsonObject timing_0 = timing.add<JsonObject>();
+    timing_0["period"] = 40;
+    timing_0["start"] = "00:00:00";
+    timing_0["end"] = "23:59:59";
+    serializeJson(doc, config);
+    Storage::write("static_config", config);
+  }
   // -----------------------------------------------
+
+  Config config;
 
   Wifi wifi;
   wifi.init();
@@ -61,12 +79,8 @@ extern "C" void app_main(void) {
     vTaskDelay(5000 / portTICK_PERIOD_MS);
     cam.take_image();
 
-    time_t now;
-    time(&now);
-    struct tm timeinfo;
-    gmtime_r(&now, &timeinfo); // Convert to UTC time
     char timestamp[TIMESTAMP_SIZE] = {0};
-    strftime(timestamp, sizeof(timestamp), "%Y-%m-%dT%H:%M:%SZ", &timeinfo);
+    Time::get_utc_timestamp(timestamp, sizeof(timestamp));
 
     JsonDocument doc;
     std::string output;

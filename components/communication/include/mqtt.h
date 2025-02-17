@@ -1,7 +1,7 @@
 #include "mqtt_client.h"
 #include <string>
 
-#define TIMESTAMP_SIZE 20
+#define TIMESTAMP_SIZE 21
 #define NAME_SIZE 64
 
 class MQTT {
