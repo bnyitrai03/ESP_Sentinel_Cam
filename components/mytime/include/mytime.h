@@ -3,6 +3,9 @@
 #include "esp_err.h"
 #include <string>
 
+/**
+ * @brief Manages time operations.
+ */
 class Time {
 public:
   /**
@@ -49,18 +52,43 @@ public:
    */
   int get_seconds() const { return _seconds; }
 
+  /**
+   * @brief Less than operator for Time class.
+   * @param other The other Time object to compare.
+   * @return True if this time is less than the other time.
+   */
   bool operator<(const Time &other) const {
     return toSeconds() < other.toSeconds();
   }
+  /**
+   * @brief Greater than operator for Time class.
+   * @param other The other Time object to compare.
+   * @return True if this time is greater than the other time.
+   */
   bool operator>(const Time &other) const {
     return toSeconds() > other.toSeconds();
   }
+  /**
+   * @brief Equality operator for Time class.
+   * @param other The other Time object to compare.
+   * @return True if this time is equal to the other time.
+   */
   bool operator==(const Time &other) const {
     return toSeconds() == other.toSeconds();
   }
+  /**
+   * @brief Less than or equal to operator for Time class.
+   * @param other The other Time object to compare.
+   * @return True if this time is less than or equal to the other time.
+   */
   bool operator<=(const Time &other) const {
     return toSeconds() <= other.toSeconds();
   }
+  /**
+   * @brief Greater than or equal to operator for Time class.
+   * @param other The other Time object to compare.
+   * @return True if this time is greater than or equal to the other time.
+   */
   bool operator>=(const Time &other) const {
     return toSeconds() >= other.toSeconds();
   }

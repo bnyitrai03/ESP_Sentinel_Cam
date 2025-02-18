@@ -1,6 +1,9 @@
 #include <nvs_flash.h>
 #include <string>
 
+/**
+ * @brief Manages configuration settings.
+ */
 class Storage {
 public:
   /**
