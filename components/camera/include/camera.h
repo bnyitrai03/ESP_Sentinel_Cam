@@ -1,6 +1,6 @@
 #include "esp_camera.h"
 #include "pins.h"
-// comment
+
 /**
  * @brief Handles the OV5640 camera
  */

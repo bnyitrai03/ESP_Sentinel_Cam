@@ -5,12 +5,48 @@
 
 class Time {
 public:
-  Time() : _hours(-1), _minutes(-1), _seconds(-1) {} /*!< Use invalid values*/
+  /**
+   * @brief Default constructor for Time class
+   *
+   * Initializes time with invalid values.
+   */
+  Time() : _hours(-1), _minutes(-1), _seconds(-1) {}
+
+  /**
+   * @brief Constructor for Time class
+   *
+   * @param hour Hour value
+   * @param minute Minute value
+   * @param second Second value
+   */
   Time(int hour, int minute, int second);
+
+  /**
+   * @brief Constructor for Time class
+   *
+   * @param timestamp Timestamp string in the format HH:MM:SS
+   */
   Time(const std::string &timestamp);
 
+  /**
+   * @brief Gets the hour value
+   *
+   * @return Hour value
+   */
   int get_hours() const { return _hours; }
+
+  /**
+   * @brief Gets the minute value
+   *
+   * @return Minute value
+   */
   int get_minutes() const { return _minutes; }
+
+  /**
+   * @brief Gets the second value
+   *
+   * @return Second value
+   */
   int get_seconds() const { return _seconds; }
 
   bool operator<(const Time &other) const {
@@ -38,19 +74,22 @@ public:
    *   - The size of the buffer
    *
    * @return
-   *     - The current local time in the format HH:MM:SS
+   *     - ESP_OK on success
+   *     - ESP_FAIL on error
    */
   static esp_err_t get_local_time(char *timestamp, uint32_t size);
+
   /**
    * @brief Gets the current UTC timestamp
    *
    * @param timestamp
-   *    - The buffer to store the current local time
+   *    - The buffer to store the current UTC time
    * @param size
    *   - The size of the buffer
    *
    * @return
-   *     - The current UTC time in the format Y-m-dTH:M:SZ
+   *     - ESP_OK on success
+   *     - ESP_FAIL on error
    */
   static esp_err_t get_utc_timestamp(char *timestamp, uint32_t size);
 
@@ -59,6 +98,11 @@ private:
   int _minutes;
   int _seconds;
 
+  /**
+   * @brief Converts time to seconds
+   *
+   * @return Time in seconds
+   */
   int toSeconds() const { return _hours * 3600 + _minutes * 60 + _seconds; }
 };
 #endif // MYTIME_H

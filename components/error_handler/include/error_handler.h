@@ -2,8 +2,25 @@
 
 typedef void (*DeinitCallback)();
 
+/**
+ * @brief Sets the callback function for WiFi deinitialization
+ *
+ * @param callback Function to be called for WiFi deinitialization
+ */
 void set_wifi_deinit_callback(DeinitCallback callback);
+
+/**
+ * @brief Sets the callback function for MQTT deinitialization
+ *
+ * @param callback Function to be called for MQTT deinitialization
+ */
 void set_mqtt_deinit_callback(DeinitCallback callback);
+
+/**
+ * @brief Sets the callback function for camera deinitialization
+ *
+ * @param callback Function to be called for camera deinitialization
+ */
 void set_camera_deinit_callback(DeinitCallback callback);
 
 /**
@@ -17,4 +34,9 @@ void set_camera_deinit_callback(DeinitCallback callback);
  */
 void restart();
 
+/**
+ * @brief Deinitializes all components
+ *
+ * This function deinitializes the camera, MQTT, and Wi-Fi drivers.
+ */
 void deinit_components();

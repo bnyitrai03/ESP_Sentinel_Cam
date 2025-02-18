@@ -17,6 +17,12 @@ public:
    *
    */
   static void load();
+  /**
+   * @brief Updates the configuration
+   *
+   * @param config The new configuration as a string
+   *
+   */
   static void update(std::string &config);
   /**
    * @brief Gets the active configuration
@@ -40,6 +46,14 @@ private:
   static std::vector<TimingConfig>::iterator _active;
   static char uuid[40]; /*! active config UUID */
 
+  /**
+   * @brief Sets the active configuration based on the current time
+   */
   void set_active_config();
+  /**
+   * @brief Gets the default active configuration
+   *
+   * @return The default active configuration
+   */
   static TimingConfig get_default_active_config();
 };
