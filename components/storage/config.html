@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Config -  -  &mdash; ESP SENTINEL CAM Documentation main documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=a60756f2" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=949a1ff5" />
+      <link rel="stylesheet" type="text/css" href="../../_static/theme_overrides.css?v=851bd809" />
+
+  
+    <link rel="canonical" href="https://bnyitrai03.github.io/ESP_Sentinel_Cam/components/storage/config.html" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=d01aebe5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=ff8fa330"></script>
+    <script src="../../_static/js/theme.js"></script>
+
+    
+        
+
+    <script type="text/javascript">
+        DOCUMENTATION_OPTIONS.PAGENAME = 'components/storage/config';
+        DOCUMENTATION_OPTIONS.PROJECT_SLUG = '';
+        DOCUMENTATION_OPTIONS.LATEST_BRANCH_NAME = 'master';
+        DOCUMENTATION_OPTIONS.LANGUAGES = ["en"];
+        DOCUMENTATION_OPTIONS.RELEASE = 'main';
+    </script>
+
+    <script type="text/javascript" src=""></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="TODO list" href="../../todolist.html" />
+    <link rel="prev" title="Storage" href="storage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ESP SENTINEL CAM Documentation
+              <img src="../../_static/espressif-logo.svg" class="logo" alt="Logo"/>
+          </a>
+
+          
+
+          <div class="selectors">
+            <select id="version-select" style="width: 150px;" hidden>
+              <option value="" disabled selected>Choose version...</option>
+            </select>
+          </div>
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../documentation/index.html">Documentation tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Software Components</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../camera.html">Camera</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../error_handler.html">Error handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mytime.html">Time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../communication/mqtt.html">MQTT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../communication/wifi.html">Wifi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="storage.html">Storage</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Config</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#header-file">Header File</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#structures">Structures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../todolist.html">TODO list</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ESP SENTINEL CAM Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Software Components</a></li>
+      <li class="breadcrumb-item active">Config</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/bnyitrai03/ESP_Sentinel_Cam/blob/main/docs/en/components/storage/config.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="config">
+<h1>Config<a class="headerlink" href="#config" title="Permalink to this heading"></a></h1>
+<div class="admonition-todo admonition" id="id1">
+<p class="admonition-title">Todo</p>
+<p>Add more verification for the JSON parsing.</p>
+</div>
+<section id="header-file">
+<h2>Header File<a class="headerlink" href="#header-file" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/ESP_Sentinel_Cam/blob/038bbb4/components/storage/include/config.h">components/storage/include/config.h</a></p></li>
+</ul>
+</section>
+<section id="structures">
+<h2>Structures<a class="headerlink" href="#structures" title="Permalink to this heading"></a></h2>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv412TimingConfig">
+<span id="_CPPv312TimingConfig"></span><span id="_CPPv212TimingConfig"></span><span id="TimingConfig"></span><span class="target" id="structTimingConfig"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TimingConfig</span></span></span><a class="headerlink" href="#_CPPv412TimingConfig" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Structure to hold timing configuration. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N12TimingConfig6periodE">
+<span id="_CPPv3N12TimingConfig6periodE"></span><span id="_CPPv2N12TimingConfig6periodE"></span><span id="TimingConfig::period__i"></span><span class="target" id="structTimingConfig_1a028d03ab02be13dc9c431bfc776eb706"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">period</span></span></span><a class="headerlink" href="#_CPPv4N12TimingConfig6periodE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>working period of the device, -1: sleeping </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N12TimingConfig5startE">
+<span id="_CPPv3N12TimingConfig5startE"></span><span id="_CPPv2N12TimingConfig5startE"></span><span id="TimingConfig::start__Time"></span><span class="target" id="structTimingConfig_1ad475ff8343773dae892b5a9eb5dbf6f2"></span><a class="reference internal" href="../mytime.html#_CPPv44Time" title="Time"><span class="n"><span class="pre">Time</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">start</span></span></span><a class="headerlink" href="#_CPPv4N12TimingConfig5startE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>HH:MM:SS </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N12TimingConfig3endE">
+<span id="_CPPv3N12TimingConfig3endE"></span><span id="_CPPv2N12TimingConfig3endE"></span><span id="TimingConfig::end__Time"></span><span class="target" id="structTimingConfig_1a42df10aefbbe15f8f8514bea2f0b81ff"></span><a class="reference internal" href="../mytime.html#_CPPv44Time" title="Time"><span class="n"><span class="pre">Time</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">end</span></span></span><a class="headerlink" href="#_CPPv4N12TimingConfig3endE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>HH:MM:SS </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv46Config">
+<span id="_CPPv36Config"></span><span id="_CPPv26Config"></span><span id="Config"></span><span class="target" id="classConfig"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Config</span></span></span><a class="headerlink" href="#_CPPv46Config" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Manages configuration settings. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Config11load_configER12JsonDocument">
+<span id="_CPPv3N6Config11load_configER12JsonDocument"></span><span id="_CPPv2N6Config11load_configER12JsonDocument"></span><span id="Config::load_config__JsonDocumentR"></span><span class="target" id="classConfig_1a03e8a29486b5b60bebd2a24db93e3a50"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">load_config</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">JsonDocument</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">config</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Config11load_configER12JsonDocument" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Loads the configuration from a JSON document and sets the active configuration as well as the UUID. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config</strong> – The new configuration as a JSON document </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Config8validateER12JsonDocument">
+<span id="_CPPv3N6Config8validateER12JsonDocument"></span><span id="_CPPv2N6Config8validateER12JsonDocument"></span><span id="Config::validate__JsonDocumentR"></span><span class="target" id="classConfig_1a39f2c6b0fd2b8f64dbc287bb4ea054fb"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">validate</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">JsonDocument</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">config</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Config8validateER12JsonDocument" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Validates the configuration. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config</strong> – The new configuration as a string</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>True if the configuration is valid</p></li>
+<li><p>False if the configuration is invalid </p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Config17get_active_configEv">
+<span id="_CPPv3N6Config17get_active_configEv"></span><span id="_CPPv2N6Config17get_active_configEv"></span><span id="Config::get_active_config"></span><span class="target" id="classConfig_1a86d57fbf06b676a944c03f7dd5f2cad2"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv412TimingConfig" title="TimingConfig"><span class="n"><span class="pre">TimingConfig</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_active_config</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Config17get_active_configEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Gets the active configuration. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the active config is not found, the default config is returned</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>The active configuration </p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Config8get_uuidEv">
+<span id="_CPPv3N6Config8get_uuidEv"></span><span id="_CPPv2N6Config8get_uuidEv"></span><span id="Config::get_uuid"></span><span class="target" id="classConfig_1ad18d4e4adcc044b6408113480232656a"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">get_uuid</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Config8get_uuidEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Gets the UUID. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>The active configuration UUID </p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="storage.html" class="btn btn-neutral float-left" title="Storage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../todolist.html" class="btn btn-neutral float-right" title="TODO list" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, AITIA International, Inc.</p>
+  </div>
+
+  <ul class="footer">
+        <li>
+	    
+            
+            Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/espressif/sphinx_idf_theme">theme</a>  based on <a href="https://github.com/readthedocs/sphinx_rtd_theme">Read the Docs Sphinx Theme</a>.
+         </li>
+
+  </ul> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
