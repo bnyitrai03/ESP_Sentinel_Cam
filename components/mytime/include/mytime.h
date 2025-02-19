@@ -94,10 +94,10 @@ public:
   }
 
   /**
-   * @brief Gets the current local time
+   * @brief Gets the current utc time in %H:%M:%S format
    *
    * @param timestamp
-   *    - The buffer to store the current local time
+   *    - The buffer to store the current utc time
    * @param size
    *   - The size of the buffer
    *
@@ -105,13 +105,13 @@ public:
    *     - ESP_OK on success
    *     - ESP_FAIL on error
    */
-  static esp_err_t get_local_time(char *timestamp, uint32_t size);
+  static esp_err_t get_time(char *timestamp, uint32_t size);
 
   /**
-   * @brief Gets the current UTC timestamp
+   * @brief Gets the current UTC timestamp in %Y-%m-%dT%H:%M:%SZ format
    *
    * @param timestamp
-   *    - The buffer to store the current UTC time
+   *    - The buffer to store the current UTC datetime
    * @param size
    *   - The size of the buffer
    *
@@ -119,7 +119,7 @@ public:
    *     - ESP_OK on success
    *     - ESP_FAIL on error
    */
-  static esp_err_t get_utc_timestamp(char *timestamp, uint32_t size);
+  static esp_err_t get_date(char *timestamp, uint32_t size);
 
 private:
   int _hours;

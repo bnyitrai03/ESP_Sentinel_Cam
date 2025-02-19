@@ -28,11 +28,11 @@ Time::Time(const std::string &timestamp) {
   }
 }
 
-esp_err_t Time::get_local_time(char *timestamp, uint32_t size) {
+esp_err_t Time::get_time(char *timestamp, uint32_t size) {
   time_t now;
   time(&now);
   struct tm timeinfo;
-  localtime_r(&now, &timeinfo);
+  gmtime_r(&now, &timeinfo);
   if (strftime(timestamp, size, "%H:%M:%S", &timeinfo) == 0) {
     ESP_LOGE(TAG, "Error formatting local time");
     return ESP_FAIL;
@@ -40,7 +40,7 @@ esp_err_t Time::get_local_time(char *timestamp, uint32_t size) {
   return ESP_OK;
 }
 
-esp_err_t Time::get_utc_timestamp(char *timestamp, uint32_t size) {
+esp_err_t Time::get_date(char *timestamp, uint32_t size) {
   time_t now;
   time(&now);
   struct tm timeinfo;

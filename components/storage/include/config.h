@@ -1,3 +1,4 @@
+#include "json_converters.h"
 #include "mytime.h"
 #include <vector>
 
@@ -18,18 +19,26 @@ public:
   Config();
 
   /**
-   * @brief Loads the configuration from the NVS storage
-   * @note This function will restart the device if the configuration is invalid
+   * @brief Loads the configuration from a JSON document and sets the active
+   * configuration as well as the UUID
+   *
+   * @param config The new configuration as a JSON document
    *
    */
-  static void load();
+  static void load_config(JsonDocument &config);
   /**
-   * @brief Updates the configuration
+   * @brief Validates the configuration
+   *
    *
    * @param config The new configuration as a string
    *
+   * @return
+   *     - True if the configuration is valid
+   *
+   *     - False if the configuration is invalid
+   *
    */
-  static void update(std::string &config);
+  static bool validate(JsonDocument &config);
   /**
    * @brief Gets the active configuration
    *
@@ -45,17 +54,25 @@ public:
    * @return
    *    - The active configuration UUID
    */
-  static const char *get_uuid() { return uuid; }
+  static const char *get_uuid() { return _uuid; }
 
 private:
   static std::vector<TimingConfig> _timing; /*!< list of operational hours */
   static std::vector<TimingConfig>::iterator _active;
-  static char uuid[40]; /*! active config UUID */
+  static char _uuid[40]; /*! config UUID */
 
+  /**
+   * @brief Loads the configuration from the NVS storage, handles validation
+   * too
+   *
+   * @note This function will restart the device if the configuration is invalid
+   *
+   */
+  static void load_from_storage();
   /**
    * @brief Sets the active configuration based on the current time
    */
-  void set_active_config();
+  static void set_active_config();
   /**
    * @brief Gets the default active configuration
    *

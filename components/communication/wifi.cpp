@@ -43,6 +43,8 @@ void Wifi::init() {
 
 void Wifi::connect() {
   wifi_config_t wifi_config = {};
+
+  // ------------------------ WiFi static config ------------------------------
   char ssid[32] = {0};
   char password[64] = {0};
 
@@ -57,6 +59,7 @@ void Wifi::connect() {
   strncpy((char *)wifi_config.sta.ssid, ssid, sizeof(wifi_config.sta.ssid));
   strncpy((char *)wifi_config.sta.password, password,
           sizeof(wifi_config.sta.password));
+  // ---------------------------------------------------------------------------
 
   esp_wifi_set_mode(WIFI_MODE_STA);
   esp_wifi_set_config(WIFI_IF_STA, &wifi_config);
@@ -75,6 +78,7 @@ void Wifi::connect() {
     ESP_LOGI(TAG, "WiFi Connected, syncing NTP...");
   }
 
+  // ------------------------------ Sync NTP --------------------------------
   // Set timezone to Budapest
   setenv("TZ", "CET-1CEST,M3.5.0,M10.5.0/3", 1);
   tzset();
@@ -85,6 +89,7 @@ void Wifi::connect() {
     ESP_LOGE(TAG, "Failed to configure NTP server!");
     restart();
   }
+  // -------------------------------------------------------------------------
 }
 
 void Wifi::eventHandler(void *arg, esp_event_base_t event_base,

@@ -1,8 +1,11 @@
-Components
+Software Components
 ===========
 
+.. todo::
+    Add more detailed comments describing the software components.
+
+This section describes the implemented software components of the project.
 .. toctree::
-    :hidden:
 
     camera
     error_handler

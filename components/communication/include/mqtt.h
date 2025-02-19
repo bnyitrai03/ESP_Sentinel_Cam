@@ -3,6 +3,7 @@
 
 #define TIMESTAMP_SIZE 21
 #define NAME_SIZE 64
+#define LOG_SIZE 256
 
 /**
  * @brief Manages MQTT connections and messaging
@@ -28,7 +29,11 @@ public:
   void publish(const char *topic, const char *data, uint32_t len);
 
   /**
-   * @brief Waits for an acknowledgment message with a specific timestamp
+   * @brief Waits for an acknowledgment message with a
+   * specific timestamp, which will be sent upon receiving the header message
+   *
+   * @note This function blocks until the acknowledgment is received or until
+   * the 5 second timeout
    *
    * @param expected_timestamp The expected timestamp for the acknowledgment
    * @return
@@ -37,7 +42,7 @@ public:
    *     - false : if the acknowledgment is not received within the timeout
    *
    */
-  bool wait_for_sendack(const char *expected_timestamp);
+  bool wait_for_header_ack(const char *expected_timestamp);
 
   /**
    * @brief Handles remote logging
@@ -73,27 +78,32 @@ private:
   static void subscribe(const char *topic);
 
   /**
-   * @brief Handles acknowledgment messages
+   * @brief Handles the header acknowledgment message
+   *
+   * @note This function is called when a header acknowledgment message is
+   * received
    *
    * @param topic The topic of the acknowledgment message
    * @param data The data of the acknowledgment message
    * @param len The length of the acknowledgment message data
    *
    */
-  static void handle_sendack_message(const char *topic, const char *data,
-                                     uint32_t len);
+  static void handle_header_ack_message(const char *topic, const char *data,
+                                        uint32_t len);
+
+  static void handle_new_config(const char *data, uint32_t len);
 
   static esp_mqtt_client_config_t _config;
   static esp_mqtt_client_handle_t _client;
   static char _hostname[NAME_SIZE];
   static char _username[NAME_SIZE];
   static char _password[NAME_SIZE];
-  static char _configack_topic[NAME_SIZE];
+  static char _config_topic[NAME_SIZE];
   static char _health_report_topic[NAME_SIZE];
   static char _image_topic[NAME_SIZE];
   static char _imageack_topic[NAME_SIZE];
   static char _log_topic[NAME_SIZE];
-  static char _logBuff[256];
+  static char _logBuff[LOG_SIZE];
   static int _qos;
   static char _expected_timestamp[TIMESTAMP_SIZE];
   static SemaphoreHandle_t _ack_semaphore;
