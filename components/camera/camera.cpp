@@ -1,5 +1,6 @@
 #include "camera.h"
 #include "error_handler.h"
+#include "freertos/FreeRTOS.h"
 #include <esp_log.h>
 
 constexpr auto *TAG = "Camera";
@@ -43,15 +44,25 @@ Camera::Camera() {
 esp_err_t Camera::start() {
   esp_err_t err = esp_camera_init(&_config);
   if (err != ESP_OK) {
-    ESP_LOGE(TAG, "Camera Init Failed"); // Exception handling
+    ESP_LOGE(TAG, "Camera Init Failed");
+    restart();
   }
   return err;
 }
 
 esp_err_t Camera::take_image() {
+  // flush the old frame buffer
   _fb = esp_camera_fb_get();
   if (!_fb) {
-    ESP_LOGE(TAG, "Failed to capture image"); // Exception handling
+    ESP_LOGE(TAG, "Failed to flush old image");
+    return ESP_FAIL;
+  }
+  return_fb();
+
+  // vTaskDelay(pdMS_TO_TICKS(2000));
+  _fb = esp_camera_fb_get();
+  if (!_fb) {
+    ESP_LOGE(TAG, "Failed to capture image");
     return ESP_FAIL;
   }
   ESP_LOGI(TAG, "Image taken!");

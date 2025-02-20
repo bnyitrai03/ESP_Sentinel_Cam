@@ -1,28 +1,15 @@
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include <ArduinoJson.h>
-#include <esp_log.h>
-#include <esp_system.h>
-#include <sys/param.h>
-
-#ifndef portTICK_RATE_MS
-#define portTICK_RATE_MS portTICK_PERIOD_MS
-#endif
-
-#include "camera.h"
-#include "config.h"
-#include "error_handler.h"
-#include "mqtt.h"
-#include "mytime.h"
+#include "camera_app.h"
 #include "secret.h"
 #include "storage.h"
-#include "wifi.h"
+#include <ArduinoJson.h>
+#include <esp_log.h>
 
 constexpr auto *TAG = "main_app";
 
 extern "C" void app_main(void) {
   Storage storage;
-  // ------ Static config values ------------------
+
+  // -------------- Static config values ------------------
   Storage::write("ssid", WIFI_SSID);
   Storage::write("password", WIFI_PASS);
 
@@ -35,7 +22,7 @@ extern "C" void app_main(void) {
   Storage::write("configTopic", HEALTH_REPORT_RESP_TOPIC);
   Storage::write("logTopic", LOG_TOPIC);
 
-  // ------ Dynamic config values ------------------
+  // ------------- Dynamic config values ------------------
   {
     JsonDocument doc;
     char config[512];
@@ -58,45 +45,17 @@ extern "C" void app_main(void) {
     serializeJson(doc, config);
     Storage::write("static_config", config);
   }
-  // -----------------------------------------------
 
-  Wifi wifi;
-  wifi.init();
-  wifi.connect();
+  // ------------------- Application select ---------------------------
+  Storage::write("app", "cam"); // this value is empty, when booting in qr mode
 
-  Config config;
-
-  // Disable lib logging else remote logging dies
-  esp_log_level_set("mqtt5_client", ESP_LOG_NONE);
-  esp_log_level_set("mqtt_client", ESP_LOG_NONE);
-  MQTT mqtt;
-  mqtt.start();
-
-  Camera cam;
-  cam.start();
-
-  while (1) {
-    vTaskDelay(5000 / portTICK_PERIOD_MS);
-    ESP_LOGI(TAG, "Hello World!");
-    /* cam.take_image();
-
-    char timestamp[TIMESTAMP_SIZE] = {0};
-    Time::get_date(timestamp, sizeof(timestamp));
-
-    JsonDocument doc;
-    std::string header;
-    doc["timestamp"] = timestamp;
-    doc["size"] = cam.get_image_size();
-    doc["mode"] = "gray";
-    serializeJson(doc, header);
-    mqtt.publish("image", header.c_str(), header.size());
-    if (mqtt.wait_for_header_ack(timestamp)) {
-      // Timestamp matches, proceed with sending image
-      mqtt.publish("image", cam.get_image_data(), cam.get_image_size());
-      ESP_LOGI(TAG, "Image published!");
-    } else {
-      ESP_LOGE(TAG, "No matching timestamp received, skipping image publish!");
-    }
-    cam.return_fb(); */
+  char app_mode[4] = {0};
+  Storage::read("app", app_mode, sizeof(app_mode));
+  if (strcmp(app_mode, "cam") == 0) {
+    ESP_LOGI(TAG, "Starting the starling detection mode");
+    init_camera_app();
+  } else {
+    ESP_LOGI(TAG, "Starting the QR code reader mode");
   }
+  // ------------------------------------------------------------------
 }

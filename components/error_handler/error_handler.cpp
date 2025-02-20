@@ -2,7 +2,6 @@
 #include "esp_err.h"
 #include "esp_log.h"
 #include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
 
 static DeinitCallback wifi_deinit_callback = nullptr;
 static DeinitCallback mqtt_deinit_callback = nullptr;
@@ -22,7 +21,7 @@ void set_camera_deinit_callback(DeinitCallback callback) {
 
 void restart() {
   ESP_LOGW("error_handler", "Restarting the device...");
-  vTaskDelay(500 / portTICK_PERIOD_MS); // To send the final log
+  vTaskDelay(2000 / portTICK_PERIOD_MS); // To send the final log
   esp_log_level_set("*",
                     ESP_LOG_NONE); // Disable logging to prevent crashing
 

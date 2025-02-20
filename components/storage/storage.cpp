@@ -58,7 +58,7 @@ esp_err_t Storage::read(const std::string &key, char *value, uint32_t len) {
 
   err = handle->get_string(key.c_str(), value, len);
   if (err != ESP_OK) {
-    ESP_LOGE(TAG, "Error writing to NVS: (%s)", esp_err_to_name(err));
+    ESP_LOGE(TAG, "Error reading from NVS: (%s)", esp_err_to_name(err));
     return err;
   }
 

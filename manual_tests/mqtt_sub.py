@@ -40,7 +40,7 @@ def subscribe(client: mqtt_client.Client):
             payload = msg.payload.decode('utf-8').strip()
             doc = json.loads(payload)
             if 'timestamp' in doc and 'size' in doc:
-                timestamp = doc['timestamp'][:19]
+                timestamp = doc['timestamp'][:20]
                 logging.info(
                     f"Received metadata: Timestamp={timestamp}, Size={doc['size']}")
                 client.publish(ack_topic, timestamp, qos=2)
