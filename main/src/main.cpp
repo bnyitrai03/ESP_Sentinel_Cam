@@ -53,7 +53,7 @@ extern "C" void app_main(void) {
   Storage::read("app", app_mode, sizeof(app_mode));
   if (strcmp(app_mode, "cam") == 0) {
     ESP_LOGI(TAG, "Starting the starling detection mode");
-    init_camera_app();
+    camera_app();
   } else {
     ESP_LOGI(TAG, "Starting the QR code reader mode");
   }

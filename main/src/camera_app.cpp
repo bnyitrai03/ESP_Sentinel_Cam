@@ -9,33 +9,11 @@
 #define portTICK_RATE_MS portTICK_PERIOD_MS
 #endif
 
-#include "camera.h"
-#include "camera_app.h"
-#include "config.h"
-#include "error_handler.h"
-#include "mqtt.h"
-#include "mytime.h"
-#include "storage.h"
-#include "wifi.h"
-
-
 constexpr auto *TAG = "camera_app";
 
-void init_camera_app() {
-  Camera cam;
-  cam.start();
+void camera_app() {
 
-  Wifi wifi;
-  wifi.init();
-  wifi.connect();
-
-  Config config;
-
-  // Disable lib logging else remote logging dies
-  esp_log_level_set("mqtt5_client", ESP_LOG_NONE);
-  esp_log_level_set("mqtt_client", ESP_LOG_NONE);
-  MQTT mqtt;
-  mqtt.start();
+  camera_app_init();
 
   cam.take_image();
   char timestamp[TIMESTAMP_SIZE] = {0};
@@ -56,4 +34,21 @@ void init_camera_app() {
     ESP_LOGE(TAG, "No matching timestamp received, skipping image publish!");
   }
   cam.return_fb();
+}
+
+void camera_app_init() {
+  Camera cam;
+  cam.start();
+
+  Wifi wifi;
+  wifi.init();
+  wifi.connect();
+
+  Config config;
+
+  // Disable lib logging else remote logging dies
+  esp_log_level_set("mqtt5_client", ESP_LOG_NONE);
+  esp_log_level_set("mqtt_client", ESP_LOG_NONE);
+  MQTT mqtt;
+  mqtt.start();
 }
