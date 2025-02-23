@@ -21,11 +21,7 @@ Wifi::Wifi() {
     esp_wifi_stop();
     esp_wifi_deinit();
   });
-}
 
-Wifi::~Wifi() { vEventGroupDelete(_wifi_event_group); }
-
-void Wifi::init() {
   esp_netif_init();
   esp_event_loop_create_default();
   esp_netif_create_default_wifi_sta();
@@ -40,6 +36,8 @@ void Wifi::init() {
   esp_event_handler_instance_register(IP_EVENT, IP_EVENT_STA_GOT_IP,
                                       &Wifi::eventHandler, NULL, NULL);
 }
+
+Wifi::~Wifi() { vEventGroupDelete(_wifi_event_group); }
 
 void Wifi::connect() {
   wifi_config_t wifi_config = {};

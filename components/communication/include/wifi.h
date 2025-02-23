@@ -1,3 +1,5 @@
+#pragma once
+
 #include "esp_event.h"
 #include "freertos/event_groups.h"
 #include <string>
@@ -16,11 +18,6 @@ public:
    * @brief Destructor for Wifi class
    */
   ~Wifi();
-
-  /**
-   * @brief Initializes the WiFi
-   */
-  void init();
 
   /**
    * @brief Connects to the WiFi

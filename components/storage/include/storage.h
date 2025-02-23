@@ -1,3 +1,5 @@
+#pragma once
+
 #include <nvs_flash.h>
 #include <string>
 

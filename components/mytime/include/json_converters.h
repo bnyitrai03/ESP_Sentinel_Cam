@@ -1,3 +1,5 @@
+#pragma once
+
 #include "mytime.h"
 #include <ArduinoJson.h>
 

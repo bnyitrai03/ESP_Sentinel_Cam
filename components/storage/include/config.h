@@ -1,3 +1,5 @@
+#pragma once
+
 #include "json_converters.h"
 #include "mytime.h"
 #include <vector>
@@ -6,7 +8,7 @@
  * @brief Structure to hold timing configuration.
  */
 typedef struct {
-  int period; /*!< working period of the device, -1: sleeping */
+  uint64_t period; /*!< working period of the device, -1: sleeping */
   Time start; /*!< HH:MM:SS */
   Time end;   /*!< HH:MM:SS */
 } TimingConfig;

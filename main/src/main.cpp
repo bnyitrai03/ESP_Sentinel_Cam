@@ -46,6 +46,9 @@ extern "C" void app_main(void) {
     Storage::write("static_config", config);
   }
 
+  // Start led state display task
+  // Start button handling task
+
   // ------------------- Application select ---------------------------
   Storage::write("app", "cam"); // this value is empty, when booting in qr mode
 
@@ -53,7 +56,8 @@ extern "C" void app_main(void) {
   Storage::read("app", app_mode, sizeof(app_mode));
   if (strcmp(app_mode, "cam") == 0) {
     ESP_LOGI(TAG, "Starting the starling detection mode");
-    camera_app();
+    CameraApp &app = CameraApp::getInstance();
+    app.run();
   } else {
     ESP_LOGI(TAG, "Starting the QR code reader mode");
   }

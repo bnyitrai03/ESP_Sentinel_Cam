@@ -1,3 +1,5 @@
+#pragma once
+
 #include "mqtt_client.h"
 #include <string>
 
@@ -53,6 +55,13 @@ public:
    *
    */
   static int remote_log_handler(const char *fmt, va_list args);
+  /**
+   * @brief Returns the health report topic
+   *
+   */
+  static const char * get_health_report_topic(){
+    return _health_report_topic;
+  }
 
 private:
   /**
