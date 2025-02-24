@@ -1,5 +1,6 @@
 #pragma once
 
+#include "esp_err.h"
 #include "mqtt_client.h"
 #include <string>
 
@@ -27,8 +28,13 @@ public:
    * @param data The message data to publish
    * @param len The length of the message data
    *
+   * @return
+   * - ESP_OK: the message was published successfully
+   *
+   * - ESP_FAIL: the message failed to publish
+   *
    */
-  void publish(const char *topic, const char *data, uint32_t len);
+  esp_err_t publish(const char *topic, const char *data, uint32_t len);
 
   /**
    * @brief Waits for an acknowledgment message with a
@@ -55,13 +61,12 @@ public:
    *
    */
   static int remote_log_handler(const char *fmt, va_list args);
+
   /**
    * @brief Returns the health report topic
    *
    */
-  static const char * get_health_report_topic(){
-    return _health_report_topic;
-  }
+  static const char *get_health_report_topic() { return _health_report_topic; }
 
 private:
   /**

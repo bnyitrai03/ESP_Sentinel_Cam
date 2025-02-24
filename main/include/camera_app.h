@@ -12,17 +12,18 @@
 #include <atomic>
 
 /*
-* @brief
-* CameraApp class is a singleton class that is responsible for running the camera application.
-* It initializes the camera, wifi, and mqtt objects and runs the camera application.
-* 
-*/
+ * @brief
+ * CameraApp class is a singleton class that is responsible for running the
+ * camera application. It initializes the camera, wifi, and mqtt objects and
+ * runs the camera application.
+ *
+ */
 class CameraApp {
 public:
-  CameraApp(const CameraApp&) = delete;
-  CameraApp& operator=(const CameraApp&) = delete;
+  CameraApp(const CameraApp &) = delete;
+  CameraApp &operator=(const CameraApp &) = delete;
 
-  static CameraApp& getInstance() {
+  static CameraApp &getInstance() {
     static CameraApp instance;
     return instance;
   }
@@ -35,6 +36,7 @@ private:
   CameraApp();
 
   esp_err_t read_sensors(JsonDocument &doc);
+  esp_err_t send_json(JsonDocument &doc, const char *topic);
 
   static std::atomic<bool> shutdown_requested;
   Camera _cam;

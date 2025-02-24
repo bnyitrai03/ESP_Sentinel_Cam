@@ -22,19 +22,17 @@ void set_camera_deinit_callback(DeinitCallback callback) {
 void restart() {
   ESP_LOGW("error_handler", "Restarting the device...");
   vTaskDelay(2000 / portTICK_PERIOD_MS); // To send the final log
-  esp_log_level_set("*",
-                    ESP_LOG_NONE); // Disable logging to prevent crashing
-
   deinit_components();
   esp_restart();
 }
 
 void deinit_components() {
-  if (camera_deinit_callback) {
-    camera_deinit_callback();
-  }
+  vTaskDelay(100 / portTICK_PERIOD_MS);
   if (mqtt_deinit_callback) {
     mqtt_deinit_callback();
+  }
+  if (camera_deinit_callback) {
+    camera_deinit_callback();
   }
   if (wifi_deinit_callback) {
     wifi_deinit_callback();

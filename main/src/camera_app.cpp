@@ -1,9 +1,8 @@
 #include "camera_app.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "mysleep.h"
 #include "mytime.h"
-#include "deep_sleep.h"
-#include "esp_timer.h"
 #include <ArduinoJson.h>
 #include <esp_log.h>
 #include <esp_system.h>
@@ -20,6 +19,7 @@ std::atomic<bool> CameraApp::shutdown_requested = false;
 CameraApp::CameraApp() {
   _cam.start();
   _wifi.connect();
+  _config.load_from_storage();
   // Disable lib logging else remote logging dies
   esp_log_level_set("mqtt5_client", ESP_LOG_NONE);
   esp_log_level_set("mqtt_client", ESP_LOG_NONE);
@@ -30,9 +30,7 @@ void CameraApp::run() {
 
   JsonDocument doc;
   read_sensors(doc);
-  std::string health_report;
-  serializeJson(doc, health_report);
-  _mqtt.publish(_mqtt.get_health_report_topic(), health_report.c_str(), health_report.size());
+  send_json(doc, "health");
   ESP_LOGI(TAG, "Health report published!");
 
   // config-ok check, or new config loading
@@ -41,7 +39,7 @@ void CameraApp::run() {
   char timestamp[TIMESTAMP_SIZE] = {0};
   Time::get_date(timestamp, sizeof(timestamp));
   ESP_LOGI(TAG, "Timestamp: %s", timestamp);
-  JsonDocument doc;
+  doc.clear();
   std::string header;
   doc["timestamp"] = timestamp;
   doc["size"] = _cam.get_image_size();
@@ -50,25 +48,22 @@ void CameraApp::run() {
   _mqtt.publish("image", header.c_str(), header.size());
   if (_mqtt.wait_for_header_ack(timestamp)) {
     // Timestamp matches, proceed with sending image
-    _mqtt.publish("image", _cam.get_image_data(), _cam.get_image_size());
-    ESP_LOGI(TAG, "Image published!");
+    if (_mqtt.publish("image", _cam.get_image_data(), _cam.get_image_size()) !=
+        ESP_OK) {
+      ESP_LOGE(TAG, "Failed to publish image!");
+    } else {
+      ESP_LOGI(TAG, "Image published!");
+    }
   } else {
     ESP_LOGE(TAG, "No matching timestamp received, skipping image publish!");
   }
   _cam.return_fb();
 
-  // deinit, deepsleep
-  uint64_t elapsed_time = esp_timer_get_time(); // try measuring this
-  TimingConfig _config = Config::get_active_config();
-  uint64_t sleep_time = _config.period - elapsed_time/1000000; // maybe need some extra value: flash shutdown/startup
-  if(sleep_time > DEEP_SLEEP_THRESHOLD){
-    ESP_LOGI(TAG, "Deep sleep for %llu seconds", sleep_time);
-  }else if (sleep_time > 0){
-    ESP_LOGI(TAG, "Light sleep for %llu seconds", sleep_time);
-  }
-  else{
-    ESP_LOGI(TAG, "No sleep, continuing");
-  }
+  // deinit
+  deinit_components();
+  // sleep
+  TimingConfig config = Config::get_active_config();
+  mysleep(config.period);
 }
 
 esp_err_t CameraApp::read_sensors(JsonDocument &doc) {
@@ -77,4 +72,10 @@ esp_err_t CameraApp::read_sensors(JsonDocument &doc) {
   doc["batteryTemp"] = 25.0;
   doc["lightLevel"] = 1500;
   return ESP_OK;
+}
+
+esp_err_t CameraApp::send_json(JsonDocument &doc, const char *topic) {
+  std::string json;
+  serializeJson(doc, json);
+  return _mqtt.publish(topic, json.c_str(), json.size());
 }

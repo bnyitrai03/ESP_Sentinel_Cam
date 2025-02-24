@@ -1,4 +1,5 @@
 #include "camera_app.h"
+#include "esp_log.h"
 #include "secret.h"
 #include "storage.h"
 #include <ArduinoJson.h>
@@ -36,14 +37,14 @@ extern "C" void app_main(void) {
     JsonObject timing_1 = timing.add<JsonObject>();
     timing_1["period"] = -1;
     timing_1["start"] = "11:00:00";
-    timing_1["end"] = "15:59:59";
+    timing_1["end"] = "14:21:40";
     JsonObject timing_2 = timing.add<JsonObject>();
     timing_2["period"] = 30;
-    timing_2["start"] = "16:00:00";
+    timing_2["start"] = "14:21:40";
     timing_2["end"] = "23:59:59";
 
     serializeJson(doc, config);
-    Storage::write("static_config", config);
+    Storage::write("dynamic_config", config);
   }
 
   // Start led state display task

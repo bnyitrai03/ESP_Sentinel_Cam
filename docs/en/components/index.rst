@@ -10,7 +10,8 @@ This section describes the implemented software components of the project.
      :maxdepth: 2
 
     camera
-    error_handler
+    utilities/error_handler
+    utilities/mysleep
     mytime
     communication/mqtt
     communication/wifi

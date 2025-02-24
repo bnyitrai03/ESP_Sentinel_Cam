@@ -8,9 +8,9 @@
  * @brief Structure to hold timing configuration.
  */
 typedef struct {
-  uint64_t period; /*!< working period of the device, -1: sleeping */
-  Time start; /*!< HH:MM:SS */
-  Time end;   /*!< HH:MM:SS */
+  int64_t period; /*!< working period of the device, -1: sleeping */
+  Time start;     /*!< HH:MM:SS */
+  Time end;       /*!< HH:MM:SS */
 } TimingConfig;
 
 /**
@@ -18,8 +18,6 @@ typedef struct {
  */
 class Config {
 public:
-  Config();
-
   /**
    * @brief Loads the configuration from a JSON document and sets the active
    * configuration as well as the UUID
@@ -28,6 +26,16 @@ public:
    *
    */
   static void load_config(JsonDocument &config);
+
+  /**
+   * @brief Loads the configuration from the NVS storage, handles validation
+   * too
+   *
+   * @note This function will restart the device if the configuration is invalid
+   *
+   */
+  static void load_from_storage();
+
   /**
    * @brief Validates the configuration
    *
@@ -41,6 +49,7 @@ public:
    *
    */
   static bool validate(JsonDocument &config);
+
   /**
    * @brief Gets the active configuration
    *
@@ -50,6 +59,7 @@ public:
    *    - The active configuration
    */
   static TimingConfig get_active_config();
+
   /**
    * @brief Gets the UUID
    *
@@ -63,14 +73,6 @@ private:
   static std::vector<TimingConfig>::iterator _active;
   static char _uuid[40]; /*! config UUID */
 
-  /**
-   * @brief Loads the configuration from the NVS storage, handles validation
-   * too
-   *
-   * @note This function will restart the device if the configuration is invalid
-   *
-   */
-  static void load_from_storage();
   /**
    * @brief Sets the active configuration based on the current time
    */

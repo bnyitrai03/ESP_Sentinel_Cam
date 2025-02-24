@@ -1,6 +1,7 @@
 #include "config.h"
 #include "error_handler.h"
 #include "esp_log.h"
+#include "mysleep.h"
 #include "storage.h"
 #include <regex>
 
@@ -9,8 +10,6 @@ constexpr auto *TAG = "Config";
 std::vector<TimingConfig> Config::_timing;
 std::vector<TimingConfig>::iterator Config::_active;
 char Config::_uuid[40] = {0};
-
-Config::Config() { Config::load_from_storage(); }
 
 void Config::load_config(JsonDocument &doc) {
   _timing.clear();
@@ -39,9 +38,9 @@ void Config::load_config(JsonDocument &doc) {
 
 void Config::load_from_storage() {
   char config[4000];
-  esp_err_t err = Storage::read("static_config", config, sizeof(config));
+  esp_err_t err = Storage::read("dynamic_config", config, sizeof(config));
   if (err != ESP_OK) {
-    ESP_LOGE(TAG, "Error (%s) reading static config from storage!",
+    ESP_LOGE(TAG, "Error (%s) reading dynamic config from storage!",
              esp_err_to_name(err));
     restart();
   }
@@ -69,10 +68,15 @@ void Config::set_active_config() {
   for (auto it = _timing.begin(); it != _timing.end(); ++it) {
     if (now >= it->start && now <= it->end) {
       _active = it;
-      ESP_LOGI(TAG, "Active: %02d:%02d:%02d - %02d:%02d:%02d, period: %d",
+      ESP_LOGI(TAG, "Active: %02d:%02d:%02d - %02d:%02d:%02d, period: %lld",
                it->start.get_hours(), it->start.get_minutes(),
                it->start.get_seconds(), it->end.get_hours(),
                it->end.get_minutes(), it->end.get_seconds(), it->period);
+      if (it->period == -1) {
+        ESP_LOGI(TAG, "Device is in sleep mode");
+        deinit_components();
+        mysleep(it->end);
+      }
       return;
     }
   }

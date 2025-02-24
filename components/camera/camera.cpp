@@ -59,7 +59,7 @@ esp_err_t Camera::take_image() {
   }
   return_fb();
 
-  // vTaskDelay(pdMS_TO_TICKS(2000));
+  // capture new image
   _fb = esp_camera_fb_get();
   if (!_fb) {
     ESP_LOGE(TAG, "Failed to capture image");

@@ -121,16 +121,16 @@ public:
    */
   static esp_err_t get_date(char *timestamp, uint32_t size);
 
-private:
-  int _hours;
-  int _minutes;
-  int _seconds;
-
   /**
    * @brief Converts time to seconds
    *
    * @return Time in seconds
    */
   int toSeconds() const { return _hours * 3600 + _minutes * 60 + _seconds; }
+
+private:
+  int _hours;
+  int _minutes;
+  int _seconds;
 };
 #endif // MYTIME_H

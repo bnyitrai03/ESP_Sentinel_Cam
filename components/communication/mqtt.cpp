@@ -24,7 +24,12 @@ SemaphoreHandle_t MQTT::_ack_semaphore = xSemaphoreCreateBinary();
 bool MQTT::_connected = false;
 
 MQTT::MQTT() {
-  set_mqtt_deinit_callback([]() { esp_mqtt_client_destroy(_client); });
+  set_mqtt_deinit_callback([]() {
+    _connected = false;
+    // Disable the MQTT log handler
+    esp_log_set_vprintf(vprintf);
+    esp_mqtt_client_destroy(_client);
+  });
 
   // -------------------- MQTT static config ----------------------------------
   if (Storage::read("mqttAddress", _hostname, sizeof(_hostname)) != ESP_OK ||
@@ -134,8 +139,14 @@ void MQTT::start() {
   _connected = true;
 }
 
-void MQTT::publish(const char *topic, const char *data, uint32_t len) {
-  esp_mqtt_client_publish(_client, topic, data, len, _qos, false);
+esp_err_t MQTT::publish(const char *topic, const char *data, uint32_t len) {
+  uint32_t ret =
+      esp_mqtt_client_publish(_client, topic, data, len, _qos, false);
+  if (ret == -1 || ret == -2) {
+    return ESP_FAIL;
+  } else {
+    return ESP_OK;
+  }
 }
 
 void MQTT::subscribe(const char *topic) {
@@ -174,7 +185,7 @@ void MQTT::handle_new_config(const char *data, uint32_t len) {
   }
 
   if (Config::validate(doc)) {
-    esp_err_t err = Storage::write("static_config", config.c_str());
+    esp_err_t err = Storage::write("dynamic_config", config.c_str());
     if (err != ESP_OK) {
       ESP_LOGE(TAG, "Failed to write new config to storage!");
       restart();
