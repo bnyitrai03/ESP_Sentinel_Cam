@@ -1,0 +1,9 @@
+{
+    "uuid": "8D8AC610-566D-4EF0-9C22-186B2A5ED793",
+    "period": 40,
+    "batteryCharge": 90,
+    "batteryTemp": 25,
+    "cpuTemp": 30,
+    "luminosity": 3000, // luxban kéne talán?
+    "chargeCurrent": 400 // napelem általi töltőáram mA-ben
+}

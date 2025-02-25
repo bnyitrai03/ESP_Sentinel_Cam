@@ -20,7 +20,7 @@ void set_camera_deinit_callback(DeinitCallback callback) {
 }
 
 void restart() {
-  ESP_LOGW("error_handler", "Restarting the device...");
+  ESP_LOGW("error_handler", "There was an error, restarting the device...");
   vTaskDelay(2000 / portTICK_PERIOD_MS); // To send the final log
   deinit_components();
   esp_restart();

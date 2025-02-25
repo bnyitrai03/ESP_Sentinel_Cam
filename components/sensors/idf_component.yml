@@ -1,0 +1,3 @@
+dependencies:
+  bblanchon/arduinojson:
+    version: ">=7.3.0"

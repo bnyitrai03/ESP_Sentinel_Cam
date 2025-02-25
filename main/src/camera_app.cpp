@@ -12,7 +12,7 @@
 #define portTICK_RATE_MS portTICK_PERIOD_MS
 #endif
 
-constexpr auto *TAG = "camera_app";
+constexpr auto *TAG = "Camera app";
 
 std::atomic<bool> CameraApp::shutdown_requested = false;
 
@@ -28,13 +28,13 @@ CameraApp::CameraApp() {
 
 void CameraApp::run() {
 
-  JsonDocument doc;
-  read_sensors(doc);
-  send_json(doc, "health");
-  ESP_LOGI(TAG, "Health report published!");
+  if (send_health_report() != ESP_OK) {
+    ESP_LOGE(TAG, "Failed to publish health report!");
+  }
 
   // config-ok check, or new config loading
 
+  JsonDocument doc;
   _cam.take_image();
   char timestamp[TIMESTAMP_SIZE] = {0};
   Time::get_date(timestamp, sizeof(timestamp));
@@ -60,22 +60,26 @@ void CameraApp::run() {
   _cam.return_fb();
 
   // deinit
+  ESP_LOGW(TAG, "Device going to sleep...");
   deinit_components();
   // sleep
   TimingConfig config = Config::get_active_config();
   mysleep(config.period);
 }
 
-esp_err_t CameraApp::read_sensors(JsonDocument &doc) {
-  doc["cpuTemp"] = 25.0;
-  doc["batteryCharge"] = 100;
-  doc["batteryTemp"] = 25.0;
-  doc["lightLevel"] = 1500;
-  return ESP_OK;
-}
-
 esp_err_t CameraApp::send_json(JsonDocument &doc, const char *topic) {
   std::string json;
   serializeJson(doc, json);
   return _mqtt.publish(topic, json.c_str(), json.size());
+}
+
+esp_err_t CameraApp::send_health_report() {
+  JsonDocument doc;
+  doc["uuid"] = _config.get_uuid();
+  TimingConfig active = _config.get_active_config();
+  doc["period"] = active.period;
+  if (_sensors.read_sensors(doc) != ESP_OK) {
+    ESP_LOGE(TAG, "Failed to read sensors!");
+  }
+  return send_json(doc, "health");
 }

@@ -6,6 +6,7 @@
 #include "error_handler.h"
 #include "mqtt.h"
 #include "mytime.h"
+#include "sensors.h"
 #include "storage.h"
 #include "wifi.h"
 #include <ArduinoJson.h>
@@ -35,12 +36,13 @@ public:
 private:
   CameraApp();
 
-  esp_err_t read_sensors(JsonDocument &doc);
   esp_err_t send_json(JsonDocument &doc, const char *topic);
+  esp_err_t send_health_report();
 
   static std::atomic<bool> shutdown_requested;
   Camera _cam;
   Wifi _wifi;
   MQTT _mqtt;
   Config _config;
+  Sensors _sensors;
 };

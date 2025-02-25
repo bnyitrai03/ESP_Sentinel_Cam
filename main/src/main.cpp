@@ -35,7 +35,7 @@ extern "C" void app_main(void) {
     timing_0["start"] = "00:00:00";
     timing_0["end"] = "10:59:59";
     JsonObject timing_1 = timing.add<JsonObject>();
-    timing_1["period"] = -1;
+    timing_1["period"] = 50;
     timing_1["start"] = "11:00:00";
     timing_1["end"] = "14:21:40";
     JsonObject timing_2 = timing.add<JsonObject>();

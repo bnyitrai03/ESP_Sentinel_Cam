@@ -73,7 +73,10 @@ void Config::set_active_config() {
                it->start.get_seconds(), it->end.get_hours(),
                it->end.get_minutes(), it->end.get_seconds(), it->period);
       if (it->period == -1) {
-        ESP_LOGI(TAG, "Device is in sleep mode");
+        ESP_LOGW(TAG, "Device is going to sleep");
+        ESP_LOGW(TAG, "Device will wake up at %02d:%02d:%02d",
+                 it->end.get_hours(), it->end.get_minutes(),
+                 it->end.get_seconds());
         deinit_components();
         mysleep(it->end);
       }

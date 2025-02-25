@@ -19,3 +19,11 @@ void mysleep(Time wake_up);
  *
  */
 void mysleep(uint64_t period);
+
+/**
+ * @brief Isolates the GPIO
+ *
+ * This function isolates the GPIO pins to minimize power consumption during
+ * deep sleep.
+ */
+void isolate_gpio();

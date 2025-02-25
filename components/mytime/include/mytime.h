@@ -126,7 +126,9 @@ public:
    *
    * @return Time in seconds
    */
-  int toSeconds() const { return _hours * 3600 + _minutes * 60 + _seconds; }
+  uint64_t toSeconds() const {
+    return _hours * 3600 + _minutes * 60 + _seconds;
+  }
 
 private:
   int _hours;

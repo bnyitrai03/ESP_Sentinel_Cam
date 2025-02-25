@@ -1,4 +1,5 @@
 #include "camera.h"
+#include "driver/rtc_io.h"
 #include "error_handler.h"
 #include "freertos/FreeRTOS.h"
 #include <esp_log.h>
@@ -6,6 +7,25 @@
 constexpr auto *TAG = "Camera";
 
 Camera::Camera() {
+  if (esp_reset_reason() == ESP_RST_DEEPSLEEP) {
+    // reset camera pins for correct deep sleep wake up
+    rtc_gpio_hold_dis(CAM_PIN_PWDN);
+    rtc_gpio_hold_dis(CAM_PIN_XCLK);
+    rtc_gpio_hold_dis(CAM_PIN_SIOD);
+    rtc_gpio_hold_dis(CAM_PIN_SIOC);
+    rtc_gpio_hold_dis(CAM_PIN_D7);
+    rtc_gpio_hold_dis(CAM_PIN_D6);
+    rtc_gpio_hold_dis(CAM_PIN_D5);
+    rtc_gpio_hold_dis(CAM_PIN_D4);
+    rtc_gpio_hold_dis(CAM_PIN_D3);
+    rtc_gpio_hold_dis(CAM_PIN_D2);
+    rtc_gpio_hold_dis(CAM_PIN_D1);
+    rtc_gpio_hold_dis(CAM_PIN_D0);
+    rtc_gpio_hold_dis(CAM_PIN_VSYNC);
+    rtc_gpio_hold_dis(CAM_PIN_HREF);
+    rtc_gpio_hold_dis(CAM_PIN_PCLK);
+  }
+
   _config = {
       .pin_pwdn = CAM_PIN_PWDN,
       .pin_reset = CAM_PIN_RESET,
@@ -38,7 +58,11 @@ Camera::Camera() {
       .fb_location = CAMERA_FB_IN_PSRAM,
       .grab_mode = CAMERA_GRAB_LATEST,
   };
-  set_camera_deinit_callback([]() { esp_camera_deinit(); });
+
+  set_camera_deinit_callback([]() {
+    esp_camera_deinit();
+    gpio_set_level(CAM_PIN_PWDN, 1);
+  });
 }
 
 esp_err_t Camera::start() {
@@ -47,6 +71,7 @@ esp_err_t Camera::start() {
     ESP_LOGE(TAG, "Camera Init Failed");
     restart();
   }
+  gpio_set_level(CAM_PIN_PWDN, 0); // Power on the camera
   return err;
 }
 
