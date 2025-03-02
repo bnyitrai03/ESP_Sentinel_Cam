@@ -12,15 +12,16 @@ esp_mqtt_client_handle_t MQTT::_client;
 char MQTT::_hostname[NAME_SIZE] = {0};
 char MQTT::_username[NAME_SIZE] = {0};
 char MQTT::_password[NAME_SIZE] = {0};
-char MQTT::_logBuff[LOG_SIZE] = {0};
 char MQTT::_config_topic[NAME_SIZE] = {0};
 char MQTT::_health_report_topic[NAME_SIZE] = {0};
 char MQTT::_imageack_topic[NAME_SIZE] = {0};
 char MQTT::_log_topic[NAME_SIZE] = {0};
 char MQTT::_image_topic[NAME_SIZE] = {0};
+bool MQTT::_new_config_received = false;
 int MQTT::_qos = 2;
 char MQTT::_expected_timestamp[TIMESTAMP_SIZE];
-SemaphoreHandle_t MQTT::_ack_semaphore = xSemaphoreCreateBinary();
+SemaphoreHandle_t MQTT::_ack_header_semaphore = xSemaphoreCreateBinary();
+SemaphoreHandle_t MQTT::_config_semaphore = xSemaphoreCreateBinary();
 bool MQTT::_connected = false;
 
 MQTT::MQTT() {
@@ -79,8 +80,9 @@ int MQTT::remote_log_handler(const char *fmt, va_list args) {
   // logs to the serial output
   vprintf(fmt, args);
   // assembles the remote log message
-  int size = vsnprintf(_logBuff, LOG_SIZE, fmt, args);
-  esp_mqtt_client_publish(_client, _log_topic, _logBuff, size, _qos, 0);
+  char logBuff[LOG_SIZE] = {0};
+  int size = vsnprintf(logBuff, LOG_SIZE, fmt, args);
+  esp_mqtt_client_publish(_client, _log_topic, logBuff, size, _qos, 0);
   return size;
 }
 
@@ -91,7 +93,7 @@ void MQTT::event_handler(void *handler_args, esp_event_base_t base,
   case MQTT_EVENT_CONNECTED:
     // Enable the MQTT log handler
     esp_log_set_vprintf(remote_log_handler);
-
+    // Subscribe to topics
     subscribe(_imageack_topic);
     subscribe(_config_topic);
     break;
@@ -113,6 +115,8 @@ void MQTT::event_handler(void *handler_args, esp_event_base_t base,
 
     if (strncmp(event->topic, _config_topic, event->topic_len) == 0) {
       if (strncmp(event->data, "config-ok", event->data_len) == 0) {
+        _new_config_received = false;
+        xSemaphoreGive(_config_semaphore);
         ESP_LOGI(TAG, "Received config-ok message!");
       } else {
         handle_new_config(event->data, event->data_len);
@@ -153,9 +157,10 @@ void MQTT::subscribe(const char *topic) {
   esp_mqtt_client_subscribe(_client, topic, _qos);
 }
 
-bool MQTT::wait_for_header_ack(const char *timestamp) {
+bool MQTT::wait_for_header_ack(const char *timestamp, uint32_t timeout) {
   snprintf(_expected_timestamp, sizeof(_expected_timestamp), "%s", timestamp);
-  return xSemaphoreTake(_ack_semaphore, pdMS_TO_TICKS(5000)) == pdTRUE;
+  return xSemaphoreTake(_ack_header_semaphore, pdMS_TO_TICKS(timeout)) ==
+         pdTRUE;
 }
 
 void MQTT::handle_header_ack_message(const char *topic, const char *data,
@@ -164,7 +169,7 @@ void MQTT::handle_header_ack_message(const char *topic, const char *data,
   strncpy(received_timestamp, data, len);
 
   if (strcmp(received_timestamp, _expected_timestamp) == 0) {
-    xSemaphoreGive(_ack_semaphore);
+    xSemaphoreGive(_ack_header_semaphore);
     ESP_LOGI(TAG, "Received matching acknowledgement timestamp: %s",
              received_timestamp);
   } else {
@@ -176,7 +181,6 @@ void MQTT::handle_header_ack_message(const char *topic, const char *data,
 
 void MQTT::handle_new_config(const char *data, uint32_t len) {
   std::string config(data, len);
-  ESP_LOGI(TAG, "Received new config: %s", config.c_str());
   JsonDocument doc;
   DeserializationError error = deserializeJson(doc, config);
   if (error) {
@@ -192,7 +196,13 @@ void MQTT::handle_new_config(const char *data, uint32_t len) {
     }
     Config::load_config(doc);
     ESP_LOGI(TAG, "New config loaded!");
+    _new_config_received = true;
   } else {
     ESP_LOGE(TAG, "Invalid config received!");
   }
+  xSemaphoreGive(_config_semaphore);
+}
+
+bool MQTT::wait_for_config(uint32_t timeout) {
+  return xSemaphoreTake(_config_semaphore, pdMS_TO_TICKS(timeout)) == pdTRUE;
 }

@@ -1,22 +1,11 @@
 #include "mysleep.h"
 #include "driver/rtc_io.h"
-#include "error_handler.h"
 #include "esp_log.h"
 #include "esp_sleep.h"
 #include "esp_timer.h"
 #include "freertos/FreeRTOS.h"
 
 constexpr auto *TAG = "Sleep";
-
-constexpr uint64_t BOOT_TIME_US = 500000;     // ~500ms for boot
-constexpr uint64_t SHUTDOWN_TIME_US = 100000; // ~100ms for entering sleep
-constexpr uint64_t WAKEUP_DELAY_US =
-    2000; // CONFIG_ESP32S3_DEEP_SLEEP_WAKEUP_DELAY
-constexpr uint64_t FLASH_READY_DELAY_US =
-    2000; // CONFIG_ESP_SLEEP_WAIT_FLASH_READY_EXTRA_DELAY
-
-constexpr uint64_t OVERHEAD =
-    BOOT_TIME_US + SHUTDOWN_TIME_US + WAKEUP_DELAY_US + FLASH_READY_DELAY_US;
 
 void mysleep(Time wake_up) {
   char timestamp[9] = {0};
@@ -27,7 +16,7 @@ void mysleep(Time wake_up) {
       wake_up.toSeconds() * 1000000 - now.toSeconds() * 1000000 - OVERHEAD;
   if (sleep_time_us < 500000) {
     ESP_LOGE(TAG, "Invalid sleep time: %lld us", sleep_time_us);
-    restart();
+    esp_restart();
   } else {
     isolate_gpio();
     esp_sleep_enable_timer_wakeup(sleep_time_us);
@@ -41,9 +30,9 @@ void mysleep(uint64_t period) {
 
   if (sleep_time_us < 500000) {
     ESP_LOGE(TAG, "Invalid sleep time: %lld us", sleep_time_us);
-    restart();
+    esp_restart();
   } else {
-    ESP_LOGW(TAG, "Deep sleep %llu seconds", sleep_time_us / 1000000);
+    ESP_LOGW(TAG, "Deep sleep %lld seconds", sleep_time_us / 1000000);
     isolate_gpio();
     esp_sleep_enable_timer_wakeup(sleep_time_us);
     esp_deep_sleep_start();

@@ -40,17 +40,34 @@ public:
    * @brief Waits for an acknowledgment message with a
    * specific timestamp, which will be sent upon receiving the header message
    *
-   * @note This function blocks until the acknowledgment is received or until
-   * the 5 second timeout
+   * @note This function blocks until the acknowledgment message is received or
+   * the timeout is reached
    *
    * @param expected_timestamp The expected timestamp for the acknowledgment
+   * @param timeout The timeout in milliseconds
    * @return
    *     - true : if the acknowledgment with the expected timestamp is received
    *
    *     - false : if the acknowledgment is not received within the timeout
    *
    */
-  bool wait_for_header_ack(const char *expected_timestamp);
+  bool wait_for_header_ack(const char *expected_timestamp, uint32_t timeout);
+
+  /**
+   * @brief Waits for a new configuration message
+   *
+   * @param timeout The timeout in milliseconds
+   *
+   * @note This function blocks until the configuration message is received
+   *
+   * @return
+   *     - true : if the configuration message is received
+   *
+   *     - false : if the configuration message is not received within the
+   * timeout
+   *
+   */
+  bool wait_for_config(uint32_t timeout);
 
   /**
    * @brief Handles remote logging
@@ -63,10 +80,22 @@ public:
   static int remote_log_handler(const char *fmt, va_list args);
 
   /**
-   * @brief Returns the health report topic
+   * @return The health report topic
    *
    */
-  static const char *get_health_report_topic() { return _health_report_topic; }
+  const char *get_health_report_topic() { return _health_report_topic; }
+
+  /**
+   * @return The image topic
+   *
+   */
+  const char *get_image_topic() { return _image_topic; }
+
+  /**
+   * @return Whether a new configuration message has been received
+   *
+   */
+  bool get_new_config_received() { return _new_config_received; }
 
 private:
   /**
@@ -117,9 +146,10 @@ private:
   static char _image_topic[NAME_SIZE];
   static char _imageack_topic[NAME_SIZE];
   static char _log_topic[NAME_SIZE];
-  static char _logBuff[LOG_SIZE];
   static int _qos;
+  static bool _new_config_received;
   static char _expected_timestamp[TIMESTAMP_SIZE];
-  static SemaphoreHandle_t _ack_semaphore;
+  static SemaphoreHandle_t _ack_header_semaphore;
+  static SemaphoreHandle_t _config_semaphore;
   static bool _connected;
 };

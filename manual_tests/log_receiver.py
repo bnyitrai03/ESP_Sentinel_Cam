@@ -23,7 +23,6 @@ def on_connect(client, userdata, flags, rc, properties=None):
 
 
 def on_message(client, userdata, msg):
-
     log_entry = msg.payload.decode()
     print(log_entry)
 

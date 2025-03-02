@@ -61,6 +61,11 @@ public:
   static TimingConfig get_active_config();
 
   /**
+   * @brief Sets the active configuration based on the current time
+   */
+  static void set_active_config();
+
+  /**
    * @brief Gets the UUID
    *
    * @return
@@ -68,15 +73,13 @@ public:
    */
   static const char *get_uuid() { return _uuid; }
 
+  static int64_t get_period();
+
 private:
   static std::vector<TimingConfig> _timing; /*!< list of operational hours */
   static std::vector<TimingConfig>::iterator _active;
   static char _uuid[40]; /*! config UUID */
 
-  /**
-   * @brief Sets the active configuration based on the current time
-   */
-  static void set_active_config();
   /**
    * @brief Gets the default active configuration
    *

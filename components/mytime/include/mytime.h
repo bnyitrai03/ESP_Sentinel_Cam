@@ -103,6 +103,7 @@ public:
    *
    * @return
    *     - ESP_OK on success
+   *
    *     - ESP_FAIL on error
    */
   static esp_err_t get_time(char *timestamp, uint32_t size);
@@ -117,6 +118,7 @@ public:
    *
    * @return
    *     - ESP_OK on success
+   *
    *     - ESP_FAIL on error
    */
   static esp_err_t get_date(char *timestamp, uint32_t size);

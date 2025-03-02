@@ -2,6 +2,16 @@
 
 #include "mytime.h"
 
+constexpr uint64_t BOOT_TIME_US = 500000;     // ~500ms for boot
+constexpr uint64_t SHUTDOWN_TIME_US = 100000; // ~100ms for entering sleep
+constexpr uint64_t WAKEUP_DELAY_US =
+    2000; // CONFIG_ESP32S3_DEEP_SLEEP_WAKEUP_DELAY
+constexpr uint64_t FLASH_READY_DELAY_US =
+    2000; // CONFIG_ESP_SLEEP_WAIT_FLASH_READY_EXTRA_DELAY
+
+constexpr uint64_t OVERHEAD =
+    BOOT_TIME_US + SHUTDOWN_TIME_US + WAKEUP_DELAY_US + FLASH_READY_DELAY_US;
+
 /**
  * @brief Puts the device to sleep until the specified time.
  *
@@ -14,6 +24,8 @@ void mysleep(Time wake_up);
 
 /**
  * @brief Puts the device to sleep until the next period.
+ *
+ * @param period The working period of the device in seconds.
  *
  * @note This function does not return.
  *

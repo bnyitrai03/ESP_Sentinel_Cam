@@ -7,6 +7,14 @@
 constexpr auto *TAG = "Camera";
 
 Camera::Camera() {
+  // raise the log level for the camera library
+  esp_log_level_set("s3 ll_cam", ESP_LOG_WARN);
+  esp_log_level_set("cam_hal", ESP_LOG_WARN);
+  esp_log_level_set("sccb", ESP_LOG_WARN);
+  esp_log_level_set("gpio", ESP_LOG_WARN);
+  esp_log_level_set("camera", ESP_LOG_WARN);
+  esp_log_level_set("ov5640", ESP_LOG_WARN);
+
   if (esp_reset_reason() == ESP_RST_DEEPSLEEP) {
     // reset camera pins for correct deep sleep wake up
     rtc_gpio_hold_dis(CAM_PIN_PWDN);

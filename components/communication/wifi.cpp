@@ -14,6 +14,9 @@ EventGroupHandle_t Wifi::_wifi_event_group = nullptr;
 bool Wifi::_connected = false;
 
 Wifi::Wifi() {
+  esp_log_level_set("wifi_init", ESP_LOG_WARN);
+  esp_log_level_set("wifi", ESP_LOG_WARN);
+
   _wifi_event_group = xEventGroupCreate();
   set_wifi_deinit_callback([]() {
     _connected = false;

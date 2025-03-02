@@ -11,7 +11,7 @@ extern "C" void app_main(void) {
   Storage storage;
 
   // -------------- Static config values ------------------
-  Storage::write("ssid", WIFI_SSID);
+  /* Storage::write("ssid", WIFI_SSID);
   Storage::write("password", WIFI_PASS);
 
   Storage::write("mqttAddress", MQTT_BROKER_IP);
@@ -21,13 +21,13 @@ extern "C" void app_main(void) {
   Storage::write("imageAckTopic", IMAGE_ACK_TOPIC);
   Storage::write("healthRepTopic", HEALTH_REPORT_TOPIC);
   Storage::write("configTopic", HEALTH_REPORT_RESP_TOPIC);
-  Storage::write("logTopic", LOG_TOPIC);
+  Storage::write("logTopic", LOG_TOPIC); */
 
   // ------------- Dynamic config values ------------------
   {
     JsonDocument doc;
     char config[512];
-    doc["uuid"] = "8D8AC610-566D-4EF0-9C22-186B2A5ED793";
+    doc["configId"] = "8D8AC610-566D-4EF0-9C22-186B2A5ED793";
     JsonArray timing = doc["timing"].to<JsonArray>();
 
     JsonObject timing_0 = timing.add<JsonObject>();

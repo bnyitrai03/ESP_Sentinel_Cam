@@ -30,36 +30,45 @@ def connect_mqtt():
     return client
 
 
-def publish(client):
-    try:
-        with open(config_path, 'r') as file:
-            config_data = json.load(file)
+def subscribe(client):
+    def on_message(client, userdata, msg):
+        try:
+            # Decode message and load new config
+            payload = msg.payload.decode()
+            old_config = json.loads(payload)
+            with open(config_path, 'r') as file:
+                new_config = json.load(file)
 
-        # Convert the JSON object to a string
-        message = json.dumps(config_data)
-        # message = "config-ok"
+            # Compare old and new config
+            if old_config['configId'] == new_config['configId']:
+                message = "config-ok"
+            else:
+                message = json.dumps(new_config)
 
-        result = client.publish(config_topic, message, qos=2)
-        result.wait_for_publish()
-        status = result[0]
-        if status == 0:
-            logging.info(f"Sent config message!")
-        else:
-            logging.error(f"Failed to send message to topic {config_topic}")
-    except FileNotFoundError:
-        logging.error(f"Config file not found: {config_path}")
-    except json.JSONDecodeError:
-        logging.error(f"Invalid JSON in the config file: {config_path}")
-    except Exception as e:
-        logging.error(f"An error occurred: {str(e)}")
+            # Publish new config or config-ok
+            result = client.publish(config_topic, message, qos=2)
+            status = result[0]
+            if status == 0:
+                logging.info(f"Sent message: {message}")
+            else:
+                logging.error(
+                    f"Failed to send message to topic {config_topic}")
+        except FileNotFoundError:
+            logging.error(f"Config file not found: {config_path}")
+        except json.JSONDecodeError:
+            logging.error(f"Invalid JSON in the config file: {config_path}")
+        except Exception as e:
+            logging.error(f"An error occurred: {str(e)}")
+
+    client.subscribe(health_rep_topic)
+    client.on_message = on_message
+    logging.info(f"Subscribed to topic: {health_rep_topic}")
 
 
 def run():
     client = connect_mqtt()
-    client.loop_start()
-    publish(client)
-    client.disconnect()
-    client.loop_stop()
+    subscribe(client)
+    client.loop_forever()
 
 
 if __name__ == '__main__':

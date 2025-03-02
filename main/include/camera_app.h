@@ -15,7 +15,7 @@
 /*
  * @brief
  * CameraApp class is a singleton class that is responsible for running the
- * camera application. It initializes the camera, wifi, and mqtt objects and
+ * camera application. It initializes and
  * runs the camera application.
  *
  */
@@ -29,6 +29,11 @@ public:
     return instance;
   }
 
+  /**
+   * @brief
+   * Runs the image capturing application.
+   *
+   */
   void run();
 
   static void request_shutdown() { shutdown_requested = true; }
@@ -38,6 +43,18 @@ private:
 
   esp_err_t send_json(JsonDocument &doc, const char *topic);
   esp_err_t send_health_report();
+  esp_err_t send_image_header(const char *timestamp);
+  void send_image();
+
+  /*
+   * @brief
+   * Calculates the maximum time to wait for receiving an acknowledgement.
+   *
+   * @return
+   * The maximum wait time in milliseconds.
+   *
+   */
+  uint32_t calculate_max_wait();
 
   static std::atomic<bool> shutdown_requested;
   Camera _cam;

@@ -1,6 +1,7 @@
 #include "config.h"
 #include "error_handler.h"
 #include "esp_log.h"
+#include "freertos/FreeRTOS.h"
 #include "mysleep.h"
 #include "storage.h"
 #include <regex>
@@ -14,7 +15,7 @@ char Config::_uuid[40] = {0};
 void Config::load_config(JsonDocument &doc) {
   _timing.clear();
 
-  if (strlcpy(_uuid, doc["uuid"], sizeof(_uuid)) == 0) {
+  if (strlcpy(_uuid, doc["configId"], sizeof(_uuid)) == 0) {
     ESP_LOGE(TAG, "UUID not found in config!");
     restart();
   }
@@ -32,8 +33,6 @@ void Config::load_config(JsonDocument &doc) {
     }
     _timing.push_back(tc);
   }
-
-  Config::set_active_config();
 }
 
 void Config::load_from_storage() {
@@ -105,9 +104,20 @@ TimingConfig Config::get_active_config() {
   }
 }
 
+int64_t Config::get_period() {
+  if (_active != _timing.end()) {
+    return _active->period;
+  } else {
+    ESP_LOGE(TAG, "No active config found!");
+    ESP_LOGE(TAG, "Returning default period: 40");
+    return 40;
+  }
+}
+
 bool Config::validate(JsonDocument &doc) {
-  if (!doc["uuid"].is<std::string>() || doc["uuid"].as<std::string>().empty() ||
-      doc["uuid"].as<std::string>().length() >= sizeof(_uuid)) {
+  if (!doc["configId"].is<std::string>() ||
+      doc["configId"].as<std::string>().empty() ||
+      doc["configId"].as<std::string>().length() >= sizeof(_uuid)) {
     ESP_LOGE(TAG, "UUID is incorrect or empty");
     return false;
   }
