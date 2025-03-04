@@ -21,9 +21,22 @@
  */
 class CameraApp {
 public:
+  /**
+   * @brief
+   * Delete copy constructor and assignment operator
+   *
+   */
   CameraApp(const CameraApp &) = delete;
   CameraApp &operator=(const CameraApp &) = delete;
 
+  /**
+   * @brief
+   * Returns the singleton instance of the CameraApp class.
+   *
+   * @return
+   * CameraApp class instance.
+   *
+   */
   static CameraApp &getInstance() {
     static CameraApp instance;
     return instance;
@@ -41,9 +54,38 @@ public:
 private:
   CameraApp();
 
+  /*
+   * @brief
+   * Publishes the JSON document to the given MQTT topic.
+   *
+   */
   esp_err_t send_json(JsonDocument &doc, const char *topic);
+
+  /**
+   * @brief
+   * Assemble and send the health report to the MQTT broker.
+   *
+   * The health report contains the timestamp, configuration ID, period, and
+   * sensor readings.
+   *
+   */
   esp_err_t send_health_report();
+
+  /**
+   * @brief
+   * Assemble and send the image header to the MQTT broker.
+   *
+   * The image header contains the timestamp, the image size and the camera
+   * color mode.
+   *
+   */
   esp_err_t send_image_header(const char *timestamp);
+
+  /**
+   * @brief
+   * Send the image to the MQTT broker.
+   *
+   */
   void send_image();
 
   /*

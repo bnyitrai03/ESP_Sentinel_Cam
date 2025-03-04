@@ -1,5 +1,6 @@
 #include "camera_app.h"
 #include "esp_log.h"
+#include "qr_reader_app.h"
 #include "secret.h"
 #include "storage.h"
 #include <ArduinoJson.h>
@@ -44,14 +45,14 @@ extern "C" void app_main(void) {
     timing_2["end"] = "23:59:59";
 
     serializeJson(doc, config);
-    Storage::write("dynamic_config", config);
+    // Storage::write("dynamic_config", config);
   }
 
   // Start led state display task
   // Start button handling task
 
   // ------------------- Application select ---------------------------
-  Storage::write("app", "cam"); // this value is empty, when booting in qr mode
+  Storage::write("app", " "); // this value is empty, when booting in qr mode
 
   char app_mode[4] = {0};
   Storage::read("app", app_mode, sizeof(app_mode));
@@ -61,6 +62,8 @@ extern "C" void app_main(void) {
     app.run();
   } else {
     ESP_LOGI(TAG, "Starting the QR code reader mode");
+    QRReaderApp &app = QRReaderApp::getInstance();
+    app.run();
   }
   // ------------------------------------------------------------------
 }

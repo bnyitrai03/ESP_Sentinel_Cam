@@ -24,6 +24,11 @@ public:
    */
   void connect();
 
+  /**
+   * @brief Syncs the time with a remote SNTP server
+   */
+  void sync_time();
+
 private:
   /**
    * @brief Event handler for WiFi events

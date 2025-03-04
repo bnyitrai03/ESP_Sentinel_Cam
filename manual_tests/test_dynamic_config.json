@@ -1,5 +1,5 @@
 {
-    "configId": "8D8AC610-566D-4EF0-9C22-186B2A",
+    "configId": "8D8AC610-566D-4EF0-9C22-186B",
     "timing": [
         {
             "period": -1,
@@ -7,7 +7,7 @@
             "end": "07:00:00"
         },
         {
-            "period": 30,
+            "period": 15,
             "start": "07:00:00",
             "end": "12:00:00"
         },

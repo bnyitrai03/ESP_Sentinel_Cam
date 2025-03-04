@@ -78,8 +78,9 @@ void Wifi::connect() {
     _connected = true;
     ESP_LOGI(TAG, "WiFi Connected, syncing NTP...");
   }
+}
 
-  // ------------------------------ Sync NTP --------------------------------
+void Wifi::sync_time() {
   // Set timezone to Budapest
   setenv("TZ", "CET-1CEST,M3.5.0,M10.5.0/3", 1);
   tzset();
@@ -90,7 +91,6 @@ void Wifi::connect() {
     ESP_LOGE(TAG, "Failed to configure NTP server!");
     restart();
   }
-  // -------------------------------------------------------------------------
 }
 
 void Wifi::eventHandler(void *arg, esp_event_base_t event_base,

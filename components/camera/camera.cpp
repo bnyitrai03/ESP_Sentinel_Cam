@@ -6,7 +6,7 @@
 
 constexpr auto *TAG = "Camera";
 
-Camera::Camera() {
+Camera::Camera(bool qr_reader_app) {
   // raise the log level for the camera library
   esp_log_level_set("s3 ll_cam", ESP_LOG_WARN);
   esp_log_level_set("cam_hal", ESP_LOG_WARN);
@@ -34,6 +34,15 @@ Camera::Camera() {
     rtc_gpio_hold_dis(CAM_PIN_PCLK);
   }
 
+  // when the qr reader app is running, use a lower resolution due to limited
+  // memory
+  framesize_t size = FRAMESIZE_INVALID;
+  if (qr_reader_app) {
+    size = FRAMESIZE_VGA;
+  } else {
+    size = FRAMESIZE_WQXGA;
+  }
+
   _config = {
       .pin_pwdn = CAM_PIN_PWDN,
       .pin_reset = CAM_PIN_RESET,
@@ -58,7 +67,7 @@ Camera::Camera() {
       .ledc_channel = LEDC_CHANNEL_0,
 
       .pixel_format = PIXFORMAT_GRAYSCALE, // PIXFORMAT_GRAYSCALE
-      .frame_size = FRAMESIZE_WQXGA,
+      .frame_size = size,
 
       .jpeg_quality = 4, // 0-63
       .fb_count = 1, // When jpeg mode is used, if fb_count more than one, the

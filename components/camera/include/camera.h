@@ -1,6 +1,7 @@
 #pragma once
 
 #include "esp_camera.h"
+#include "esp_log.h"
 #include "pins.h"
 
 /**
@@ -8,11 +9,9 @@
  */
 class Camera {
 public:
-  Camera();
+  Camera() { ESP_LOGE("Camera", "This constructor is not supported"); };
+  Camera(bool qr_reader_app);
   ~Camera() { esp_camera_fb_return(_fb); }
-
-  // there needs to be a delay before taking the first image
-  // to guarantee sufficient exposition time
 
   /**
    * @brief Starts the camera
@@ -30,6 +29,7 @@ public:
    *
    * @return
    *     - ESP_OK : captured image
+   *
    *     - ESP_FAIL : couldn't take image
    */
   esp_err_t take_image();
@@ -43,6 +43,14 @@ public:
   const char *get_image_data() {
     return reinterpret_cast<const char *>(_fb->buf);
   }
+
+  /*
+   * @brief Gets the frame buffer of the captured image
+   *
+   * @return
+   *     - Frame buffer of the captured image
+   */
+  const camera_fb_t *get_fb() { return _fb; }
 
   /**
    * @brief Gets image size

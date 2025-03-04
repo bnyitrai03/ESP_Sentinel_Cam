@@ -17,8 +17,9 @@ constexpr auto *TAG = "Camera app";
 
 std::atomic<bool> CameraApp::shutdown_requested = false;
 
-CameraApp::CameraApp() {
+CameraApp::CameraApp() : _cam(false) {
   _wifi.connect();
+  _wifi.sync_time();
   // Disable lib logging else remote logging dies
   esp_log_level_set("mqtt5_client", ESP_LOG_NONE);
   esp_log_level_set("mqtt_client", ESP_LOG_NONE);
