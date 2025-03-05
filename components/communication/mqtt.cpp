@@ -19,6 +19,7 @@ char MQTT::_log_topic[NAME_SIZE] = {0};
 char MQTT::_image_topic[NAME_SIZE] = {0};
 bool MQTT::_new_config_received = false;
 int MQTT::_qos = 2;
+int MQTT::_error_count = 0;
 char MQTT::_expected_timestamp[TIMESTAMP_SIZE];
 SemaphoreHandle_t MQTT::_ack_header_semaphore = xSemaphoreCreateBinary();
 SemaphoreHandle_t MQTT::_config_semaphore = xSemaphoreCreateBinary();
@@ -128,6 +129,12 @@ void MQTT::event_handler(void *handler_args, esp_event_base_t base,
     esp_log_set_vprintf(vprintf);
     ESP_LOGE(TAG, "Error during MQTT communication!");
     ESP_LOGE(TAG, "Error type: %d", event->error_handle->error_type);
+    _error_count++;
+    ESP_LOGE(TAG, "MQTT communication error count: %d", _error_count);
+    if (_error_count > 20) {
+      ESP_LOGE(TAG, "Too many MQTT communication errors!");
+      restart();
+    }
     break;
   }
 }

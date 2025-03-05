@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, abort
 
 
 app = Flask(__name__)
@@ -19,6 +19,11 @@ def send_config(uuid):
         "cameraMode": "GRAY"
     }
     return jsonify(config)
+
+
+""" @app.route('/config/<uuid>', methods=['GET'])
+def send_400(uuid):
+    abort(400) """
 
 
 if __name__ == '__main__':

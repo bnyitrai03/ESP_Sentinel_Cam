@@ -2,8 +2,10 @@
 #include "camera.h"
 #include "qr_decoder.h"
 #include "wifi.h"
+#include <ArduinoJson.h>
 #include <atomic>
 #include <memory>
+
 
 class QRReaderApp {
 public:
@@ -60,6 +62,10 @@ private:
    *
    */
   void get_qr_code();
+
+  void get_static_config();
+
+  void save_static_config(const JsonDocument &doc);
 
   /*
    * @brief Structure to pass the task context to the QR code decoder task

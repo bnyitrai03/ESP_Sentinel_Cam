@@ -1,6 +1,9 @@
 #include "qr_reader_app.h"
 #include "error_handler.h"
 #include "esp_log.h"
+#include "http_client.h"
+#include "storage.h"
+#include <ArduinoJson.h>
 
 constexpr auto *TAG = "QR Reader app";
 
@@ -16,6 +19,15 @@ void QRReaderApp::run() {
 
   // -------- Connect to the WiFi network -------- //
   _wifi.connect();
+
+  // -------- Get the static configuration from the server -------- //
+  get_static_config();
+
+  // -------- Restart the device to start the camera app -------- //
+  deinit_components();
+  Storage::write("app", "cam"); // change app mode
+  ESP_LOGI(TAG, "Restarting the device to start the camera app");
+  esp_restart();
 }
 // ********************************************************************** //
 
@@ -82,4 +94,60 @@ void QRReaderApp::get_qr_code() {
   vQueueDelete(processing_queue);
   esp_camera_deinit();
   ESP_LOGI(TAG, "QR code decoded!");
+}
+
+void QRReaderApp::get_static_config() {
+  JsonDocument response;
+  char server_url[256];
+  Storage::read("server_url", server_url, sizeof(server_url));
+  const int MAX_RETRIES = 5;
+  const int RETRY_DELAY_MS = 5000;
+
+  for (int retry = 0; retry < MAX_RETRIES; retry++) {
+    // Send a GET request to the server to get the static configuration
+    esp_err_t result = HTTPClient::get_config(server_url, response);
+
+    switch (result) {
+    case ESP_OK:
+      save_static_config(response);
+      return;
+
+    case ESP_FAIL:
+      if (retry < MAX_RETRIES - 1) {
+        ESP_LOGW(TAG,
+                 "Failed to get static configuration (attempt %d/%d). Retrying "
+                 "in %d ms...",
+                 retry + 1, MAX_RETRIES, RETRY_DELAY_MS);
+        vTaskDelay(pdMS_TO_TICKS(RETRY_DELAY_MS));
+        continue;
+      }
+      ESP_LOGE(TAG, "Failed to get static configuration after %d attempts",
+               MAX_RETRIES);
+      restart();
+      break;
+
+    case ESP_ERR_NOT_FOUND:
+      // Go into an error loop, nothing can be done from here
+      vTaskDelete(nullptr);
+      // Blink the LED
+      break;
+
+    default:
+      ESP_LOGE(TAG, "Unknown error");
+      restart();
+      break;
+    }
+  }
+}
+
+void QRReaderApp::save_static_config(const JsonDocument &doc) {
+  Storage::write("mqttAddress", doc["mqttAddress"].as<std::string>());
+  Storage::write("mqttUser", doc["mqttUser"].as<std::string>());
+  Storage::write("mqttPassword", doc["mqttPassword"].as<std::string>());
+  Storage::write("imageTopic", doc["imageTopic"].as<std::string>());
+  Storage::write("imageAckTopic", doc["imageAckTopic"].as<std::string>());
+  Storage::write("healthRepTopic", doc["healthReportTopic"].as<std::string>());
+  Storage::write("configTopic", doc["healthReportRespTopic"].as<std::string>());
+  Storage::write("logTopic", doc["logTopic"].as<std::string>());
+  ESP_LOGI(TAG, "Static configuration saved!");
 }

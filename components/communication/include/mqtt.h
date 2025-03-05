@@ -147,6 +147,7 @@ private:
   static char _imageack_topic[NAME_SIZE];
   static char _log_topic[NAME_SIZE];
   static int _qos;
+  static int _error_count;
   static bool _new_config_received;
   static char _expected_timestamp[TIMESTAMP_SIZE];
   static SemaphoreHandle_t _ack_header_semaphore;

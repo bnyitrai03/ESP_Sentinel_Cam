@@ -71,16 +71,21 @@ void Wifi::connect() {
 
   ESP_LOGI(TAG, "Waiting for WiFi connection...");
 
-  EventBits_t bits = xEventGroupWaitBits(_wifi_event_group, WIFI_CONNECTED_BIT,
-                                         pdFALSE, pdFALSE, portMAX_DELAY);
+  EventBits_t bits =
+      xEventGroupWaitBits(_wifi_event_group, WIFI_CONNECTED_BIT, pdFALSE,
+                          pdFALSE, pdMS_TO_TICKS(15000));
 
   if (bits & WIFI_CONNECTED_BIT) {
     _connected = true;
-    ESP_LOGI(TAG, "WiFi Connected, syncing NTP...");
+    ESP_LOGI(TAG, "WiFi Connected!");
+  } else {
+    ESP_LOGE(TAG, "WiFi couldn't connect!");
+    restart();
   }
 }
 
 void Wifi::sync_time() {
+  ESP_LOGI(TAG, "Syncing time with NTP server...");
   // Set timezone to Budapest
   setenv("TZ", "CET-1CEST,M3.5.0,M10.5.0/3", 1);
   tzset();

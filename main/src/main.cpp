@@ -12,17 +12,17 @@ extern "C" void app_main(void) {
   Storage storage;
 
   // -------------- Static config values ------------------
-  /* Storage::write("ssid", WIFI_SSID);
-  Storage::write("password", WIFI_PASS);
+  /*  Storage::write("ssid", WIFI_SSID);
+   Storage::write("password", WIFI_PASS);
 
-  Storage::write("mqttAddress", MQTT_BROKER_IP);
-  Storage::write("mqttUser", MQTT_USERNAME);
-  Storage::write("mqttPassword", MQTT_PASSWORD);
-  Storage::write("imageTopic", IMAGE_TOPIC);
-  Storage::write("imageAckTopic", IMAGE_ACK_TOPIC);
-  Storage::write("healthRepTopic", HEALTH_REPORT_TOPIC);
-  Storage::write("configTopic", HEALTH_REPORT_RESP_TOPIC);
-  Storage::write("logTopic", LOG_TOPIC); */
+   Storage::write("mqttAddress", MQTT_BROKER_IP);
+   Storage::write("mqttUser", MQTT_USERNAME);
+   Storage::write("mqttPassword", MQTT_PASSWORD);
+   Storage::write("imageTopic", IMAGE_TOPIC);
+   Storage::write("imageAckTopic", IMAGE_ACK_TOPIC);
+   Storage::write("healthRepTopic", HEALTH_REPORT_TOPIC);
+   Storage::write("configTopic", HEALTH_REPORT_RESP_TOPIC);
+   Storage::write("logTopic", LOG_TOPIC); */
 
   // ------------- Dynamic config values ------------------
   {
@@ -52,7 +52,7 @@ extern "C" void app_main(void) {
   // Start button handling task
 
   // ------------------- Application select ---------------------------
-  Storage::write("app", " "); // this value is empty, when booting in qr mode
+  // Storage::write("app", " "); // this value is empty, when booting in qr mode
 
   char app_mode[4] = {0};
   Storage::read("app", app_mode, sizeof(app_mode));

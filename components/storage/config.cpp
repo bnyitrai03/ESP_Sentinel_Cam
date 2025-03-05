@@ -41,7 +41,8 @@ void Config::load_from_storage() {
   if (err != ESP_OK) {
     ESP_LOGE(TAG, "Error (%s) reading dynamic config from storage!",
              esp_err_to_name(err));
-    restart();
+    _timing.push_back(get_active_config());
+    return;
   }
 
   JsonDocument doc;
