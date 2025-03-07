@@ -2,6 +2,7 @@
 #include "error_handler.h"
 #include "esp_log.h"
 #include "http_client.h"
+#include "led.h"
 #include "storage.h"
 #include <ArduinoJson.h>
 
@@ -27,6 +28,9 @@ void QRReaderApp::run() {
   deinit_components();
   Storage::write("app", "cam"); // change app mode
   ESP_LOGI(TAG, "Restarting the device to start the camera app");
+  // Signaling the correct execution of the app
+  Led::set_pattern(Led::Pattern::STATIC_CONFIG_SAVED_BLINK);
+  vTaskDelay(pdMS_TO_TICKS(3000));
   esp_restart();
 }
 // ********************************************************************** //
@@ -91,9 +95,10 @@ void QRReaderApp::get_qr_code() {
   }
 
   // Clean up
+  ESP_LOGI(TAG, "QR code decoded!");
+  Led::set_pattern(Led::Pattern::ON);
   vQueueDelete(processing_queue);
   esp_camera_deinit();
-  ESP_LOGI(TAG, "QR code decoded!");
 }
 
 void QRReaderApp::get_static_config() {

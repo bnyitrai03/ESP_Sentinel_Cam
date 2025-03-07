@@ -4,6 +4,7 @@
 #include "esp_sleep.h"
 #include "esp_timer.h"
 #include "freertos/FreeRTOS.h"
+#include "led.h"
 
 constexpr auto *TAG = "Sleep";
 
@@ -58,4 +59,8 @@ void isolate_gpio() {
   rtc_gpio_isolate(GPIO_NUM_15); // CAM_PIN_VSYNC
   rtc_gpio_isolate(GPIO_NUM_6);  // CAM_PIN_HREF
   rtc_gpio_isolate(GPIO_NUM_9);  // CAM_PIN_PCLK
+
+  // Isolate LED pin
+  gpio_set_level(LED_PIN, 0);
+  rtc_gpio_isolate(LED_PIN);
 }

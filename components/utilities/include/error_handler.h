@@ -37,14 +37,6 @@ void set_camera_deinit_callback(DeinitCallback callback);
 void restart();
 
 /**
- * @brief Restarts the device after a new configuration is received
- *
- * This function deinitializes the camera, MQTT, and Wi-Fi drivers, then
- * safely restarts the device.
- */
-void new_config_restart();
-
-/**
  * @brief Deinitializes all components
  *
  * This function deinitializes the camera, MQTT, and Wi-Fi drivers.

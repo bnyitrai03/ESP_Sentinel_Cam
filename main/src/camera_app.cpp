@@ -2,6 +2,7 @@
 #include "esp_timer.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "led.h"
 #include "mysleep.h"
 #include "mytime.h"
 #include <ArduinoJson.h>
@@ -26,6 +27,7 @@ CameraApp::CameraApp() : _cam(false) {
   _mqtt.start();
   _config.load_from_storage();
   _config.set_active_config();
+  Led::set_pattern(Led::Pattern::MQTT_CONNECTED_BLINK);
 }
 
 // ***************************   Main logic   *************************** //
@@ -58,7 +60,6 @@ void CameraApp::run() {
   // ------------------------ Send image ----------------------- //
   if (_mqtt.wait_for_header_ack(timestamp, calculate_max_wait())) {
     // Timestamp matches, proceed with sending image
-    ESP_LOGI(TAG, "Received image ack, sending image!");
     send_image();
   } else {
     ESP_LOGE(TAG, "No matching timestamp received, skipping image publish!");

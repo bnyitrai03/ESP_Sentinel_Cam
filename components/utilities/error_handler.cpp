@@ -2,6 +2,7 @@
 #include "esp_err.h"
 #include "esp_log.h"
 #include "freertos/FreeRTOS.h"
+#include "led.h"
 #include "mysleep.h"
 #include "storage.h"
 
@@ -27,8 +28,9 @@ void set_camera_deinit_callback(DeinitCallback callback) {
 
 void restart() {
   ESP_LOGE(TAG, "There was an error, restarting the device...");
+  Led::set_pattern(Led::Pattern::ERROR_BLINK);
   uint32_t error_count = get_error_count();
-  vTaskDelay(5000 / portTICK_PERIOD_MS);
+  vTaskDelay(10000 / portTICK_PERIOD_MS);
 
   deinit_components();
 
@@ -37,11 +39,6 @@ void restart() {
   } else {
     esp_restart();
   }
-}
-
-void new_config_restart() {
-  deinit_components();
-  esp_restart();
 }
 
 void deinit_components() {
