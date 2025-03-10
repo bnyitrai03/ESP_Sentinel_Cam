@@ -1,5 +1,6 @@
 #pragma once
 
+#include "button.h"
 #include "camera.h"
 #include "camera_app.h"
 #include "config.h"
@@ -37,10 +38,16 @@ public:
    * CameraApp class instance.
    *
    */
-  static CameraApp &getInstance() {
-    static CameraApp instance;
+  static CameraApp &getInstance(Button &button) {
+    static CameraApp instance(button);
     return instance;
   }
+
+  void start();
+  void stop();
+
+private:
+  CameraApp(Button &button);
 
   /**
    * @brief
@@ -49,10 +56,7 @@ public:
    */
   void run();
 
-  static void request_shutdown() { shutdown_requested = true; }
-
-private:
-  CameraApp();
+  static void camera_task(void *pvParameters);
 
   /*
    * @brief
@@ -98,7 +102,8 @@ private:
    */
   uint32_t calculate_max_wait();
 
-  static std::atomic<bool> shutdown_requested;
+  static TaskHandle_t _camera_task_handle;
+  Button &_button;
   Camera _cam;
   Wifi _wifi;
   MQTT _mqtt;

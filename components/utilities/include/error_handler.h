@@ -36,6 +36,8 @@ void set_camera_deinit_callback(DeinitCallback callback);
  */
 void restart();
 
+void reset_device();
+
 /**
  * @brief Deinitializes all components
  *

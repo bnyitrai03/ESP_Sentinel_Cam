@@ -16,9 +16,9 @@
 
 constexpr auto *TAG = "Camera app";
 
-std::atomic<bool> CameraApp::shutdown_requested = false;
+TaskHandle_t CameraApp::_camera_task_handle = nullptr;
 
-CameraApp::CameraApp() : _cam(false) {
+CameraApp::CameraApp(Button &button) : _button(button), _cam(false) {
   _wifi.connect();
   _wifi.sync_time();
   // Disable lib logging else remote logging dies
@@ -30,8 +30,34 @@ CameraApp::CameraApp() : _cam(false) {
   Led::set_pattern(Led::Pattern::MQTT_CONNECTED_BLINK);
 }
 
+void CameraApp::start() {
+  xTaskCreate(camera_task, "camera_task", 8192, this, 5, &_camera_task_handle);
+}
+
+void CameraApp::stop() {
+  if (_camera_task_handle != nullptr) {
+    ESP_LOGI(TAG, "Stopping camera task");
+    vTaskDelete(_camera_task_handle);
+    _camera_task_handle = nullptr;
+  }
+}
+
+void CameraApp::camera_task(void *pvParameters) {
+  CameraApp *app = static_cast<CameraApp *>(pvParameters);
+  app->run();
+  while (1) {
+    vTaskDelay(pdMS_TO_TICKS(1000));
+  }
+}
+
 // ***************************   Main logic   *************************** //
 void CameraApp::run() {
+  multi_heap_info_t info;
+  heap_caps_get_info(&info, MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT);
+  ESP_LOGI(TAG, "total currently free in all non-continues blocks: %d",
+           info.total_free_bytes);
+  ESP_LOGI(TAG, "minimum free ever: %d", info.minimum_free_bytes);
+  ESP_LOGI(TAG, "largest continues block: %d", info.largest_free_block);
   // -------- Send health report and check for new config -------- //
   if (send_health_report() != ESP_OK) {
     ESP_LOGE(TAG, "Failed to publish health report!");
@@ -67,6 +93,12 @@ void CameraApp::run() {
 
   // ---------------------- Deinit and sleep ------------------- //
   _cam.return_fb();
+  if (_button.get_button_shutdown()) {
+    return;
+  } else {
+    // Delete button task to prevent it from fucking up the shutdown sequence
+    vTaskDelete(_button.get_button_task_handle());
+  }
   ESP_LOGW(TAG, "Device going to sleep!");
   deinit_components();
   mysleep(static_cast<uint64_t>(Config::get_period()));

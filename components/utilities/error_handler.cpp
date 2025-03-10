@@ -41,6 +41,13 @@ void restart() {
   }
 }
 
+void reset_device() {
+  deinit_components();
+  Storage::erase_nvs();
+  ESP_LOGW(TAG, "Device reset complete, restarting...");
+  esp_restart();
+}
+
 void deinit_components() {
   vTaskDelay(300 / portTICK_PERIOD_MS);
   if (mqtt_deinit_callback) {

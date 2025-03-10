@@ -63,4 +63,6 @@ public:
    *     - ESP_FAIL on error
    */
   static esp_err_t read_error_count(uint32_t *value);
+
+  static void erase_nvs();
 };

@@ -25,27 +25,27 @@ Led::Led() {
   gpio_set_level(LED_PIN, 0);
 
   running = true;
-  auto res = xTaskCreate(led_task, "led_task", 2048, this, 2, nullptr);
+  auto res = xTaskCreate(led_task, "led_task", 3000, this, 2, nullptr);
   if (res != pdPASS) {
     ESP_LOGE(TAG, "Failed to create LED task");
     esp_restart();
   }
 }
 
-Led::~Led() {
-  running = false;
-  if (pattern_mutex != nullptr) {
-    vSemaphoreDelete(pattern_mutex);
-    pattern_mutex = nullptr;
-  }
-}
+Led::~Led() { running = false; }
 
 void Led::set_pattern(Pattern pattern) {
-  if (xSemaphoreTake(pattern_mutex, pdMS_TO_TICKS(100)) == pdTRUE) {
+  if (pattern_mutex == NULL) {
+    ESP_LOGE(TAG, "Mutex not initialized");
+    return;
+  }
+  if (xSemaphoreTake(pattern_mutex, pdMS_TO_TICKS(500)) == pdTRUE) {
     current_pattern = pattern;
     xSemaphoreGive(pattern_mutex);
   }
 }
+
+void Led::stop() { running = false; }
 
 void Led::led_task(void *arg) {
   // Give context to the task
@@ -56,8 +56,12 @@ void Led::led_task(void *arg) {
 }
 
 void Led::task_function() {
-  Pattern current_pattern_local;
+  Pattern current_pattern_local = Pattern::ERROR_BLINK;
   while (running) {
+    if (pattern_mutex == NULL) {
+      ESP_LOGE(TAG, "Mutex not initialized");
+      continue;
+    }
     if (xSemaphoreTake(pattern_mutex, pdMS_TO_TICKS(100)) == pdTRUE) {
       current_pattern_local = current_pattern;
       xSemaphoreGive(pattern_mutex);

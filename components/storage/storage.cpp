@@ -110,3 +110,10 @@ esp_err_t Storage::read_error_count(uint32_t *value) {
 
   return err;
 }
+
+void Storage::erase_nvs() {
+  esp_err_t err = nvs_flash_erase();
+  if (err != ESP_OK) {
+    ESP_LOGE(TAG, "Error erasing NVS flash: %s", esp_err_to_name(err));
+  }
+}

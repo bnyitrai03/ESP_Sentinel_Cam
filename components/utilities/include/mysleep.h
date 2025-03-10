@@ -33,6 +33,14 @@ void mysleep(Time wake_up);
 void mysleep(uint64_t period);
 
 /**
+ * @brief Puts the device to sleep until the button is pressed again.
+ *
+ * @note This function does not return.
+ *
+ */
+void button_press_sleep();
+
+/**
  * @brief Isolates the GPIO
  *
  * This function isolates the GPIO pins to minimize power consumption during

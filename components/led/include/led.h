@@ -21,6 +21,8 @@ public:
   Led();
   ~Led();
 
+  void stop();
+
   /*
    * Set the blinking pattern of the LED
    * @param pattern The pattern to set

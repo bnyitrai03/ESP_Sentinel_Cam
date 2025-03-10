@@ -40,6 +40,14 @@ void mysleep(uint64_t period) {
   }
 }
 
+void button_press_sleep() {
+  isolate_gpio();
+  // esp_sleep_disable_wakeup_source(ESP_SLEEP_WAKEUP_TIMER);
+  // esp_sleep_enable_ext0_wakeup(GPIO_NUM_48, 0); // OOF
+  esp_sleep_enable_timer_wakeup(10000000);
+  esp_deep_sleep_start();
+}
+
 void isolate_gpio() {
   // Isolate Camera pins
   rtc_gpio_isolate(GPIO_NUM_14); // CAM_PIN_PWDN
