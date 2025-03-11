@@ -25,6 +25,7 @@ CameraApp::CameraApp(Button &button) : _button(button), _cam(false) {
   esp_log_level_set("mqtt5_client", ESP_LOG_NONE);
   esp_log_level_set("mqtt_client", ESP_LOG_NONE);
   _mqtt.start();
+  _sensors.init();
   _config.load_from_storage();
   _config.set_active_config();
   Led::set_pattern(Led::Pattern::MQTT_CONNECTED_BLINK);

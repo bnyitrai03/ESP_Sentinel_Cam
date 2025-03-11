@@ -77,6 +77,7 @@ void Config::set_active_config() {
         ESP_LOGW(TAG, "Device will wake up at %02d:%02d:%02d",
                  it->end.get_hours(), it->end.get_minutes(),
                  it->end.get_seconds());
+        vTaskDelay(pdMS_TO_TICKS(3000));
         deinit_components();
         mysleep(it->end);
       }

@@ -2,7 +2,7 @@
 
 #include "mytime.h"
 
-constexpr uint64_t BOOT_TIME_US = 500000;     // ~500ms for boot
+constexpr uint64_t BOOT_TIME_US = 1000000;    // ~1s for boot
 constexpr uint64_t SHUTDOWN_TIME_US = 100000; // ~100ms for entering sleep
 constexpr uint64_t WAKEUP_DELAY_US =
     2000; // CONFIG_ESP32S3_DEEP_SLEEP_WAKEUP_DELAY
