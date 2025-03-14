@@ -42,7 +42,6 @@ void restart() {
 }
 
 void reset_device() {
-  deinit_components();
   Storage::erase_nvs();
   ESP_LOGW(TAG, "Device reset complete, restarting...");
   esp_restart();
@@ -50,13 +49,13 @@ void reset_device() {
 
 void deinit_components() {
   vTaskDelay(300 / portTICK_PERIOD_MS);
-  if (mqtt_deinit_callback) {
+  if (mqtt_deinit_callback != nullptr) {
     mqtt_deinit_callback();
   }
-  if (camera_deinit_callback) {
+  if (camera_deinit_callback != nullptr) {
     camera_deinit_callback();
   }
-  if (wifi_deinit_callback) {
+  if (wifi_deinit_callback != nullptr) {
     wifi_deinit_callback();
   }
 }

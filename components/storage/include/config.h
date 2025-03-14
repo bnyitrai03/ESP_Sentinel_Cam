@@ -62,8 +62,13 @@ public:
 
   /**
    * @brief Sets the active configuration based on the current time
+   *
+   * @note If the active config is not found, the default config is set
+   *
+   * @return -1 if the active config period is -1 (sleeping)
+   *
    */
-  static void set_active_config();
+  static int32_t set_active_config();
 
   /**
    * @brief Gets the UUID

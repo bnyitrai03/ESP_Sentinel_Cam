@@ -138,7 +138,7 @@ private:
 
   static esp_mqtt_client_config_t _config;
   static esp_mqtt_client_handle_t _client;
-  static char _hostname[NAME_SIZE];
+  static char _uri[NAME_SIZE];
   static char _username[NAME_SIZE];
   static char _password[NAME_SIZE];
   static char _config_topic[NAME_SIZE];

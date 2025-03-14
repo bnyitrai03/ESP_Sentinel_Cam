@@ -1,6 +1,7 @@
 #include "qr_reader_app.h"
 #include "error_handler.h"
 #include "esp_log.h"
+#include "event_manager.h"
 #include "http_client.h"
 #include "led.h"
 #include "storage.h"
@@ -8,29 +9,61 @@
 
 constexpr auto *TAG = "QR Reader app";
 
-std::atomic<bool> QRReaderApp::_shutdown_requested{false};
 std::atomic<bool> QRReaderApp::_qr_code_decoded{false};
 
 QRReaderApp::QRReaderApp() : _cam(true) { _cam.start(); }
 
+void QRReaderApp::start() {
+  xTaskCreate(qr_task, "qr_app_task", 8192, this, 5, &_qr_app_task_handle);
+}
+
+void QRReaderApp::stop() {
+
+  if (_decode_task_handle != nullptr) {
+    eTaskState taskState = eTaskGetState(_decode_task_handle);
+    if (taskState != eDeleted && taskState != eInvalid) {
+      vTaskSuspend(_decode_task_handle);
+      vTaskDelete(_decode_task_handle);
+      _decode_task_handle = nullptr;
+    }
+  }
+  if (_qr_app_task_handle != nullptr) {
+    eTaskState taskState = eTaskGetState(_qr_app_task_handle);
+    if (taskState != eDeleted && taskState != eInvalid) {
+      vTaskSuspend(_qr_app_task_handle);
+      vTaskDelete(_qr_app_task_handle);
+      ESP_LOGI(TAG, "Stopped QR reader task");
+      _qr_app_task_handle = nullptr;
+    }
+  }
+}
+
+void QRReaderApp::qr_task(void *pvParameters) {
+  QRReaderApp *app = static_cast<QRReaderApp *>(pvParameters);
+
+  app->run();
+}
+
 // ***************************   Main logic   *************************** //
 void QRReaderApp::run() {
   // -------- Get the WiFi and server information from the QR code -------- //
-  get_qr_code();
+  this->get_qr_code();
 
   // -------- Connect to the WiFi network -------- //
   _wifi.connect();
 
   // -------- Get the static configuration from the server -------- //
-  get_static_config();
+  this->get_static_config();
 
-  // -------- Restart the device to start the camera app -------- //
-  deinit_components();
-  Storage::write("app", "cam"); // change app mode
-  ESP_LOGI(TAG, "Restarting the device to start the camera app");
   // Signaling the correct execution of the app
   Led::set_pattern(Led::Pattern::STATIC_CONFIG_SAVED_BLINK);
   vTaskDelay(pdMS_TO_TICKS(3000));
+
+  // -------- Restart the device to start the camera app -------- //
+  PUBLISH(EventType::STOP_BUTTON);
+  deinit_components();
+  Storage::write("mode", "cam"); // change app mode
+  ESP_LOGI(TAG, "Restarting the device to start the camera app");
   esp_restart();
 }
 // ********************************************************************** //
@@ -38,7 +71,7 @@ void QRReaderApp::run() {
 void QRReaderApp::qr_decode_task(void *arg) {
   auto *context = static_cast<TaskContext *>(arg);
 
-  while (!_shutdown_requested && !context->decoded) {
+  while (!context->decoded) {
     camera_fb_t *pic = NULL;
     if (xQueueReceive(context->queue, &pic, pdMS_TO_TICKS(10000)) != pdTRUE) {
       ESP_LOGE(TAG, "Failed to receive frame from queue");
@@ -48,10 +81,14 @@ void QRReaderApp::qr_decode_task(void *arg) {
     if (context->decoder.decode_frame(pic)) {
       context->decoded = true;
     }
+    vTaskDelay(pdMS_TO_TICKS(50));
   }
 
   delete context;
-  vTaskDelete(nullptr);
+  // The qr task handles the clean up
+  while (true) {
+    vTaskDelay(portMAX_DELAY);
+  }
 }
 
 void QRReaderApp::get_qr_code() {
@@ -71,7 +108,7 @@ void QRReaderApp::get_qr_code() {
   auto result = xTaskCreatePinnedToCore(
       &qr_decode_task, "qr_decode", 24000,
       context.release(), // Transfer ownership to the task
-      5, NULL, tskNO_AFFINITY);
+      5, &_decode_task_handle, tskNO_AFFINITY);
   if (result != pdPASS) {
     ESP_LOGE(TAG, "Failed to create task");
     restart();
@@ -80,9 +117,9 @@ void QRReaderApp::get_qr_code() {
   /*
    * The loop is responsible for getting the camera frame buffer and
    * sending it to the QR code decoding task. The loop runs until the QR code
-   * is decoded or a shutdown is requested.
+   * is decoded.
    */
-  while (!_qr_code_decoded && !_shutdown_requested) {
+  while (!_qr_code_decoded) {
     camera_fb_t *pic = NULL;
     pic = esp_camera_fb_get();
     if (pic) {
@@ -96,6 +133,10 @@ void QRReaderApp::get_qr_code() {
 
   // Clean up
   ESP_LOGI(TAG, "QR code decoded!");
+  if (_decode_task_handle != nullptr) {
+    vTaskDelete(_decode_task_handle);
+    _decode_task_handle = nullptr;
+  }
   Led::set_pattern(Led::Pattern::ON);
   vQueueDelete(processing_queue);
   esp_camera_deinit();
@@ -132,9 +173,7 @@ void QRReaderApp::get_static_config() {
       break;
 
     case ESP_ERR_NOT_FOUND:
-      // Go into an error loop, nothing can be done from here
-      vTaskDelete(nullptr);
-      // Blink the LED
+      restart();
       break;
 
     default:

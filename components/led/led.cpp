@@ -45,7 +45,10 @@ void Led::set_pattern(Pattern pattern) {
   }
 }
 
-void Led::stop() { running = false; }
+void Led::stop() {
+  running = false;
+  ESP_LOGI(TAG, "LED task stopped");
+}
 
 void Led::led_task(void *arg) {
   // Give context to the task
@@ -53,6 +56,7 @@ void Led::led_task(void *arg) {
   led->task_function();
   // Clean up
   vTaskDelete(nullptr);
+  ESP_LOGI(TAG, "LED task deleted itself");
 }
 
 void Led::task_function() {

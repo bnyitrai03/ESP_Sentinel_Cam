@@ -54,6 +54,7 @@ bool QRDecoder::decode_frame(const camera_fb_t *frame) {
     ESP_LOGI(TAG, "Trying to decode QR code...");
     if (quirc_decode(&code, &data) == 0) {
       ESP_LOGI(TAG, "Decoded QR Code");
+      ESP_LOGI(TAG, "Payload: %s", data.payload);
       save_decoded_data(reinterpret_cast<const char *>(data.payload),
                         data.payload_len);
       return true;

@@ -9,7 +9,7 @@ constexpr auto *TAG = "MQTT";
 
 esp_mqtt_client_config_t MQTT::_config;
 esp_mqtt_client_handle_t MQTT::_client;
-char MQTT::_hostname[NAME_SIZE] = {0};
+char MQTT::_uri[NAME_SIZE] = {0};
 char MQTT::_username[NAME_SIZE] = {0};
 char MQTT::_password[NAME_SIZE] = {0};
 char MQTT::_config_topic[NAME_SIZE] = {0};
@@ -34,7 +34,7 @@ MQTT::MQTT() {
   });
 
   // -------------------- MQTT static config ----------------------------------
-  if (Storage::read("mqttAddress", _hostname, sizeof(_hostname)) != ESP_OK ||
+  if (Storage::read("mqttAddress", _uri, sizeof(_uri)) != ESP_OK ||
       Storage::read("mqttUser", _username, sizeof(_username)) != ESP_OK ||
       Storage::read("mqttPassword", _password, sizeof(_password)) != ESP_OK) {
     ESP_LOGE(TAG, "Failed to read MQTT credentials from storage!");
@@ -60,9 +60,7 @@ MQTT::MQTT() {
           {
               .address =
                   {
-                      .hostname = _hostname,
-                      .transport = MQTT_TRANSPORT_OVER_TCP,
-                      .port = 1883,
+                      .uri = _uri,
                   },
           },
       .credentials = {.username = _username,

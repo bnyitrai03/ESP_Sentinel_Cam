@@ -16,9 +16,49 @@
 
 constexpr auto *TAG = "Camera app";
 
-TaskHandle_t CameraApp::_camera_task_handle = nullptr;
+CameraApp::CameraApp() : _cam(false) {}
 
-CameraApp::CameraApp(Button &button) : _button(button), _cam(false) {
+void CameraApp::start() {
+  xTaskCreate(camera_task, "camera_task", 8192, this, 5, &_camera_task_handle);
+}
+
+void CameraApp::stop() {
+  _stopped_from_other_task = true;
+  ESP_LOGI(TAG, "Attempting to stop camera task");
+  if (_camera_task_handle != nullptr) {
+    eTaskState taskState = eTaskGetState(_camera_task_handle);
+    if (taskState != eDeleted && taskState != eInvalid) {
+      ESP_LOGI(TAG, "Camera task in state: %d, suspending...", taskState);
+      vTaskSuspend(_camera_task_handle);
+      ESP_LOGI(TAG, "Camera task suspended, deleting...");
+      vTaskDelete(_camera_task_handle);
+      ESP_LOGI(TAG, "Stopped camera task");
+      _camera_task_handle = nullptr;
+    } else {
+      ESP_LOGW(TAG, "Camera task in invalid state: %d", taskState);
+    }
+  } else {
+    ESP_LOGW(TAG, "Camera task handle is null");
+  }
+}
+
+void CameraApp::camera_task(void *pvParameters) {
+  CameraApp *app = static_cast<CameraApp *>(pvParameters);
+
+  app->run();
+
+  if (app->_stopped_from_other_task == false) {
+    PUBLISH(EventType::SLEEP_UNTIL_NEXT_PERIOD);
+  }
+  ESP_LOGI(TAG, "Camera task suspended");
+  while (1) {
+    vTaskDelay(portMAX_DELAY);
+  }
+}
+
+// ***************************   Main logic   *************************** //
+void CameraApp::run() {
+  // ---------------------- Init ------------------- //
   _wifi.connect();
   _wifi.sync_time();
   // Disable lib logging else remote logging dies
@@ -27,51 +67,34 @@ CameraApp::CameraApp(Button &button) : _button(button), _cam(false) {
   _mqtt.start();
   _sensors.init();
   _config.load_from_storage();
-  _config.set_active_config();
   Led::set_pattern(Led::Pattern::MQTT_CONNECTED_BLINK);
-}
-
-void CameraApp::start() {
-  xTaskCreate(camera_task, "camera_task", 8192, this, 5, &_camera_task_handle);
-}
-
-void CameraApp::stop() {
-  if (_camera_task_handle != nullptr) {
-    ESP_LOGI(TAG, "Stopping camera task");
-    vTaskDelete(_camera_task_handle);
-    _camera_task_handle = nullptr;
+  if (_config.set_active_config() == -1) {
+    return;
   }
-}
 
-void CameraApp::camera_task(void *pvParameters) {
-  CameraApp *app = static_cast<CameraApp *>(pvParameters);
-  app->run();
-  while (1) {
-    vTaskDelay(pdMS_TO_TICKS(1000));
-  }
-}
-
-// ***************************   Main logic   *************************** //
-void CameraApp::run() {
   multi_heap_info_t info;
   heap_caps_get_info(&info, MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT);
   ESP_LOGI(TAG, "total currently free in all non-continues blocks: %d",
            info.total_free_bytes);
   ESP_LOGI(TAG, "minimum free ever: %d", info.minimum_free_bytes);
   ESP_LOGI(TAG, "largest continues block: %d", info.largest_free_block);
+
   // -------- Send health report and check for new config -------- //
   if (send_health_report() != ESP_OK) {
     ESP_LOGE(TAG, "Failed to publish health report!");
+  } else {
+    ESP_LOGI(TAG, "JSON health report sent!");
   }
-  ESP_LOGI(TAG, "JSON health report sent!");
   if (!_mqtt.wait_for_config(calculate_max_wait())) {
     ESP_LOGE(TAG, "Failed to receive new config or config-ok!");
-    restart();
+    return;
   }
   // if a new config is received, set it as active
   if (_mqtt.get_new_config_received()) {
     vTaskDelay(500 / portTICK_RATE_MS);
-    _config.set_active_config();
+    if (_config.set_active_config() == -1) {
+      return;
+    }
   }
 
   // ------------ Create image and send the header ------------ //
@@ -92,17 +115,8 @@ void CameraApp::run() {
     ESP_LOGE(TAG, "No matching timestamp received, skipping image publish!");
   }
 
-  // ---------------------- Deinit and sleep ------------------- //
+  // ---------------------- Deinit ------------------- //
   _cam.return_fb();
-  if (_button.get_button_shutdown()) {
-    return;
-  } else {
-    // Delete button task to prevent it from fucking up the shutdown sequence
-    vTaskDelete(_button.get_button_task_handle());
-  }
-  ESP_LOGW(TAG, "Device going to sleep!");
-  deinit_components();
-  mysleep(static_cast<uint64_t>(Config::get_period()));
 }
 // ********************************************************************* //
 
@@ -126,7 +140,7 @@ esp_err_t CameraApp::send_image_header(const char *timestamp) {
   // create image header json
   doc["timestamp"] = timestamp;
   doc["size"] = _cam.get_image_size();
-  doc["mode"] = "gray"; // need to implement color mode
+  doc["mode"] = "GRAY"; // need to implement color mode
   return send_json(doc, _mqtt.get_image_topic());
 }
 

@@ -5,6 +5,7 @@
 #include "camera_app.h"
 #include "config.h"
 #include "error_handler.h"
+#include "event_manager.h"
 #include "mqtt.h"
 #include "mytime.h"
 #include "sensors.h"
@@ -38,8 +39,8 @@ public:
    * CameraApp class instance.
    *
    */
-  static CameraApp &getInstance(Button &button) {
-    static CameraApp instance(button);
+  static CameraApp &getInstance() {
+    static CameraApp instance;
     return instance;
   }
 
@@ -47,7 +48,7 @@ public:
   void stop();
 
 private:
-  CameraApp(Button &button);
+  CameraApp();
 
   /**
    * @brief
@@ -102,8 +103,8 @@ private:
    */
   uint32_t calculate_max_wait();
 
-  static TaskHandle_t _camera_task_handle;
-  Button &_button;
+  std::atomic<bool> _stopped_from_other_task{false};
+  TaskHandle_t _camera_task_handle = nullptr;
   Camera _cam;
   Wifi _wifi;
   MQTT _mqtt;

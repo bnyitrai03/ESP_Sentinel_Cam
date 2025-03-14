@@ -1,11 +1,11 @@
 #pragma once
 #include "camera.h"
+#include "freertos/FreeRTOS.h"
 #include "qr_decoder.h"
 #include "wifi.h"
 #include <ArduinoJson.h>
 #include <atomic>
 #include <memory>
-
 
 class QRReaderApp {
 public:
@@ -30,11 +30,30 @@ public:
     return instance;
   }
 
-  void run();
-  static void request_shutdown() { _shutdown_requested = true; }
+  void start();
+  void stop();
 
 private:
   QRReaderApp();
+
+  /**
+   *
+   * Run the QR code reader application.
+   *
+   * The QR code reader uses the following steps:
+   *          1. Start the camera
+   *          2. Read the QR code
+   *          3. Connect to the WiFi network using the information from the QR
+   *             code
+   *          4. Send the GET request to acquire the static configuration from
+   *             the server
+   *          5. Save the static configuration
+   *          6. Restart the device and start the camera app
+   *
+   */
+  static void qr_task(void *arg);
+
+  void run();
 
   /*
    * @brief
@@ -75,6 +94,10 @@ private:
    * the camera frame buffer, and the flag to indicate if the QR code is
    * decoded.
    *
+   * @param decoder QRDecoder object
+   * @param queue Queue handle to receive the camera frame buffer
+   * @param decoded Flag to indicate if the QR code is decoded
+   *
    */
   struct TaskContext {
     QRDecoder decoder;
@@ -87,6 +110,8 @@ private:
 
   Camera _cam;
   Wifi _wifi;
-  static std::atomic<bool> _shutdown_requested;
+
   static std::atomic<bool> _qr_code_decoded;
+  TaskHandle_t _decode_task_handle = nullptr;
+  TaskHandle_t _qr_app_task_handle = nullptr;
 };

@@ -3,13 +3,16 @@
 #include "error_handler.h"
 #include "esp_log.h"
 #include "esp_system.h"
+#include "event_manager.h"
 #include "mysleep.h"
 
 constexpr auto *TAG = "Button";
 
 Button::Button() {
   event_queue = xQueueCreate(1, sizeof(uint32_t));
+  running = true;
 
+  // TODO
   // rtc_gpio_deinit(button_pin); Doesn't work yet
   gpio_config_t io_conf = {.pin_bit_mask = (1ULL << button_pin),
                            .mode = GPIO_MODE_INPUT,
@@ -40,7 +43,23 @@ Button::~Button() {
     vQueueDelete(event_queue);
     event_queue = nullptr;
   }
-  gpio_reset_pin(button_pin);
+
+  if (_task_handle != nullptr) {
+    vTaskDelete(_task_handle);
+    _task_handle = nullptr;
+  }
+}
+
+void Button::stop() {
+  if (_task_handle != nullptr) {
+    eTaskState taskState = eTaskGetState(_task_handle);
+    if (taskState != eDeleted && taskState != eInvalid) {
+      vTaskSuspend(_task_handle);
+      vTaskDelete(_task_handle);
+      ESP_LOGI(TAG, "Button task deleted");
+      _task_handle = nullptr;
+    }
+  }
 }
 
 void IRAM_ATTR Button::gpio_isr_handler(void *arg) {
@@ -58,17 +77,17 @@ void Button::button_task(void *arg) {
 
   ESP_LOGI(TAG, "Button task started");
 
-  while (true) {
+  while (button->running) {
     uint32_t current_time;
-    if (!wait_for_button_event(button, &current_time)) {
-      continue;
-    }
-
-    if (!is_debounced(current_time, state.last_press_time)) {
-      continue;
-    }
-
+    wait_for_button_event(button, &current_time);
+    is_debounced(current_time, state.last_press_time);
     handle_button_state_change(button, current_time, &state);
+  }
+
+  if (button->_task_handle != nullptr) {
+    vTaskDelete(button->_task_handle);
+    ESP_LOGI(TAG, "Button task deleted itself");
+    button->_task_handle = nullptr;
   }
 }
 
@@ -104,11 +123,7 @@ void Button::handle_button_press(Button *button, uint32_t current_time,
   ESP_LOGI(TAG, "Button pressed on GPIO %d!", button->button_pin);
   state->press_start_time = current_time;
   state->is_pressed = true;
-  button->_button_shutdown = true;
-  // Notify the observer task if registered
-  if (button->_observer_task != nullptr) {
-    xTaskNotify(button->_observer_task, 0, eNoAction);
-  }
+  PUBLISH(EventType::BUTTON_PRESSED);
 }
 
 void Button::handle_button_release(Button *button, uint32_t current_time,
@@ -119,16 +134,12 @@ void Button::handle_button_release(Button *button, uint32_t current_time,
 
   uint32_t press_duration = current_time - state->press_start_time;
 
-  // Disable the button interrupt to not disturb the shutdown sequence
-  gpio_intr_disable(button->button_pin);
-  gpio_isr_handler_remove(button->button_pin);
-
   if (press_duration >= LONG_PRESS_TIME) {
     ESP_LOGW(TAG, "Long press detected - Resetting device");
-    reset_device();
+    PUBLISH(EventType::RESET);
   } else {
     ESP_LOGW(TAG, "Short press detected - Entering deep sleep");
-    deinit_components();
-    button_press_sleep();
+    PUBLISH(EventType::SLEEP_UNTIL_BUTTON_PRESS);
   }
+  button->running = false;
 }

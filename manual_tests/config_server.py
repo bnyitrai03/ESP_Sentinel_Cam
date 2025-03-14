@@ -8,7 +8,7 @@ app = Flask(__name__)
 def send_config(uuid):
     config = {
         "uuid": uuid,
-        "mqttAddress": "192.168.0.232",
+        "mqttAddress": "mqtt://192.168.0.232:1883",
         "mqttUser": "testuser",
         "mqttPassword": "123456",
         "imageTopic": "image",
@@ -27,4 +27,4 @@ def send_400(uuid):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=12534)
+    app.run(host='0.0.0.0', port=12534, ssl_context='adhoc')

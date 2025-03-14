@@ -17,9 +17,7 @@ public:
   Button();
   ~Button();
 
-  TaskHandle_t get_button_task_handle() { return _task_handle; }
-  std::atomic<bool> &get_button_shutdown() { return _button_shutdown; }
-  void register_shutdown_observer(TaskHandle_t task) { _observer_task = task; }
+  void stop();
 
 private:
   static void button_task(void *arg);
@@ -34,10 +32,8 @@ private:
   static void handle_button_release(Button *button, uint32_t current_time,
                                     ButtonState *state);
 
-  std::atomic<bool> _button_shutdown = false;
   TaskHandle_t _task_handle = nullptr;
-  TaskHandle_t _observer_task = nullptr;
-
+  bool running = false;
   static constexpr uint32_t LONG_PRESS_TIME = pdMS_TO_TICKS(2500);
   const gpio_num_t button_pin = GPIO_NUM_48;
   static constexpr uint32_t DEBOUNCE_TIME_MS = 50;

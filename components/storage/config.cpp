@@ -1,6 +1,7 @@
 #include "config.h"
 #include "error_handler.h"
 #include "esp_log.h"
+#include "event_manager.h"
 #include "freertos/FreeRTOS.h"
 #include "mysleep.h"
 #include "storage.h"
@@ -36,7 +37,7 @@ void Config::load_config(JsonDocument &doc) {
 }
 
 void Config::load_from_storage() {
-  char config[4000];
+  char config[2048] = {0};
   esp_err_t err = Storage::read("dynamic_config", config, sizeof(config));
   if (err != ESP_OK) {
     ESP_LOGE(TAG, "Error (%s) reading dynamic config from storage!",
@@ -60,7 +61,7 @@ void Config::load_from_storage() {
   }
 }
 
-void Config::set_active_config() {
+int32_t Config::set_active_config() {
   char timestamp[9] = {0};
   Time::get_time(timestamp, sizeof(timestamp));
   Time now(timestamp);
@@ -78,12 +79,12 @@ void Config::set_active_config() {
                  it->end.get_hours(), it->end.get_minutes(),
                  it->end.get_seconds());
         vTaskDelay(pdMS_TO_TICKS(3000));
-        deinit_components();
-        mysleep(it->end);
+        PUBLISH(EventType::SLEEP_UNTIL_NEXT_TIMING);
+        return -1;
       }
-      return;
     }
   }
+  return 0;
 }
 
 TimingConfig Config::get_default_active_config() {

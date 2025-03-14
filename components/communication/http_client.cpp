@@ -7,9 +7,11 @@ static const char *TAG = "HTTPClient";
 esp_err_t HTTPClient::get_config(const char *url, JsonDocument &response) {
   esp_http_client_config_t config = {
       .url = url,
+      .cert_pem = NULL,
       .timeout_ms = 15000,
       .event_handler = event_handler,
-      .transport_type = HTTP_TRANSPORT_OVER_TCP,
+      .transport_type = HTTP_TRANSPORT_OVER_SSL,
+      .skip_cert_common_name_check = true,
   };
 
   esp_http_client_handle_t client = esp_http_client_init(&config);

@@ -6,6 +6,19 @@
 
 class QRDecoder {
 public:
+  /*
+   * @brief
+   * Constructor to initialize the QR decoder.
+   *
+   * The constructor initializes the quirc library and creates a quirc object.
+   *
+   * @param width
+   * Width of the camera frame.
+   *
+   * @param height
+   * Height of the camera frame.
+   *
+   */
   QRDecoder(int width, int height);
 
   // Delete copy constructor and assignment because of unique_ptr
