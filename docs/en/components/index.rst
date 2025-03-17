@@ -8,12 +8,18 @@ This section describes the implemented software components of the project.
 
 .. toctree::
      :maxdepth: 2
+     :hidden:
 
     camera
-    utilities/error_handler
-    utilities/mysleep
+    utilities
     mytime
-    communication/mqtt
-    communication/wifi
-    storage/storage
-    storage/config
+    communication
+    storage
+    button
+    event
+    led
+    qr
+    sensors/battery_charge
+    sensors/cpu_temp
+    sensors/light_sensor
+    sesnsors/adc

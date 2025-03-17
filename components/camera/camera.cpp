@@ -40,7 +40,7 @@ Camera::Camera(bool qr_reader_app) {
   if (qr_reader_app) {
     size = FRAMESIZE_VGA;
   } else {
-    size = FRAMESIZE_WQXGA;
+    size = FRAMESIZE_FHD;
   }
 
   _config = {
@@ -66,7 +66,7 @@ Camera::Camera(bool qr_reader_app) {
       .ledc_timer = LEDC_TIMER_0,
       .ledc_channel = LEDC_CHANNEL_0,
 
-      .pixel_format = PIXFORMAT_GRAYSCALE, // PIXFORMAT_GRAYSCALE
+      .pixel_format = PIXFORMAT_JPEG, // PIXFORMAT_GRAYSCALE
       .frame_size = size,
 
       .jpeg_quality = 4, // 0-63
