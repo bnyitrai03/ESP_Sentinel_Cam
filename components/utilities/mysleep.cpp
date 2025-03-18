@@ -71,4 +71,8 @@ void isolate_gpio() {
   // Isolate LED pin
   gpio_set_level(LED_PIN, 0);
   rtc_gpio_isolate(LED_PIN);
+
+  // Isolate ADC pins
+  rtc_gpio_isolate(GPIO_NUM_1); // ADC1_CHANNEL_0
+  rtc_gpio_isolate(GPIO_NUM_2); // ADC1_CHANNEL_1
 }

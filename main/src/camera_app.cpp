@@ -141,6 +141,8 @@ esp_err_t CameraApp::send_image_header(const char *timestamp) {
   doc["timestamp"] = timestamp;
   doc["size"] = _cam.get_image_size();
   doc["mode"] = "GRAY"; // need to implement color mode
+  doc["width"] = _cam.get_width();
+  doc["height"] = _cam.get_height();
   return send_json(doc, _mqtt.get_image_topic());
 }
 

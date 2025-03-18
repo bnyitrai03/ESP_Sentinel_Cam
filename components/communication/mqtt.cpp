@@ -3,7 +3,6 @@
 #include "error_handler.h"
 #include "esp_log.h"
 #include "storage.h"
-#include <ArduinoJson.h>
 
 constexpr auto *TAG = "MQTT";
 
@@ -113,12 +112,20 @@ void MQTT::event_handler(void *handler_args, esp_event_base_t base,
     }
 
     if (strncmp(event->topic, _config_topic, event->topic_len) == 0) {
-      if (strncmp(event->data, "config-ok", event->data_len) == 0) {
+      JsonDocument config;
+      DeserializationError error =
+          deserializeJson(config, event->data, event->data_len);
+      if (error) {
+        ESP_LOGE(TAG, "Error parsing JSON: %s", error.c_str());
+        return;
+      }
+
+      if (config.as<std::string>() == "config-ok") {
         _new_config_received = false;
         xSemaphoreGive(_config_semaphore);
         ESP_LOGI(TAG, "Received config-ok message!");
       } else {
-        handle_new_config(event->data, event->data_len);
+        handle_new_config(event->data, event->data_len, config);
       }
     }
     break;
@@ -184,14 +191,9 @@ void MQTT::handle_header_ack_message(const char *topic, const char *data,
   }
 }
 
-void MQTT::handle_new_config(const char *data, uint32_t len) {
+void MQTT::handle_new_config(const char *data, uint32_t len,
+                             JsonDocument &doc) {
   std::string config(data, len);
-  JsonDocument doc;
-  DeserializationError error = deserializeJson(doc, config);
-  if (error) {
-    ESP_LOGE(TAG, "Error parsing JSON: %s", error.c_str());
-    restart();
-  }
 
   if (Config::validate(doc)) {
     esp_err_t err = Storage::write("dynamic_config", config.c_str());

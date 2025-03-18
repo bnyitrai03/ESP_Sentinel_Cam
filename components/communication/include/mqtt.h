@@ -2,7 +2,9 @@
 
 #include "esp_err.h"
 #include "mqtt_client.h"
+#include <ArduinoJson.h>
 #include <string>
+
 
 #define TIMESTAMP_SIZE 21
 #define NAME_SIZE 64
@@ -134,7 +136,8 @@ private:
   static void handle_header_ack_message(const char *topic, const char *data,
                                         uint32_t len);
 
-  static void handle_new_config(const char *data, uint32_t len);
+  static void handle_new_config(const char *data, uint32_t len,
+                                JsonDocument &doc);
 
   static esp_mqtt_client_config_t _config;
   static esp_mqtt_client_handle_t _client;

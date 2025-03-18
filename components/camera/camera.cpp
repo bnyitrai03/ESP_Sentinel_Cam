@@ -2,7 +2,6 @@
 #include "driver/rtc_io.h"
 #include "error_handler.h"
 #include "freertos/FreeRTOS.h"
-#include <esp_log.h>
 
 constexpr auto *TAG = "Camera";
 
@@ -39,8 +38,12 @@ Camera::Camera(bool qr_reader_app) {
   framesize_t size = FRAMESIZE_INVALID;
   if (qr_reader_app) {
     size = FRAMESIZE_VGA;
+    _width = 640;
+    _height = 480;
   } else {
     size = FRAMESIZE_WQXGA;
+    _width = 2560;
+    _height = 1600;
   }
 
   _config = {

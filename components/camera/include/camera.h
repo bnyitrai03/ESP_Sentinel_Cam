@@ -60,6 +60,16 @@ public:
    */
   uint32_t get_image_size() { return _fb->len; }
 
+  /*
+   * @return The width of the captured image
+   */
+  int32_t get_width() { return _width; }
+
+  /*
+   * @return The height of the captured image
+   */
+  int32_t get_height() { return _height; }
+
   /**
    * @brief Returns the frame buffer to enable the next image capture
    */
@@ -77,4 +87,7 @@ private:
    * @private
    */
   camera_config_t _config;
+
+  int32_t _width = -1;
+  int32_t _height = -1;
 };

@@ -41,7 +41,7 @@ def subscribe(client):
 
             # Compare old and new config
             if old_config['configId'] == new_config['configId']:
-                message = "config-ok"
+                message = json.dumps("config-ok")
             else:
                 message = json.dumps(new_config)
 

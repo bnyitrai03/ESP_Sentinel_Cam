@@ -118,12 +118,21 @@ int64_t Config::get_period() {
 }
 
 bool Config::validate(JsonDocument &doc) {
-  if (!doc["configId"].is<std::string>() ||
-      doc["configId"].as<std::string>().empty() ||
-      doc["configId"].as<std::string>().length() >= sizeof(_uuid)) {
-    ESP_LOGE(TAG, "UUID is incorrect or empty");
+  if (!doc["configId"].is<std::string>()) {
+    ESP_LOGE(TAG, "UUID is not string");
+    ESP_LOGI(TAG, "Received UUID: %s",
+             doc["configId"].as<std::string>().c_str());
     return false;
   }
+  if (doc["configId"].as<std::string>().empty()) {
+    ESP_LOGE(TAG, "UUID is empty");
+    return false;
+  }
+  if (doc["configId"].as<std::string>().length() >= sizeof(_uuid)) {
+    ESP_LOGE(TAG, "UUID is too long");
+    return false;
+  }
+
   if (!doc["timing"].is<JsonArray>()) {
     ESP_LOGE(TAG, "Timing array is missing");
     return false;
