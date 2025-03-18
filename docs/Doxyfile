@@ -34,8 +34,8 @@ INPUT = \
     $(PROJECT_PATH)/components/led/include/led.h \
     $(PROJECT_PATH)/components/button/include/button.h \
     $(PROJECT_PATH)/components/qr/include/qr_decoder.h \
-    $(PROJECT_PATH)/components/sensors/include/isensor.h \
     $(PROJECT_PATH)/components/sensors/include/sensors.h \
+    $(PROJECT_PATH)/components/sensors/include/isensor.h \
     $(PROJECT_PATH)/components/sensors/include/myadc.h \
     $(PROJECT_PATH)/components/sensors/include/cpu_temp.h \
     $(PROJECT_PATH)/components/sensors/include/battery_charge.h \

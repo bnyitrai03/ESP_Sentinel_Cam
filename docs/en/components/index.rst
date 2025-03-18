@@ -7,9 +7,9 @@ Software Components
 This section describes the implemented software components of the project.
 
 .. toctree::
-     :maxdepth: 2
      :hidden:
 
+    main
     camera
     utilities
     mytime
@@ -19,7 +19,4 @@ This section describes the implemented software components of the project.
     event
     led
     qr
-    sensors/battery_charge
-    sensors/cpu_temp
-    sensors/light_sensor
-    sesnsors/adc
+    sensors

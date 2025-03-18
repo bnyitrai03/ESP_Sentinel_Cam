@@ -12,6 +12,7 @@
 
 constexpr auto *TAG = "main_app";
 
+void main_task(void *pvParameter);
 void run_camera_app_mode();
 void run_qr_reader_mode();
 void setup_camera_mode_events(CameraApp &app, Button &button, Led &led);
@@ -19,6 +20,14 @@ void setup_qr_reader_mode_events(QRReaderApp &app, Button &button, Led &led);
 
 // *********************** MAIN APP ***********************
 extern "C" void app_main(void) {
+  auto res = xTaskCreate(&main_task, "main_task", 4096, NULL, 7, NULL);
+  if (res != pdPASS) {
+    ESP_LOGE(TAG, "Failed to create main task");
+    restart();
+  }
+}
+
+void main_task(void *pvParameter) {
   Storage storage;
 
   char app_mode[4] = {0};
@@ -28,6 +37,8 @@ extern "C" void app_main(void) {
   } else {
     run_qr_reader_mode();
   }
+
+  vTaskDelete(NULL);
 }
 // *********************************************************
 

@@ -47,13 +47,13 @@ void QRReaderApp::qr_task(void *pvParameters) {
 // ***************************   Main logic   *************************** //
 void QRReaderApp::run() {
   // -------- Get the WiFi and server information from the QR code -------- //
-  this->get_qr_code();
+  get_qr_code();
 
   // -------- Connect to the WiFi network -------- //
   _wifi.connect();
 
   // -------- Get the static configuration from the server -------- //
-  this->get_static_config();
+  get_static_config();
 
   // Signaling the correct execution of the app
   Led::set_pattern(Led::Pattern::STATIC_CONFIG_SAVED_BLINK);
@@ -193,5 +193,6 @@ void QRReaderApp::save_static_config(const JsonDocument &doc) {
   Storage::write("healthRepTopic", doc["healthReportTopic"].as<std::string>());
   Storage::write("configTopic", doc["healthReportRespTopic"].as<std::string>());
   Storage::write("logTopic", doc["logTopic"].as<std::string>());
+  Storage::write("cameraMode", doc["cameraMode"].as<std::string>());
   ESP_LOGI(TAG, "Static configuration saved!");
 }

@@ -10,6 +10,13 @@
 class Camera {
 public:
   Camera() { ESP_LOGE("Camera", "This constructor is not supported"); };
+  /*
+   * @brief Constructor for the Camera class
+   *
+   * @param qr_reader_app: true if the QR reader app is running and false
+   * otherwise
+   *
+   */
   Camera(bool qr_reader_app);
   ~Camera() { esp_camera_fb_return(_fb); }
 
