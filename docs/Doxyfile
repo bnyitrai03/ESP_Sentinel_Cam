@@ -27,8 +27,22 @@ INPUT = \
     $(PROJECT_PATH)/components/mytime/include/mytime.h \
     $(PROJECT_PATH)/components/communication/include/mqtt.h \
     $(PROJECT_PATH)/components/communication/include/wifi.h \
+    $(PROJECT_PATH)/components/communication/include/http_client.h \
     $(PROJECT_PATH)/components/utilities/include/mysleep.h \
-    $(PROJECT_PATH)/components/utilities/include/error_handler.h
+    $(PROJECT_PATH)/components/utilities/include/error_handler.h \
+    $(PROJECT_PATH)/components/event/include/event_manager.h \
+    $(PROJECT_PATH)/components/led/include/led.h \
+    $(PROJECT_PATH)/components/button/include/button.h \
+    $(PROJECT_PATH)/components/qr/include/qr_decoder.h \
+    $(PROJECT_PATH)/components/sensors/include/isensor.h \
+    $(PROJECT_PATH)/components/sensors/include/sensors.h \
+    $(PROJECT_PATH)/components/sensors/include/myadc.h \
+    $(PROJECT_PATH)/components/sensors/include/cpu_temp.h \
+    $(PROJECT_PATH)/components/sensors/include/battery_charge.h \
+    $(PROJECT_PATH)/components/sensors/include/light_sensor.h \
+    $(PROJECT_PATH)/main/include/camera_app.h \
+    $(PROJECT_PATH)/main/include/qr_reader_app.h
+    
 
 
 
