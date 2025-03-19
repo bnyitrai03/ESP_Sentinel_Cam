@@ -3,7 +3,6 @@
 #include "error_handler.h"
 #include "freertos/FreeRTOS.h"
 #include "storage.h"
-#include <string>
 
 constexpr auto *TAG = "Camera";
 
@@ -40,30 +39,9 @@ Camera::Camera(bool qr_reader_app) {
     rtc_gpio_hold_dis(CAM_PIN_PCLK);
   }
 
-  // when the qr reader app is running, use a lower resolution due to faster
-  // decoding
   framesize_t size = FRAMESIZE_INVALID;
   pixformat_t format = PIXFORMAT_GRAYSCALE;
-  if (qr_reader_app) {
-    size = FRAMESIZE_VGA;
-    _width = 640;
-    _height = 480;
-  } else {
-    size = FRAMESIZE_WQXGA;
-    _width = 2560;
-    _height = 1600;
-    // set the pixe format in the camera app mode based on the static config
-    char camera_mode[6] = {0};
-    if (Storage::read("cameraMode", camera_mode, sizeof(camera_mode)) !=
-        ESP_OK) {
-      ESP_LOGE(TAG, "Failed to read camera mode from NVS");
-      restart();
-    }
-    std::string camera_mode_str(camera_mode);
-    if (camera_mode_str == "COLOR") {
-      format = PIXFORMAT_JPEG;
-    }
-  }
+  set_camera_mode(size, format, qr_reader_app);
 
   _config = {
       .pin_pwdn = CAM_PIN_PWDN,
@@ -99,6 +77,34 @@ Camera::Camera(bool qr_reader_app) {
   };
 }
 
+void Camera::set_camera_mode(framesize_t &size, pixformat_t &format,
+                             bool qr_app) {
+  if (qr_app) {
+    // when the qr reader app is running, use a lower resolution due to faster
+    // decoding
+    size = FRAMESIZE_VGA;
+    _width = 640;
+    _height = 480;
+  } else {
+    size = FRAMESIZE_WQXGA;
+    _width = 2560;
+    _height = 1600;
+    // set the pixel format in the camera app mode based on the static config
+    char camera_mode[6] = {0};
+    if (Storage::read("cameraMode", camera_mode, sizeof(camera_mode)) !=
+        ESP_OK) {
+      ESP_LOGE(TAG, "Failed to read camera mode from NVS");
+      restart();
+    }
+    std::string camera_mode_str(camera_mode);
+
+    if (camera_mode_str == "COLOR") {
+      format = PIXFORMAT_JPEG;
+      _camera_mode = "COLOR";
+    }
+  }
+}
+
 esp_err_t Camera::start() {
   esp_err_t err = esp_camera_init(&_config);
   if (err != ESP_OK) {
@@ -116,7 +122,7 @@ esp_err_t Camera::take_image() {
     ESP_LOGE(TAG, "Failed to flush old image");
     return ESP_FAIL;
   }
-  return_fb();
+  esp_camera_fb_return(_fb);
 
   // capture new image
   _fb = esp_camera_fb_get();

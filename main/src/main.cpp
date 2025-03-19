@@ -10,7 +10,7 @@
 #include <ArduinoJson.h>
 #include <esp_log.h>
 
-constexpr auto *TAG = "main_app";
+constexpr auto *TAG = "Main app";
 
 void main_task(void *pvParameter);
 void run_camera_app_mode();
@@ -20,7 +20,7 @@ void setup_qr_reader_mode_events(QRReaderApp &app, Button &button, Led &led);
 
 // *********************** MAIN APP ***********************
 extern "C" void app_main(void) {
-  auto res = xTaskCreate(&main_task, "main_task", 4096, NULL, 7, NULL);
+  auto res = xTaskCreate(&main_task, "main_task", 4096, NULL, 15, NULL);
   if (res != pdPASS) {
     ESP_LOGE(TAG, "Failed to create main task");
     restart();
@@ -51,7 +51,7 @@ void main_task(void *pvParameter) {
  * 5. When an event occurs, process the event queue and handle the event
  */
 void run_camera_app_mode() {
-  EventManager &eventManager = EventManager::getInstance();
+  EventManager &event_manager = EventManager::getInstance();
   Led led;
   Button button;
   ESP_LOGI(TAG, "Starting the starling detection mode");
@@ -62,7 +62,7 @@ void run_camera_app_mode() {
   app.start();
 
   while (true) {
-    eventManager.process_event_queue();
+    event_manager.process_event_queue();
   }
 }
 
@@ -71,7 +71,7 @@ void run_camera_app_mode() {
  *
  */
 void run_qr_reader_mode() {
-  EventManager &eventManager = EventManager::getInstance();
+  EventManager &event_manager = EventManager::getInstance();
   Led led;
   Button button;
 
@@ -82,7 +82,7 @@ void run_qr_reader_mode() {
   app.start();
 
   while (true) {
-    eventManager.process_event_queue();
+    event_manager.process_event_queue();
   }
 }
 
@@ -132,6 +132,16 @@ void setup_camera_mode_events(CameraApp &app, Button &button, Led &led) {
   });
 }
 
+/*
+ * Setup the QR reader mode events:
+ *    - BUTTON_PRESSED: Stop the QR reader app, wait for the button release
+ *    - SLEEP_UNTIL_BUTTON_PRESS: The button was pressed for a short duration,
+ *                                the device will sleep until the next button
+ *                                press
+ *    - RESET: The button was long pressed (> 2sec), the device will reset
+ *    - STOP_BUTTON: Stop the button task
+ *
+ */
 void setup_qr_reader_mode_events(QRReaderApp &app, Button &button, Led &led) {
   SUBSCRIBE(EventType::BUTTON_PRESSED, { app.stop(); });
 

@@ -32,6 +32,10 @@ MQTT::MQTT() {
     esp_mqtt_client_destroy(_client);
   });
 
+  // Disable lib logging else remote logging dies
+  esp_log_level_set("mqtt5_client", ESP_LOG_NONE);
+  esp_log_level_set("mqtt_client", ESP_LOG_NONE);
+
   // -------------------- MQTT static config ----------------------------------
   if (Storage::read("mqttAddress", _uri, sizeof(_uri)) != ESP_OK ||
       Storage::read("mqttUser", _username, sizeof(_username)) != ESP_OK ||
@@ -98,6 +102,7 @@ void MQTT::event_handler(void *handler_args, esp_event_base_t base,
   case MQTT_EVENT_DISCONNECTED:
     if (_connected) {
       esp_mqtt_client_reconnect(_client);
+      vTaskDelay(pdMS_TO_TICKS(100));
     }
     break;
   case MQTT_EVENT_SUBSCRIBED:
@@ -177,6 +182,10 @@ bool MQTT::wait_for_header_ack(const char *timestamp, uint32_t timeout) {
 
 void MQTT::handle_header_ack_message(const char *topic, const char *data,
                                      uint32_t len) {
+  if (len > TIMESTAMP_SIZE) {
+    ESP_LOGE(TAG, "Received timestamp is too long!");
+    return;
+  }
   char received_timestamp[TIMESTAMP_SIZE] = {0};
   strncpy(received_timestamp, data, len);
 

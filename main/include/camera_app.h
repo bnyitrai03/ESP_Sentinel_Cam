@@ -44,7 +44,17 @@ public:
     return instance;
   }
 
+  /**
+   * @brief
+   * Creates the camera task and starts the camera application.
+   *
+   */
   void start();
+  /**
+   * @brief
+   * Stops the camera task and the camera application.
+   *
+   */
   void stop();
 
 private:
@@ -56,8 +66,33 @@ private:
    *
    */
   void run();
-
+  /**
+   *
+   * @brief
+   * Starts the camera task, and signals when it finishes.
+   *
+   * @param pvParameters
+   * CameraApp instance
+   *
+   */
   static void camera_task(void *pvParameters);
+
+  /**
+   * @brief Initializes all components needed for the camera application
+   * @return true if initialization was successful, false otherwise
+   */
+  bool initialize();
+  /**
+   *
+   * @brief Handles configuration updates and health reporting
+   * @return true if configuration was handled successfully, false otherwise
+   */
+  bool handle_config_update();
+  /**
+   * @brief Captures an image and sends it to the MQTT broker
+   * @return true if image was captured and sent successfully, false otherwise
+   */
+  bool capture_and_send_image();
 
   /*
    * @brief
@@ -65,7 +100,6 @@ private:
    *
    */
   esp_err_t send_json(JsonDocument &doc, const char *topic);
-
   /**
    * @brief
    * Assemble and send the health report to the MQTT broker.
@@ -75,7 +109,6 @@ private:
    *
    */
   esp_err_t send_health_report();
-
   /**
    * @brief
    * Assemble and send the image header to the MQTT broker.
@@ -85,14 +118,12 @@ private:
    *
    */
   esp_err_t send_image_header(const char *timestamp);
-
   /**
    * @brief
    * Send the image to the MQTT broker.
    *
    */
-  void send_image();
-
+  esp_err_t send_image();
   /*
    * @brief
    * Calculates the maximum time to wait for receiving an acknowledgement.

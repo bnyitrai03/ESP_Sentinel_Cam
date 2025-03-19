@@ -3,6 +3,7 @@
 #include "esp_camera.h"
 #include "esp_log.h"
 #include "pins.h"
+#include <string>
 
 /**
  * @brief Handles the OV5640 camera
@@ -18,12 +19,9 @@ public:
    *
    */
   Camera(bool qr_reader_app);
-  ~Camera() { esp_camera_fb_return(_fb); }
 
   /**
    * @brief Starts the camera
-   *
-   *
    *
    * @return
    *     - ESP_OK : camera initialized successfully
@@ -51,14 +49,6 @@ public:
     return reinterpret_cast<const char *>(_fb->buf);
   }
 
-  /*
-   * @brief Gets the frame buffer of the captured image
-   *
-   * @return
-   *     - Frame buffer of the captured image
-   */
-  const camera_fb_t *get_fb() { return _fb; }
-
   /**
    * @brief Gets image size
    *
@@ -77,24 +67,34 @@ public:
    */
   int32_t get_height() { return _height; }
 
-  /**
-   * @brief Returns the frame buffer to enable the next image capture
+  /*
+   * @return The camera mode: GRAY or JPEG
    */
-  void return_fb() { esp_camera_fb_return(_fb); }
+  const char *get_camera_mode() { return _camera_mode.c_str(); }
 
 private:
+  /**
+   * @brief  Sets the framesize and pixformat based on the app mode and config
+   *
+   * @param size: The size of the image: FRAMESIZE_VGA or FRAMESIZE_WQXGA
+   * @param format: The format of the image: JPEG or GRAY
+   * @param qr_app: true if the QR reader app is running and false otherwise
+   *
+   */
+  void set_camera_mode(framesize_t &size, pixformat_t &format, bool qr_app);
+
   /**
    * @brief Frame buffer containing the captured image
    * @private
    */
   camera_fb_t *_fb = nullptr;
-
   /**
    * @brief Configuration of the camera
    * @private
    */
   camera_config_t _config;
 
+  std::string _camera_mode = "GRAY";
   int32_t _width = -1;
   int32_t _height = -1;
 };

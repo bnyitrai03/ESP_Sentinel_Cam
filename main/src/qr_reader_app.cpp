@@ -14,7 +14,12 @@ std::atomic<bool> QRReaderApp::_qr_code_decoded{false};
 QRReaderApp::QRReaderApp() : _cam(true) { _cam.start(); }
 
 void QRReaderApp::start() {
-  xTaskCreate(qr_task, "qr_app_task", 8192, this, 5, &_qr_app_task_handle);
+  auto res =
+      xTaskCreate(qr_task, "qr_app_task", 8192, this, 5, &_qr_app_task_handle);
+  if (res != pdPASS) {
+    ESP_LOGE(TAG, "Failed to create QR reader task");
+    restart();
+  }
 }
 
 void QRReaderApp::stop() {

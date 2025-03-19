@@ -30,7 +30,7 @@ Button::Button() {
   }
 
   auto res =
-      xTaskCreate(button_task, "button_task", 4096, this, 20, &_task_handle);
+      xTaskCreate(button_task, "button_task", 4096, this, 13, &_task_handle);
   if (res != pdPASS) {
     ESP_LOGE(TAG, "Failed to create Button task");
     restart();
@@ -80,7 +80,6 @@ void Button::button_task(void *arg) {
   while (button->running) {
     uint32_t current_time;
     wait_for_button_event(button, &current_time);
-    is_debounced(current_time, state.last_press_time);
     handle_button_state_change(button, current_time, &state);
   }
 
@@ -94,10 +93,6 @@ void Button::button_task(void *arg) {
 bool Button::wait_for_button_event(Button *button, uint32_t *current_time) {
   return xQueueReceive(button->event_queue, current_time, portMAX_DELAY) ==
          pdTRUE;
-}
-
-bool Button::is_debounced(uint32_t current_time, uint32_t last_press_time) {
-  return (current_time - last_press_time) >= pdMS_TO_TICKS(DEBOUNCE_TIME_MS);
 }
 
 void Button::handle_button_state_change(Button *button, uint32_t current_time,
