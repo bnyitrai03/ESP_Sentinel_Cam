@@ -5,16 +5,20 @@
 #include <ArduinoJson.h>
 #include <string>
 
-
-#define TIMESTAMP_SIZE 21
-#define NAME_SIZE 64
-#define LOG_SIZE 256
+constexpr int TIMESTAMP_SIZE{21};
+constexpr int NAME_SIZE{64};
+constexpr int LOG_SIZE{256};
 
 /**
  * @brief Manages MQTT connections and messaging
  */
 class MQTT {
 public:
+  /*
+   * Registers a callback function to be called when the MQTT client is
+   * deinitialized. Read the static config values from the storage and
+   * initialize the MQTT client.
+   */
   MQTT();
 
   /**
@@ -72,7 +76,8 @@ public:
   bool wait_for_config(uint32_t timeout);
 
   /**
-   * @brief Handles remote logging
+   * @brief Publishes the logs remotely to the MQTT broker, and locally to the
+   * ESP Monitor
    *
    * @param fmt The format string for the log message
    * @param args The arguments for the format string
@@ -94,7 +99,7 @@ public:
   const char *get_image_topic() { return _image_topic; }
 
   /**
-   * @return Whether a new configuration message has been received
+   * @return Whether a new configuration has been received
    *
    */
   bool get_new_config_received() { return _new_config_received; }
@@ -103,7 +108,9 @@ private:
   /**
    * @brief Event handler registered to receive MQTT events
    *
-   * This function is called by the MQTT client event loop.
+   * This function is called by the MQTT client event loop. It handles
+   * subscribing, recconections, and errors. It also dispatches the header
+   * acknowledgment message handler and new configuration message handler.
    *
    * @param handler_args User data registered to the event
    * @param base Event base for the handler (always MQTT Base in this example)
@@ -123,7 +130,8 @@ private:
   static void subscribe(const char *topic);
 
   /**
-   * @brief Handles the header acknowledgment message
+   * @brief Compares the received timestamp with the expected timestamp, if they
+   * match it releases the header acknowledge semaphore
    *
    * @note This function is called when a header acknowledgment message is
    * received
@@ -136,6 +144,16 @@ private:
   static void handle_header_ack_message(const char *topic, const char *data,
                                         uint32_t len);
 
+  /*
+   * @brief Validate, save and load the new configuration
+   *
+   * @note This function is called when a new configuration message is received
+   *
+   * @param data The data of the new configuration message
+   * @param len The length of the new configuration message data
+   * @param doc The JSON document containing the new configuration
+   *
+   */
   static void handle_new_config(const char *data, uint32_t len,
                                 JsonDocument &doc);
 

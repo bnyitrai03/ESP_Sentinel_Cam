@@ -13,5 +13,16 @@ public:
   } // ADC1_CHANNEL_1 = GPIO_NUM_2, 0V offset
 
 protected:
+  /*
+   * @brief
+   * Converts the raw ADC reading to a lux value.
+   *
+   * @param raw_value
+   * Raw ADC reading
+   *
+   * @return
+   * Lux value
+   *
+   */
   float convert_adc_reading(int raw_value) override;
 };

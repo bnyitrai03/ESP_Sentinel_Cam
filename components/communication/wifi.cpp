@@ -40,8 +40,6 @@ Wifi::Wifi() {
                                       &Wifi::eventHandler, NULL, NULL);
 }
 
-Wifi::~Wifi() { vEventGroupDelete(_wifi_event_group); }
-
 void Wifi::connect() {
   wifi_config_t wifi_config = {};
 

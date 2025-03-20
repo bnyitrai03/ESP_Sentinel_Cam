@@ -12,8 +12,32 @@ public:
     }
   };
 
+  /*
+   * @brief
+   * Initializes the CPU temperature sensor.
+   *
+   * @return
+   * ESP_OK if the sensor was initialized successfully, ESP_FAIL otherwise.
+   *
+   */
   esp_err_t init() override;
+  /*
+   * @brief
+   * Reads the CPU temperature.
+   *
+   * @return
+   * ESP_OK if the temperature was read successfully, ESP_FAIL otherwise.
+   *
+   */
   esp_err_t read() override;
+  /*
+   * @brief
+   * Returns the CPU temperature.
+   *
+   * @return
+   * The CPU temperature in degrees Celsius.
+   *
+   */
   float get_value() const override;
 
 private:

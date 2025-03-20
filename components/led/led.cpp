@@ -71,7 +71,6 @@ void Led::task_function() {
       xSemaphoreGive(pattern_mutex);
     } else {
       ESP_LOGW(TAG, "Failed to acquire mutex for pattern displaying");
-      vTaskDelay(pdMS_TO_TICKS(100));
       continue;
     }
 

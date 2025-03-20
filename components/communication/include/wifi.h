@@ -15,17 +15,12 @@ public:
   Wifi();
 
   /**
-   * @brief Destructor for Wifi class
-   */
-  ~Wifi();
-
-  /**
    * @brief Connects to the WiFi
    */
   void connect();
 
   /**
-   * @brief Syncs the time with a remote SNTP server
+   * @brief Syncs the time with a remote NTP server
    */
   void sync_time();
 

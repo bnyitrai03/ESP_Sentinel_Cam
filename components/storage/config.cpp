@@ -118,14 +118,14 @@ int64_t Config::get_period() {
 }
 
 bool Config::validate(JsonDocument &doc) {
+  if (doc["configId"].as<std::string>().empty()) {
+    ESP_LOGE(TAG, "UUID is empty");
+    return false;
+  }
   if (!doc["configId"].is<std::string>()) {
     ESP_LOGE(TAG, "UUID is not string");
     ESP_LOGI(TAG, "Received UUID: %s",
              doc["configId"].as<std::string>().c_str());
-    return false;
-  }
-  if (doc["configId"].as<std::string>().empty()) {
-    ESP_LOGE(TAG, "UUID is empty");
     return false;
   }
   if (doc["configId"].as<std::string>().length() >= sizeof(_uuid)) {

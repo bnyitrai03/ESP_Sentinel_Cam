@@ -19,8 +19,7 @@ typedef struct {
 class Config {
 public:
   /**
-   * @brief Loads the configuration from a JSON document and sets the active
-   * configuration as well as the UUID
+   * @brief Loads the dynamic configuration from a JSON document
    *
    * @param config The new configuration as a JSON document
    *
@@ -28,8 +27,8 @@ public:
   static void load_config(JsonDocument &config);
 
   /**
-   * @brief Loads the configuration from the NVS storage, handles validation
-   * too
+   * @brief Loads the dynamic configuration from the NVS storage, also handles
+   * validation
    *
    * @note This function will restart the device if the configuration is invalid
    *
@@ -38,6 +37,20 @@ public:
 
   /**
    * @brief Validates the configuration
+   *
+   * @note The configuration is valid if:
+   *
+   *   - The UUID is not empty
+   *
+   *   - The UUID is a string
+   *
+   *   - The UUID is not too long
+   *
+   *   - The timing array is not missing
+   *
+   *   - The period is an integer and not less than -1
+   *
+   *   - The start and end times are in the format HH:MM:SS
    *
    *
    * @param config The new configuration as a string
@@ -65,7 +78,7 @@ public:
    *
    * @note If the active config is not found, the default config is set
    *
-   * @return -1 if the active config period is -1 (sleeping)
+   * @return -1 if the active config period is -1 (sleeping), else 0
    *
    */
   static int32_t set_active_config();
@@ -78,6 +91,12 @@ public:
    */
   static const char *get_uuid() { return _uuid; }
 
+  /**
+   * @brief Gets the period of the active configuration
+   *
+   * @return
+   *    - The active configuration period
+   */
   static int64_t get_period();
 
 private:

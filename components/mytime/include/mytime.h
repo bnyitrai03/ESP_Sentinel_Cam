@@ -94,7 +94,7 @@ public:
   }
 
   /**
-   * @brief Gets the current utc time in %H:%M:%S format
+   * @brief Gets the current UTC time in %H:%M:%S format
    *
    * @param timestamp
    *    - The buffer to store the current utc time

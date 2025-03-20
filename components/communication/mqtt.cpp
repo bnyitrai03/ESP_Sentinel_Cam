@@ -121,6 +121,7 @@ void MQTT::event_handler(void *handler_args, esp_event_base_t base,
       DeserializationError error =
           deserializeJson(config, event->data, event->data_len);
       if (error) {
+        ESP_LOGE(TAG, "Error receiving the new config");
         ESP_LOGE(TAG, "Error parsing JSON: %s", error.c_str());
         return;
       }

@@ -13,5 +13,16 @@ public:
   } // ADC1_CHANNEL_0 = GPIO_NUM_1, 0.3V offset
 
 protected:
+  /*
+   * @brief
+   * Converts the raw ADC reading to a battery percentage value.
+   *
+   * @param raw_value
+   * Raw ADC reading
+   *
+   * @return
+   * Battery percentage value
+   *
+   */
   float convert_adc_reading(int raw_value) override;
 };
