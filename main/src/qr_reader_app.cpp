@@ -60,7 +60,7 @@ void QRReaderApp::run() {
   // -------- Get the static configuration from the server -------- //
   get_static_config();
 
-  // Signaling the correct execution of the app
+  // Signaling the correct execution of the QR code reader app
   Led::set_pattern(Led::Pattern::STATIC_CONFIG_SAVED_BLINK);
   vTaskDelay(pdMS_TO_TICKS(3000));
 
@@ -151,8 +151,8 @@ void QRReaderApp::get_static_config() {
   JsonDocument response;
   char server_url[256];
   Storage::read("server_url", server_url, sizeof(server_url));
-  const int MAX_RETRIES = 5;
-  const int RETRY_DELAY_MS = 5000;
+  constexpr int MAX_RETRIES = 5;
+  constexpr int RETRY_DELAY_MS = 5000;
 
   for (int retry = 0; retry < MAX_RETRIES; retry++) {
     // Send a GET request to the server to get the static configuration

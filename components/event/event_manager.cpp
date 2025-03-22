@@ -34,7 +34,7 @@ EventManager &EventManager::getInstance() {
 }
 
 int EventManager::subscribe(EventType type, EventCallback callback) {
-  if (xSemaphoreTake(_mutex, portMAX_DELAY) != pdTRUE) {
+  if (xSemaphoreTake(_mutex, pdMS_TO_TICKS(5000)) != pdTRUE) {
     ESP_LOGE(TAG, "Failed to take mutex in subscribe");
     return -1;
   }
@@ -46,31 +46,6 @@ int EventManager::subscribe(EventType type, EventCallback callback) {
   ESP_LOGD(TAG, "Subscribed to event type %d with ID %d",
            static_cast<int>(type), id);
   return id;
-}
-
-bool EventManager::unsubscribe(EventType type, int subscriptionId) {
-  if (xSemaphoreTake(_mutex, portMAX_DELAY) != pdTRUE) {
-    ESP_LOGE(TAG, "Failed to take mutex in unsubscribe");
-    return false;
-  }
-
-  bool success = false;
-  auto it = _subscribers.find(type);
-  if (it != _subscribers.end()) {
-    auto &subs = it->second;
-    for (auto subIt = subs.begin(); subIt != subs.end(); ++subIt) {
-      if (subIt->id == subscriptionId) {
-        subs.erase(subIt);
-        success = true;
-        ESP_LOGD(TAG, "Unsubscribed from event type %d with ID %d",
-                 static_cast<int>(type), subscriptionId);
-        break;
-      }
-    }
-  }
-
-  xSemaphoreGive(_mutex);
-  return success;
 }
 
 void EventManager::publish(EventType type) {

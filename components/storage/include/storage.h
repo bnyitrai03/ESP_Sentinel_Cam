@@ -64,5 +64,8 @@ public:
    */
   static esp_err_t read_error_count(uint32_t *value);
 
+  /*
+   * @brief Erases the NVS storage
+   */
   static void erase_nvs();
 };

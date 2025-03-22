@@ -26,16 +26,20 @@ void set_mqtt_deinit_callback(DeinitCallback callback);
 void set_camera_deinit_callback(DeinitCallback callback);
 
 /**
- * @brief Restarts the device
+ * @brief Handles an error by restarting the device
  *
- * This function deinitializes the camera, MQTT, and Wi-Fi drivers, then
- * safely restarts the device.
+ * This function blinks the error LED pattern, then deinitializes the camera,
+ * MQTT, and Wi-Fi drivers. If the error_count is 15, the device will sleep for
+ * 10 minutes before restarting. Otherwise, the device will restart immediately.
  *
- * @return
- *     - Nothing as the device restarts
  */
 void restart();
 
+/**
+ * @brief Resets the device
+ *
+ * This function erases the NVS and restarts the device.
+ */
 void reset_device();
 
 /**

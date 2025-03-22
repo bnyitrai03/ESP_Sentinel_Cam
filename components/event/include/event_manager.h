@@ -16,7 +16,6 @@
 #define SUBSCRIBE(type, code)                                                  \
   EventManager::getInstance().subscribe(type, [&](EventType) { code; })
 #define PUBLISH(type) EventManager::getInstance().publish(type)
-#define UNSUBSCRIBE(type, id) EventManager::getInstance().unsubscribe(type, id)
 
 /**
  * @brief Enum of event types in the system
@@ -54,14 +53,6 @@ public:
    * @return Subscription ID that can be used to unsubscribe
    */
   int subscribe(EventType type, EventCallback callback);
-
-  /**
-   * @brief Unsubscribe from an event
-   * @param type The event type
-   * @param subscriptionId The subscription ID returned from subscribe()
-   * @return true if successful, false otherwise
-   */
-  bool unsubscribe(EventType type, int subscriptionId);
 
   /**
    * @brief Helper method to publish an event by type

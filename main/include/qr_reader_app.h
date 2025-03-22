@@ -30,29 +30,53 @@ public:
     return instance;
   }
 
+  /**
+   * @brief
+   * Start the QR code reader application.
+   *
+   */
   void start();
+  /*
+   * @brief
+   * Stop the QR code reader application.
+   *
+   */
   void stop();
 
 private:
   QRReaderApp();
 
-  /**
+  /*
+   * @brief
+   * Task function to run the QR code reader application.
    *
-   * Run the QR code reader application.
+   * The task function runs the QR code reader application. The task runs until
+   * the QR code is decoded or a shutdown is requested.
    *
-   * The QR code reader uses the following steps:
-   *          1. Start the camera
-   *          2. Read the QR code
-   *          3. Connect to the WiFi network using the information from the QR
-   *             code
-   *          4. Send the GET request to acquire the static configuration from
-   *             the server
-   *          5. Save the static configuration
-   *          6. Restart the device and start the camera app
+   * @param arg
+   * QRReaderApp object.
    *
    */
   static void qr_task(void *arg);
 
+  /*
+   * @brief Run the QR code reader application.
+   *
+   * The QR code reader uses the following steps:
+   *
+   *          1. Start the camera
+   *
+   *          2. Read the QR code
+   *
+   *          3. Connect to the WiFi network using the information from the QR
+   *             code
+   *          4. Send the GET request to acquire the static configuration from
+   *             the server
+   *
+   *          5. Save the static configuration
+   *
+   *          6. Restart the device and start the camera app
+   */
   void run();
 
   /*

@@ -69,10 +69,7 @@ esp_err_t HTTPClient::get_config(const char *url, JsonDocument &response) {
 esp_err_t HTTPClient::event_handler(esp_http_client_event_t *evt) {
   switch (evt->event_id) {
   case HTTP_EVENT_ERROR:
-    ESP_LOGE(TAG, "HTTPS_EVENT_ERROR");
-    break;
-  case HTTP_EVENT_ON_DATA:
-    ESP_LOGI(TAG, "HTTPS_EVENT_ON_DATA, len=%d", evt->data_len);
+    ESP_LOGE(TAG, "Event error: %s", static_cast<const char *>(evt->data));
     break;
   default:
     break;

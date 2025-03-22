@@ -25,7 +25,7 @@ void mysleep(Time wake_up);
 /**
  * @brief Puts the device to sleep until the next period.
  *
- * @param period The working period of the device in seconds.
+ * @param period The active period from the static config in seconds.
  *
  * @note This function does not return.
  *

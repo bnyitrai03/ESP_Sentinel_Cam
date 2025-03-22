@@ -95,7 +95,7 @@ public:
    * @brief Gets the period of the active configuration
    *
    * @return
-   *    - The active configuration period
+   *    - The active configuration period in seconds
    */
   static int64_t get_period();
 

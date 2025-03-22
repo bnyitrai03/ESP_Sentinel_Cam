@@ -70,10 +70,8 @@ void IRAM_ATTR Button::gpio_isr_handler(void *arg) {
 
 void Button::button_task(void *arg) {
   Button *button = static_cast<Button *>(arg);
-  ButtonState state = {.last_press_time = 0,
-                       .press_start_time = 0,
-                       .last_state = 1,
-                       .is_pressed = false};
+  ButtonState state = {
+      .press_start_time = 0, .last_state = 1, .is_pressed = false};
 
   ESP_LOGI(TAG, "Button task started");
 
@@ -110,7 +108,6 @@ void Button::handle_button_state_change(Button *button, uint32_t current_time,
   }
 
   state->last_state = current_state;
-  state->last_press_time = current_time;
 }
 
 void Button::handle_button_press(Button *button, uint32_t current_time,

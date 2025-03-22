@@ -107,7 +107,7 @@ bool CameraApp::handle_config_update() {
 
   // Process new configuration if received
   if (_mqtt.get_new_config_received()) {
-    vTaskDelay(500 / portTICK_RATE_MS);
+    vTaskDelay(100 / portTICK_RATE_MS);
     if (_config.set_active_config() == -1) {
       return false;
     }
@@ -144,24 +144,26 @@ esp_err_t CameraApp::send_health_report() {
   JsonDocument doc;
   char timestamp[TIMESTAMP_SIZE] = {0};
   Time::get_date(timestamp, sizeof(timestamp));
+
   // create health report json
   doc["timestamp"] = timestamp;
   doc["configId"] = _config.get_uuid();
   doc["period"] = _config.get_period();
-  if (_sensors.read_sensors(doc) != ESP_OK) {
-    ESP_LOGE(TAG, "Failed to read sensors!");
-  }
+  _sensors.read_sensors(doc);
+
   return send_json(doc, _mqtt.get_health_report_topic());
 }
 
 esp_err_t CameraApp::send_image_header(const char *timestamp) {
   JsonDocument doc;
+
   // create image header json
   doc["timestamp"] = timestamp;
   doc["size"] = _cam.get_image_size();
   doc["mode"] = _cam.get_camera_mode();
   doc["width"] = _cam.get_width();
   doc["height"] = _cam.get_height();
+
   return send_json(doc, _mqtt.get_image_topic());
 }
 
