@@ -1,5 +1,5 @@
-#ifndef MYTIME_H
-#define MYTIME_H
+#pragma once
+
 #include "esp_err.h"
 #include <string>
 
@@ -137,4 +137,3 @@ private:
   int _minutes;
   int _seconds;
 };
-#endif // MYTIME_H

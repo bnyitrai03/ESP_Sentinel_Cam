@@ -26,7 +26,7 @@ public:
    */
   static esp_err_t write(const std::string &key, const std::string &value);
 
-  /*
+  /**
    * @brief Writes a key-value pair to the NVS storage
    *
    * @param key The key to write
@@ -50,7 +50,7 @@ public:
    */
   static esp_err_t read(const std::string &key, char *value, uint32_t len);
 
-  /*
+  /**
    * @brief Reads the error_count value from the NVS storage
    *
    * @note If the error_count value does not exist, it will be created with a
@@ -64,7 +64,7 @@ public:
    */
   static esp_err_t read_error_count(uint32_t *value);
 
-  /*
+  /**
    * @brief Erases the NVS storage
    */
   static void erase_nvs();

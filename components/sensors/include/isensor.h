@@ -1,6 +1,11 @@
 #pragma once
 #include <esp_err.h>
 
+/**
+ * @brief
+ * Sensor interface class
+ *
+ */
 class ISensor {
 public:
   virtual ~ISensor() = default;

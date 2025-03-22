@@ -27,7 +27,6 @@ enum class EventType {
   SLEEP_UNTIL_BUTTON_PRESS,
   SLEEP_UNTIL_NEXT_PERIOD,
   SLEEP_UNTIL_NEXT_TIMING,
-  // Add more event types as needed
 };
 
 /**
@@ -75,8 +74,8 @@ private:
   EventManager &operator=(const EventManager &) = delete;
 
   struct Subscription {
-    int id;
-    EventCallback callback;
+    int id;                 /*!< ID for the subscription */
+    EventCallback callback; /*!< Function that gets registered */
   };
 
   std::map<EventType, std::vector<Subscription>> _subscribers;

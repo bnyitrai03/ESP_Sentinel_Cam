@@ -14,7 +14,7 @@ constexpr int LOG_SIZE{256};
  */
 class MQTT {
 public:
-  /*
+  /**
    * Registers a callback function to be called when the MQTT client is
    * deinitialized. Read the static config values from the storage and
    * initialize the MQTT client.
@@ -144,7 +144,7 @@ private:
   static void handle_header_ack_message(const char *topic, const char *data,
                                         uint32_t len);
 
-  /*
+  /**
    * @brief Validate, save and load the new configuration
    *
    * @note This function is called when a new configuration message is received

@@ -4,6 +4,11 @@
 #include "freertos/FreeRTOS.h"
 #include "myadc.h"
 
+/**
+ * @brief
+ * Battery charge sensor class
+ *
+ */
 class BatteryCharge : public Adc {
 public:
   BatteryCharge() : Adc(ADC_CHANNEL_0, ADC_UNIT_1, 0.3f) {
@@ -13,7 +18,7 @@ public:
   } // ADC1_CHANNEL_0 = GPIO_NUM_1, 0.3V offset
 
 protected:
-  /*
+  /**
    * @brief
    * Converts the raw ADC reading to a battery percentage value.
    *

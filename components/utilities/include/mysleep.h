@@ -13,6 +13,7 @@ constexpr uint64_t OVERHEAD =
     BOOT_TIME_US + SHUTDOWN_TIME_US + WAKEUP_DELAY_US + FLASH_READY_DELAY_US;
 
 /**
+ * @fn void mysleep(Time wake_up)
  * @brief Puts the device to sleep until the specified time.
  *
  * @param wake_up The time to wake up at in HH:MM:SS format.
@@ -23,6 +24,7 @@ constexpr uint64_t OVERHEAD =
 void mysleep(Time wake_up);
 
 /**
+ * @fn void mysleep(uint64_t period)
  * @brief Puts the device to sleep until the next period.
  *
  * @param period The active period from the static config in seconds.

@@ -11,7 +11,7 @@
 class Camera {
 public:
   Camera() { ESP_LOGE("Camera", "This constructor is not supported"); };
-  /*
+  /**
    * @brief Constructor for the Camera class
    *
    * @param qr_reader_app: true if the QR reader app is running and false
@@ -57,17 +57,17 @@ public:
    */
   uint32_t get_image_size() { return _fb->len; }
 
-  /*
+  /**
    * @return The width of the captured image
    */
   int32_t get_width() { return _width; }
 
-  /*
+  /**
    * @return The height of the captured image
    */
   int32_t get_height() { return _height; }
 
-  /*
+  /**
    * @return The camera mode: GRAY or JPEG
    */
   const char *get_camera_mode() { return _camera_mode.c_str(); }

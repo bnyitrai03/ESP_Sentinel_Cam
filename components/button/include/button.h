@@ -5,6 +5,9 @@
 #include "freertos/queue.h"
 #include <atomic>
 
+/**
+ * @brief Button class that handles button press and release events
+ */
 class Button {
 public:
   struct ButtonState {
@@ -13,25 +16,25 @@ public:
     bool is_pressed;
   };
 
-  /*
-   * Install the button ISR and start the button task
+  /**
+   * @brief Install the button ISR and start the button task
    */
   Button();
   ~Button();
 
-  /*
-   * Stop the button task
+  /**
+   * @brief Stop the button task
    */
   void stop();
 
 private:
-  /*
+  /**
    * @brief Task that handles the button press and release events
    *
    * @param arg Button object
    */
   static void button_task(void *arg);
-  /*
+  /**
    * @brief ISR handler that sends the current button press time to the button
    * task
    *
@@ -39,7 +42,7 @@ private:
    */
   static void IRAM_ATTR gpio_isr_handler(void *arg);
 
-  /*
+  /**
    * @brief Waits for a button event
    *
    * @param button Button object
@@ -48,7 +51,7 @@ private:
    * @return true if an event was received, false otherwise
    */
   static bool wait_for_button_event(Button *button, uint32_t *current_time);
-  /*
+  /**
    * @brief Decide whether the button was pressed or released
    *
    * @param button Button object
@@ -57,7 +60,7 @@ private:
    */
   static void handle_button_state_change(Button *button, uint32_t current_time,
                                          ButtonState *state);
-  /*
+  /**
    * @brief Handle the button press event
    *
    * @param button Button object
@@ -66,7 +69,7 @@ private:
    */
   static void handle_button_press(Button *button, uint32_t current_time,
                                   ButtonState *state);
-  /*
+  /**
    * @brief Publish an event to the event queue when the button is released
    *
    * @param button Button object

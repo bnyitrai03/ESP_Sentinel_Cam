@@ -4,6 +4,11 @@
 #include <ArduinoJson.h>
 #include <string>
 
+/**
+ * @brief
+ * HTTP client class for sending GET request
+ *
+ */
 class HTTPClient {
 public:
   /**

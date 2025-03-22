@@ -3,6 +3,11 @@
 #include "driver/temperature_sensor.h"
 #include "isensor.h"
 
+/**
+ * @brief
+ * CPU temperature sensor class
+ *
+ */
 class CpuTemp : public ISensor {
 public:
   CpuTemp() = default;
@@ -12,7 +17,7 @@ public:
     }
   };
 
-  /*
+  /**
    * @brief
    * Initializes the CPU temperature sensor.
    *
@@ -21,7 +26,7 @@ public:
    *
    */
   esp_err_t init() override;
-  /*
+  /**
    * @brief
    * Reads the CPU temperature.
    *
@@ -30,7 +35,7 @@ public:
    *
    */
   esp_err_t read() override;
-  /*
+  /**
    * @brief
    * Returns the CPU temperature.
    *

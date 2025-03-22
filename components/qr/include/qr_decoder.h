@@ -4,9 +4,12 @@
 #include "quirc.h"
 #include <memory>
 
+/**
+ * @brief Handles the QR decoding
+ */
 class QRDecoder {
 public:
-  /*
+  /**
    * @brief
    * Constructor to initialize the QR decoder.
    *
@@ -25,7 +28,7 @@ public:
   QRDecoder(const QRDecoder &) = delete;
   QRDecoder &operator=(const QRDecoder &) = delete;
 
-  /*
+  /**
    * @brief
    * Function to decode the QR code from the camera frame.
    *
@@ -45,7 +48,7 @@ public:
   bool decode_frame(const camera_fb_t *frame);
 
 private:
-  /*
+  /**
    * @brief
    * Function to save the decoded data to the storage.
    *

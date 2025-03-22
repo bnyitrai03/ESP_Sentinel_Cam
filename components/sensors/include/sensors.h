@@ -6,16 +6,21 @@
 #include <map>
 #include <memory>
 
+/**
+ * @brief
+ * Sensors class
+ *
+ */
 class Sensors {
 public:
-  /*
+  /**
    * @brief
    * Instantiate the Sensors
    *
    */
   Sensors();
 
-  /*
+  /**
    * @brief
    * Initialize the sensors
    *
@@ -24,7 +29,7 @@ public:
    *
    */
   esp_err_t init();
-  /*
+  /**
    * @brief
    * Read the sensor values
    *
