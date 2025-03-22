@@ -1,4 +1,4 @@
 Battery Charge Sensor
 ======================
 
-.. include-build-file:: _inc/battery_charge.h
+.. include-build-file:: inc/battery_charge.h

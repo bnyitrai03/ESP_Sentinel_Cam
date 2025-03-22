@@ -1,4 +1,4 @@
 Sensor Interface
 =================
 
-.. include-build-file:: _inc/isensor.h
+.. include-build-file:: inc/isensor.h

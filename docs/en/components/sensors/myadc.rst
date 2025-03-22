@@ -1,4 +1,4 @@
 ADC
 ====
 
-.. include-build-file:: _inc/myadc.h
+.. include-build-file:: inc/myadc.h
