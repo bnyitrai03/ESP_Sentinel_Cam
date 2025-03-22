@@ -4,19 +4,18 @@ Software Components
 .. todo::
     Add more detailed comments describing the software components.
 
-This section describes the implemented software components of the project.
+**This section describes the implemented software components of the project.**
 
 .. toctree::
-     :hidden:
 
-    main
+    main/index
+    communication/index
+    sensors/index
+    storage/index
+    utilities/index
     camera
-    utilities
     mytime
-    communication
-    storage
     button
     event
     led
     qr
-    sensors
