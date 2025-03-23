@@ -22,14 +22,19 @@ public:
 
   /**
    * @brief Initializes the ADC handle and channel.
+   * @return ESP_OK on success, ESP_FAIL otherwise
+   * @note This function is called once for each ADC channel.
    */
   esp_err_t init() override;
   /**
    * @brief Reads the ADC value from the channel.
+   * @return ESP_OK on success, ESP_FAIL otherwise
+   * @note This function is called periodically to read the sensor value.
    */
   esp_err_t read() override;
   /**
    * @brief Returns the sensor value.
+   * @return Sensor value
    */
   float get_value() const override;
 
