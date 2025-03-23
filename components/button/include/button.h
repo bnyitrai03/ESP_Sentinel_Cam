@@ -10,10 +10,13 @@
  */
 class Button {
 public:
+  /**
+   * @brief State of the button
+   */
   struct ButtonState {
-    uint32_t press_start_time;
-    int last_state;
-    bool is_pressed;
+    uint32_t press_start_time; /*!< When the button was pressed */
+    int last_state;            /*!< Last state of the button */
+    bool is_pressed;           /*!< Whether the button is pressed */
   };
 
   /**

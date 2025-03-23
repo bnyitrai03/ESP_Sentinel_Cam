@@ -10,6 +10,13 @@
  */
 class Adc : public ISensor {
 public:
+  /**
+   * @brief Constructor
+   *
+   * @param channel ADC channel
+   * @param unit ADC unit
+   * @param offset Offset value
+   */
   Adc(adc_channel_t channel, adc_unit_t unit = ADC_UNIT_1, float offset = 0.0f);
   virtual ~Adc();
 
@@ -29,6 +36,8 @@ public:
 protected:
   /**
    * @brief Converts the raw ADC reading to a sensor value.
+   * @param raw_value Raw ADC reading
+   * @return Sensor value
    */
   virtual float convert_adc_reading(int raw_value) = 0;
 

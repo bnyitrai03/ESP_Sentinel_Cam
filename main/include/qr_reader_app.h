@@ -7,6 +7,13 @@
 #include <atomic>
 #include <memory>
 
+/**
+ * @brief
+ * QRReaderApp class is a singleton class that is responsible for running the QR
+ * code reader application. It initializes and runs the QR code reader
+ * application.
+ *
+ */
 class QRReaderApp {
 public:
   /**
@@ -36,7 +43,7 @@ public:
    *
    */
   void start();
-  /*
+  /**
    * @brief
    * Stop the QR code reader application.
    *
@@ -46,7 +53,7 @@ public:
 private:
   QRReaderApp();
 
-  /*
+  /**
    * @brief
    * Task function to run the QR code reader application.
    *
@@ -59,7 +66,7 @@ private:
    */
   static void qr_task(void *arg);
 
-  /*
+  /**
    * @brief Run the QR code reader application.
    *
    * The QR code reader uses the following steps:
@@ -79,7 +86,7 @@ private:
    */
   void run();
 
-  /*
+  /**
    * @brief
    * Task function to decode the QR code.
    *
@@ -93,7 +100,7 @@ private:
    */
   static void qr_decode_task(void *arg);
 
-  /*
+  /**
    * @brief
    * Function to get the WiFi and server information from the QR code.
    *
@@ -106,11 +113,30 @@ private:
    */
   void get_qr_code();
 
+  /**
+   * @brief
+   * Function to get the static configuration from the server.
+   *
+   * The function sends a GET request to the server to get the static
+   * configuration. The function runs until the static configuration is received
+   * or a shutdown is requested.
+   *
+   */
   void get_static_config();
 
+  /**
+   * @brief
+   * Function to save the static configuration.
+   *
+   * The function saves the static configuration to the storage.
+   *
+   * @param doc
+   * Static configuration in JSON format.
+   *
+   */
   void save_static_config(const JsonDocument &doc);
 
-  /*
+  /**
    * @brief Structure to pass the task context to the QR code decoder task
    * function
    *

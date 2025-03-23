@@ -14,7 +14,7 @@
 #include <ArduinoJson.h>
 #include <atomic>
 
-/*
+/**
  * @brief
  * CameraApp class is a singleton class that is responsible for running the
  * camera application. It initializes and
@@ -94,7 +94,7 @@ private:
    */
   bool capture_and_send_image();
 
-  /*
+  /**
    * @brief
    * Publishes the JSON document to the given MQTT topic.
    *
@@ -124,7 +124,7 @@ private:
    *
    */
   esp_err_t send_image();
-  /*
+  /**
    * @brief
    * Calculates the maximum time to wait for receiving an acknowledgement.
    *
