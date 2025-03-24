@@ -1,5 +1,5 @@
-Main Component
-===============
+Main
+=====
 
 .. toctree::
 

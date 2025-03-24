@@ -94,7 +94,7 @@ void Camera::set_camera_mode(framesize_t &size, pixformat_t &format,
     if (Storage::read("cameraMode", camera_mode, sizeof(camera_mode)) !=
         ESP_OK) {
       ESP_LOGE(TAG, "Failed to read camera mode from NVS");
-      restart();
+      ESP_LOGW(TAG, "Camera mode set to default: GRAY");
     }
     std::string camera_mode_str(camera_mode);
 
@@ -119,7 +119,7 @@ esp_err_t Camera::take_image() {
   // flush the old frame buffer
   _fb = esp_camera_fb_get();
   if (!_fb) {
-    ESP_LOGE(TAG, "Failed to flush old image");
+    ESP_LOGE(TAG, "Failed to capture image");
     return ESP_FAIL;
   }
   esp_camera_fb_return(_fb);

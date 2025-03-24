@@ -1,5 +1,5 @@
-Sensor components
-==================
+Sensors
+========
 .. toctree::
     isensor
     sensors

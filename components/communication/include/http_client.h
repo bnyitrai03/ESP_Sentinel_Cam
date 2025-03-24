@@ -17,8 +17,7 @@ public:
    *
    * @param url The URL to send the request to
    * @param response JSON document to store the response
-   * @return esp_err_t
-   *
+   * @return
    *                  - ESP_OK on success
    *
    *                  - ESP_FAIL on failure

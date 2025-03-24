@@ -1,4 +1,3 @@
-// unity-app/main/test_app_main.c
 #include "unity.h"
 
 static void print_banner(const char* text)
@@ -9,11 +8,10 @@ static void print_banner(const char* text)
 void app_main(void)
 {
     print_banner("Unity test runner");
-    printf("Total test count: %d\n", unity_get_test_count());
+    printf("Total test count: %d\n\n", unity_get_test_count());
 
     UNITY_BEGIN();
-    unity_run_all_tests();
+    unity_run_menu();
     UNITY_END();
 
-    unity_run_menu();
 }

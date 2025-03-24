@@ -1,5 +1,5 @@
-Communication components
-========================
+Communication
+==============
 
 .. toctree::
     mqtt
