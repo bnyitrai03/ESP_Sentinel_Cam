@@ -30,6 +30,30 @@ enum class EventType {
 };
 
 /**
+ * @brief Utility function to convert EventType to string
+ * @param type The EventType to convert
+ * @return const char* String representation of the EventType
+ */
+inline const char *event_type_to_string(EventType type) {
+  switch (type) {
+  case EventType::BUTTON_PRESSED:
+    return "BUTTON_PRESSED";
+  case EventType::STOP_BUTTON:
+    return "STOP_BUTTON";
+  case EventType::RESET:
+    return "RESET";
+  case EventType::SLEEP_UNTIL_BUTTON_PRESS:
+    return "SLEEP_UNTIL_BUTTON_PRESS";
+  case EventType::SLEEP_UNTIL_NEXT_PERIOD:
+    return "SLEEP_UNTIL_NEXT_PERIOD";
+  case EventType::SLEEP_UNTIL_NEXT_TIMING:
+    return "SLEEP_UNTIL_NEXT_TIMING";
+  default:
+    return "UNKNOWN_EVENT";
+  }
+}
+
+/**
  * @brief Callback function type for event handlers
  */
 using EventCallback = std::function<void(EventType)>;

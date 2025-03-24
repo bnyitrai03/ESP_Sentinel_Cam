@@ -38,16 +38,17 @@ Button::Button() {
 }
 
 Button::~Button() {
-  gpio_isr_handler_remove(button_pin);
+  if (gpio_isr_handler_remove(button_pin) != ESP_OK) {
+    ESP_LOGE(TAG, "Failed to remove ISR handler for GPIO %d", button_pin);
+  }
+  gpio_uninstall_isr_service();
+
   if (event_queue) {
     vQueueDelete(event_queue);
     event_queue = nullptr;
   }
 
-  if (_task_handle != nullptr) {
-    vTaskDelete(_task_handle);
-    _task_handle = nullptr;
-  }
+  stop();
 }
 
 void Button::stop() {
@@ -81,11 +82,7 @@ void Button::button_task(void *arg) {
     handle_button_state_change(button, current_time, &state);
   }
 
-  if (button->_task_handle != nullptr) {
-    vTaskDelete(button->_task_handle);
-    ESP_LOGI(TAG, "Button task deleted itself");
-    button->_task_handle = nullptr;
-  }
+  button->stop();
 }
 
 bool Button::wait_for_button_event(Button *button, uint32_t *current_time) {

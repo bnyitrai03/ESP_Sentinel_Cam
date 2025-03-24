@@ -43,8 +43,8 @@ int EventManager::subscribe(EventType type, EventCallback callback) {
   _subscribers[type].push_back({id, callback});
 
   xSemaphoreGive(_mutex);
-  ESP_LOGD(TAG, "Subscribed to event type %d with ID %d",
-           static_cast<int>(type), id);
+  ESP_LOGD(TAG, "Subscribed to event type %s with ID %d",
+           event_type_to_string(type), id);
   return id;
 }
 
@@ -56,9 +56,9 @@ void EventManager::publish(EventType type) {
 
   BaseType_t result = xQueueSend(_eventQueue, &type, pdMS_TO_TICKS(100));
   if (result != pdTRUE) {
-    ESP_LOGW(TAG, "Failed to queue event %d", static_cast<int>(type));
+    ESP_LOGW(TAG, "Failed to queue event %s", event_type_to_string(type));
   } else {
-    ESP_LOGI(TAG, "Event %d queued successfully", static_cast<int>(type));
+    ESP_LOGI(TAG, "Event %s queued successfully", event_type_to_string(type));
   }
 }
 
