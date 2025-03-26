@@ -3,7 +3,6 @@
 #include "driver/gpio.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include <functional>
 
 constexpr gpio_num_t LED_PIN = GPIO_NUM_21;
 

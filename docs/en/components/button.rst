@@ -1,14 +1,14 @@
 Button
 =======
-When the device is in deep sleep mode, the button can be used to wake up the device.
+In deep sleep mode, the button serves as a wake-up trigger for the device.
 
-When the device is operating normally, a short button press (less than 2.5 seconds) will put the device in deep sleep mode. The device will wake up when the button is pressed again.
+During normal operation, a short button press (less than 2.5 seconds) transitions the device into deep sleep mode. The device exits deep sleep and resumes operation upon the next button press.
 
-In the normal operation mode, a long button press will reset the device. Then the device will boot in ``QR Reader mode``.
+In normal operation mode, a long button press initiates a system reset, after which the device boots into ``QR Reader mode``.
 
-The button is connected to **GPIO21** on the ESP32-S3. 
+The button is interfaced with **GPIO21** on the ESP32-S3 microcontroller.
 
-The button is debounced in hardware and active low.
+Hardware-based debouncing is implemented for the button, and it operates in an active-low configuration.
 
 .. todo::
     Add test for button wake up from deep sleep.

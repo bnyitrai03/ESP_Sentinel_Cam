@@ -20,7 +20,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install esp-docs==2.0.1 sphinx breathe sphinx-copybutton
+          pip install esp-docs sphinx breathe sphinx-copybutton
           sudo apt-get update
           sudo apt-get install -y doxygen
 
