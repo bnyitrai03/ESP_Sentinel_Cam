@@ -111,6 +111,17 @@ esp_err_t Camera::start() {
     ESP_LOGE(TAG, "Camera Init Failed");
     restart();
   }
+
+  // Configure image rotation (180 degrees)
+  sensor_t *sensor = esp_camera_sensor_get();
+  if (sensor) {
+    sensor->set_vflip(sensor, 1);
+    sensor->set_hmirror(sensor, 1);
+  } else {
+    ESP_LOGE(TAG, "Failed to set camera rotation");
+    err = ESP_FAIL;
+  }
+
   gpio_set_level(CAM_PIN_PWDN, 0); // Power on the camera
   return err;
 }
