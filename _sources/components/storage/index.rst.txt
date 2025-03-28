@@ -1,0 +1,6 @@
+Storage
+========
+
+.. toctree::
+    storage
+    config
