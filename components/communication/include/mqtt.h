@@ -15,6 +15,12 @@ constexpr int LOG_SIZE{256};
 class MQTT {
 public:
   /**
+   * @brief Helper class to test private methods of the MQTT class
+   *
+   */
+  friend class MQTTTestHelper;
+
+  /**
    * Registers a callback function to be called when the MQTT client is
    * deinitialized. Read the static config values from the storage and
    * initialize the MQTT client.
@@ -136,26 +142,21 @@ private:
    * @note This function is called when a header acknowledgment message is
    * received
    *
-   * @param topic The topic of the acknowledgment message
-   * @param data The data of the acknowledgment message
+   * @param ack_msg The data of the acknowledgment message
    * @param len The length of the acknowledgment message data
    *
    */
-  static void handle_header_ack_message(const char *topic, const char *data,
-                                        uint32_t len);
+  static void handle_header_ack_message(const char *ack_msg, uint32_t len);
 
   /**
    * @brief Validate, save and load the new configuration
    *
    * @note This function is called when a new configuration message is received
    *
-   * @param data The data of the new configuration message
-   * @param len The length of the new configuration message data
    * @param doc The JSON document containing the new configuration
    *
    */
-  static void handle_new_config(const char *data, uint32_t len,
-                                JsonDocument &doc);
+  static void handle_new_config(JsonDocument &doc);
 
   static esp_mqtt_client_config_t _config;
   static esp_mqtt_client_handle_t _client;

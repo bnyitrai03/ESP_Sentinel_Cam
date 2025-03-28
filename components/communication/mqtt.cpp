@@ -113,7 +113,7 @@ void MQTT::event_handler(void *handler_args, esp_event_base_t base,
     break;
   case MQTT_EVENT_DATA:
     if (strncmp(event->topic, _imageack_topic, event->topic_len) == 0) {
-      handle_header_ack_message(event->topic, event->data, event->data_len);
+      handle_header_ack_message(event->data, event->data_len);
     }
 
     if (strncmp(event->topic, _config_topic, event->topic_len) == 0) {
@@ -131,7 +131,7 @@ void MQTT::event_handler(void *handler_args, esp_event_base_t base,
         xSemaphoreGive(_config_semaphore);
         ESP_LOGI(TAG, "Received config-ok message!");
       } else {
-        handle_new_config(event->data, event->data_len, config);
+        handle_new_config(config);
       }
     }
     break;
@@ -181,14 +181,13 @@ bool MQTT::wait_for_header_ack(const char *timestamp, uint32_t timeout) {
          pdTRUE;
 }
 
-void MQTT::handle_header_ack_message(const char *topic, const char *data,
-                                     uint32_t len) {
+void MQTT::handle_header_ack_message(const char *ack_msg, uint32_t len) {
   if (len > TIMESTAMP_SIZE) {
     ESP_LOGE(TAG, "Received timestamp is too long!");
     return;
   }
   char received_timestamp[TIMESTAMP_SIZE] = {0};
-  strncpy(received_timestamp, data, len);
+  strncpy(received_timestamp, ack_msg, len);
 
   if (strcmp(received_timestamp, _expected_timestamp) == 0) {
     xSemaphoreGive(_ack_header_semaphore);
@@ -201,16 +200,17 @@ void MQTT::handle_header_ack_message(const char *topic, const char *data,
   }
 }
 
-void MQTT::handle_new_config(const char *data, uint32_t len,
-                             JsonDocument &doc) {
-  std::string config(data, len);
-
+void MQTT::handle_new_config(JsonDocument &doc) {
   if (Config::validate(doc)) {
-    esp_err_t err = Storage::write("dynamic_config", config.c_str());
+    std::string config;
+    serializeJson(doc, config);
+
+    esp_err_t err = Storage::write("dynamic_config", config);
     if (err != ESP_OK) {
       ESP_LOGE(TAG, "Failed to write new config to storage!");
       restart();
     }
+
     Config::load_config(doc);
     ESP_LOGI(TAG, "New config loaded!");
     _new_config_received = true;
