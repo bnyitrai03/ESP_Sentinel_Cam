@@ -26,34 +26,11 @@ Flowchart
 
 The following flowchart represents the main logic of the application:
 
-.. blockdiag::
+.. figure:: ../../../_static/qr_app_flowchart.png
+        :align: center
+        :alt: Flowchart depicting the ``QR Reader App``
 
-    A [label = "Start Application"];
-    B [label = "Initialize Camera"];
-    C [label = "Run QR Code Decoding Task"];
-    D [label = "Extract WiFi Credentials"];
-    E [label = "Connect to WiFi"];
-    F [label = "Fetch Static Configuration"];
-    G [label = "Retry Connection"];
-    H [label = "Save Configuration"];
-    I [label = "Retry Fetching Config"];
-    J [label = "Restart Device"];
-    K [label = "Start Camera App"];
-    L [label = "Signal Success on LED"];
-
-    A -> B;
-    B -> C;
-    C -> D [label = "QR Code Found"];
-    C -> C [label = "QR Code Not Found"];
-    D -> E;
-    E -> F [label = "Success"];
-    E -> G [label = "Failure"];
-    F -> H [label = "Success"];
-    F -> I [label = "Failure"];
-    H -> L;
-    L -> J;
-    J -> K;
-
+        Flowchart depicting the ``QR Reader App``
 
 Error Handling
 ---------------
