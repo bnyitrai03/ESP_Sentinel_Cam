@@ -199,5 +199,6 @@ void QRReaderApp::save_static_config(const JsonDocument &doc) {
   Storage::write("configTopic", doc["healthReportRespTopic"].as<std::string>());
   Storage::write("logTopic", doc["logTopic"].as<std::string>());
   Storage::write("cameraMode", doc["cameraMode"].as<std::string>());
+
   ESP_LOGI(TAG, "Static configuration saved!");
 }
