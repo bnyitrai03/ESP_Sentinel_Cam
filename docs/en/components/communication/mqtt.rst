@@ -2,11 +2,11 @@ MQTT
 ======
 The camera device communicates with the **Sentinel system** using this MQTT component.
 
-.. figure:: ../../_static/mqtt_comms.png
-    :align: center
-    :alt: MQTT communication with the **Sentinel system**
+.. figure:: ../../../_static/mqtt_comms.png
+        :align: center
+        :alt: MQTT communication with the **Sentinel system**
 
-MQTT communication with the **Sentinel system**
+        MQTT communication with the **Sentinel system**
 
 The communication topics are:
 
