@@ -28,6 +28,7 @@ The following flowchart represents the main logic of the application:
 
 .. figure:: ../../../_static/qr_app_flowchart.png
         :align: center
+        :scale: 80%
         :alt: Flowchart depicting the ``QR Reader App``
 
         Flowchart depicting the ``QR Reader App``
@@ -47,5 +48,7 @@ External Dependencies
 - `ArduinoJson <https://github.com/bblanchon/ArduinoJson>`_
 
 - `quirc <https://github.com/dlbeer/quirc>`_
+
+- `esp32-camera <https://github.com/espressif/esp32-camera>`_
 
 .. include-build-file:: inc/qr_reader_app.inc
