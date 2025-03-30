@@ -1,6 +1,6 @@
 Camera App
 ===========
-The CameraApp class is a singleton responsible for running the camera application on the ESP32-S3 device. It handles:
+The ``Camera App`` is responsible for running the image capturing application on the ESP32-S3 device. It handles:
 
 - Initializing all necessary components (WiFi, MQTT, sensors, camera)
 
@@ -30,7 +30,6 @@ The following flowchart represents the main logic of the application:
 
 .. figure:: ../../../_static/camera_app_flowchart.png
         :align: center
-        :scale: 80%
         :alt: Flowchart depicting the ``Camera App``
 
         Flowchart depicting the ``Camera App``
