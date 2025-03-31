@@ -1,3 +1,3 @@
-idf_component_register(SRCS "led.cpp"
+idf_component_register(SRCS "rgb_led.cpp" "led.cpp"
                     INCLUDE_DIRS "include"
-                    REQUIRES driver)
+                    REQUIRES driver esp_driver_ledc)
