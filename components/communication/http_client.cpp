@@ -2,7 +2,7 @@
 #include "esp_log.h"
 #include <memory>
 
-static const char *TAG = "HTTPClient";
+constexpr auto *TAG = "HTTPClient";
 
 esp_err_t HTTPClient::get_config(const char *url, JsonDocument &response) {
   esp_http_client_config_t config = {
