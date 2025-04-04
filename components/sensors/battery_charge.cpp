@@ -2,46 +2,52 @@
 #include "esp_log.h"
 #include <cmath>
 
-auto constexpr TAG = "BatteryCharge";
+constexpr auto *TAG = "BatteryCharge";
 
-float BatteryCharge::convert_adc_reading(int raw_value) {
-  // divider with 10k:10k ratio doubles the measurable range
-  const float VOLTAGE_DIVIDER_RATIO = 2.0f;
-  // Convert ADC reading to voltage and account for voltage divider
-  float measured_voltage =
-      (raw_value / ADC_MAX) * V_MAX * VOLTAGE_DIVIDER_RATIO + _offset;
+BatteryCharge::BatteryCharge(BatteryManager &battery_manager)
+    : _battery_manager(battery_manager), _charge_percentage(-1.0f) {}
 
-  // Lookup tables for voltage to percentage conversion
-  const float voltages[] = {4.2f, 4.1f,  4.0f,  3.9f,  3.82f, 3.75f, 3.72f,
-                            3.7f, 3.68f, 3.65f, 3.62f, 3.55f, 3.4f,  3.0f};
-  const float percentages[] = {100.0f, 95.0f, 90.0f, 85.0f, 80.0f, 70.0f, 60.0f,
-                               50.0f,  40.0f, 30.0f, 20.0f, 15.0f, 10.0f, 0.0f};
-  const int table_size = sizeof(voltages) / sizeof(voltages[0]);
+esp_err_t BatteryCharge::init() { return _battery_manager.init(); }
 
-  // Find the closest voltage in the lookup table
-  float battery_percentage = 0.0f;
+esp_err_t BatteryCharge::read() {
+  float voltage = 0.0f;
+  esp_err_t ret = _battery_manager.get_battery_voltage(&voltage);
+  if (ret != ESP_OK) {
+    ESP_LOGE(TAG, "Failed to read battery voltage: %s", esp_err_to_name(ret));
+    return ret;
+  }
 
-  if (measured_voltage >=
-      voltages[0]) { // If voltage is higher than the highest
-    battery_percentage = percentages[0];
-  } else if (measured_voltage <=
-             voltages[table_size - 1]) { // If voltage is lower than the lowest
-    battery_percentage = percentages[table_size - 1];
-  } else {
-    // Linear interpolation between voltage points
-    for (int i = 0; i < table_size - 1; i++) {
-      if (measured_voltage <= voltages[i] &&
-          measured_voltage > voltages[i + 1]) {
-        float voltage_diff = voltages[i] - voltages[i + 1];
-        float percentage_diff = percentages[i] - percentages[i + 1];
-        float ratio = (measured_voltage - voltages[i + 1]) / voltage_diff;
-        battery_percentage = percentages[i + 1] + (ratio * percentage_diff);
-        break;
-      }
+  _charge_percentage = calculate_percentage_from_voltage(voltage);
+  return ESP_OK;
+}
+
+float BatteryCharge::calculate_percentage_from_voltage(float voltage) {
+  if (voltage >= _voltages[0]) {
+    return _percentages[0];
+  }
+
+  if (voltage <= _voltages[_table_size - 1]) {
+    return _percentages[_table_size - 1];
+  }
+
+  for (size_t i = 0; i < _table_size - 1; ++i) {
+    if (voltage <= _voltages[i] && voltage > _voltages[i + 1]) {
+      // Calculate interpolation ratio
+      float voltage_range = _voltages[i] - _voltages[i + 1];
+      float percentage_range = _percentages[i] - _percentages[i + 1];
+      float position_in_range = (voltage - _voltages[i + 1]) / voltage_range;
+
+      // Interpolate and round to 2 decimal places
+      float interpolated_percentage =
+          _percentages[i + 1] + (position_in_range * percentage_range);
+      float rounded_percentage =
+          std::round(interpolated_percentage * 100) / 100;
+
+      ESP_LOGI(TAG, "Battery: %.1f%%", rounded_percentage);
+      return rounded_percentage;
     }
   }
 
-  ESP_LOGI(TAG, "ADC: %d, Voltage: %.2fV, Battery: %.1f%%", raw_value,
-           measured_voltage, battery_percentage);
-  return std::round(battery_percentage * 100) / 100;
+  // This line should theoretically never be reached due to edge case checks
+  return -1.0f;
 }

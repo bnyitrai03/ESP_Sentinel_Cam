@@ -1,5 +1,7 @@
 #pragma once
 
+#include "battery_manager.h"
+#include "i2c_manager.h"
 #include "isensor.h"
 #include <ArduinoJson.h>
 #include <esp_err.h>
@@ -44,4 +46,6 @@ public:
 
 private:
   std::map<std::string, std::unique_ptr<ISensor>> _sensors;
+  I2CManager _i2c_manager;
+  BatteryManager _battery_manager;
 };

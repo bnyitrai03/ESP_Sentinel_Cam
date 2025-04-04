@@ -5,6 +5,6 @@
     "batteryCharge": 90,
     "batteryTemp": 25,
     "cpuTemp": 30,
-    "luminosity": 3000, // luxban kéne talán?
-    "chargeCurrent": 400 // napelem általi töltőáram mA-ben
+    "luminosity": 3000,
+    "chargeCurrent": 400
 }
