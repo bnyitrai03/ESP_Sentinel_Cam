@@ -85,6 +85,6 @@ private:
   TaskHandle_t _task_handle = nullptr;
   bool running = false;
   static constexpr uint32_t LONG_PRESS_TIME = pdMS_TO_TICKS(2500);
-  const gpio_num_t button_pin = GPIO_NUM_48;
+  const gpio_num_t button_pin = GPIO_NUM_21;
   QueueHandle_t event_queue = nullptr;
 };

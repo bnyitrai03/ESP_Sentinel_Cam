@@ -4,7 +4,7 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
-constexpr gpio_num_t LED_PIN = GPIO_NUM_21;
+constexpr gpio_num_t LED_PIN = GPIO_NUM_38;
 
 /**
  * @brief

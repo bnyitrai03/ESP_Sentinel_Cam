@@ -42,9 +42,8 @@ void mysleep(uint64_t period) {
 
 void button_press_sleep() {
   isolate_gpio();
-  // esp_sleep_disable_wakeup_source(ESP_SLEEP_WAKEUP_TIMER);
-  // esp_sleep_enable_ext0_wakeup(GPIO_NUM_48, 0); // OOF
-  esp_sleep_enable_timer_wakeup(10000000);
+  esp_sleep_disable_wakeup_source(ESP_SLEEP_WAKEUP_TIMER);
+  esp_sleep_enable_ext0_wakeup(GPIO_NUM_21, 0);
   esp_deep_sleep_start();
 }
 
@@ -55,24 +54,20 @@ void isolate_gpio() {
   rtc_gpio_isolate(GPIO_NUM_4);  // CAM_PIN_SIOD
   rtc_gpio_isolate(GPIO_NUM_5);  // CAM_PIN_SIOC
 
-  rtc_gpio_isolate(GPIO_NUM_10); // CAM_PIN_D7
-  rtc_gpio_isolate(GPIO_NUM_16); // CAM_PIN_D6
-  rtc_gpio_isolate(GPIO_NUM_11); // CAM_PIN_D5
-  rtc_gpio_isolate(GPIO_NUM_17); // CAM_PIN_D4
-  rtc_gpio_isolate(GPIO_NUM_12); // CAM_PIN_D3
-  rtc_gpio_isolate(GPIO_NUM_18); // CAM_PIN_D2
-  rtc_gpio_isolate(GPIO_NUM_13); // CAM_PIN_D1
-  rtc_gpio_isolate(GPIO_NUM_8);  // CAM_PIN_D0
+  rtc_gpio_isolate(GPIO_NUM_11); // CAM_PIN_D7
+  rtc_gpio_isolate(GPIO_NUM_15); // CAM_PIN_D6
+  rtc_gpio_isolate(GPIO_NUM_10); // CAM_PIN_D5
+  rtc_gpio_isolate(GPIO_NUM_16); // CAM_PIN_D4
+  rtc_gpio_isolate(GPIO_NUM_9);  // CAM_PIN_D3
+  rtc_gpio_isolate(GPIO_NUM_17); // CAM_PIN_D2
+  rtc_gpio_isolate(GPIO_NUM_8);  // CAM_PIN_D1
+  rtc_gpio_isolate(GPIO_NUM_18); // CAM_PIN_D0
 
-  rtc_gpio_isolate(GPIO_NUM_15); // CAM_PIN_VSYNC
+  rtc_gpio_isolate(GPIO_NUM_13); // CAM_PIN_VSYNC
   rtc_gpio_isolate(GPIO_NUM_6);  // CAM_PIN_HREF
-  rtc_gpio_isolate(GPIO_NUM_9);  // CAM_PIN_PCLK
-
+  rtc_gpio_isolate(GPIO_NUM_12); // CAM_PIN_PCLK
+  
   // Isolate LED pin
   gpio_set_level(LED_PIN, 0);
   rtc_gpio_isolate(LED_PIN);
-
-  // Isolate ADC pins
-  rtc_gpio_isolate(GPIO_NUM_1); // ADC1_CHANNEL_0
-  rtc_gpio_isolate(GPIO_NUM_2); // ADC1_CHANNEL_1
 }

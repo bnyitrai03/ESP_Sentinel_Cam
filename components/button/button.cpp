@@ -12,8 +12,10 @@ Button::Button() {
   event_queue = xQueueCreate(1, sizeof(uint32_t));
   running = true;
 
-  // TODO
-  // rtc_gpio_deinit(button_pin); Doesn't work yet
+  if (esp_reset_reason() == ESP_RST_DEEPSLEEP) {
+    rtc_gpio_deinit(button_pin);
+  }
+
   gpio_config_t io_conf = {.pin_bit_mask = (1ULL << button_pin),
                            .mode = GPIO_MODE_INPUT,
                            .pull_up_en = GPIO_PULLUP_ENABLE,
