@@ -8,6 +8,7 @@ BatteryManager::BatteryManager(I2CManager &i2c)
 
 BatteryManager::~BatteryManager() {
   if (_initialized) {
+    this->disable_ADC();
     i2c_master_bus_rm_device(_device_handle);
   }
 }
@@ -20,8 +21,8 @@ esp_err_t BatteryManager::init() {
   i2c_master_bus_handle_t bus_handle = _i2c.get_bus_handle();
   i2c_device_config_t dev_cfg = {
       .dev_addr_length = I2C_ADDR_BIT_LEN_7,
-      .device_address = BQ25622_ADDR,
-      .scl_speed_hz = 400000,
+      .device_address = I2C_DEVICE_ADDRESS_NOT_USED,
+      .scl_speed_hz = 100000,
   };
 
   esp_err_t err =
@@ -34,7 +35,9 @@ esp_err_t BatteryManager::init() {
   // Probe device to check if it's connected
   _i2c.probe(BQ25622_ADDR);
 
+  // Enable ADC
   _initialized = true;
+  this->enable_ADC();
   ESP_LOGI(TAG, "BatteryManager initialized successfully");
   return ESP_OK;
 }
@@ -44,8 +47,25 @@ esp_err_t BatteryManager::write_register(uint8_t reg, uint8_t data) {
     return ESP_ERR_INVALID_STATE;
   }
 
-  uint8_t write_buf[2] = {reg, data};
-  return _i2c.write(_device_handle, write_buf, 2);
+  // Prepare the I2C data to write
+  uint8_t address = (BQ25622_ADDR << 1); // LSB = 0 for write
+  uint8_t write_data[3] = {address, reg, data};
+
+  // BQ25622 single register write operation sequence
+  i2c_operation_job_t write[] = {
+      {.command = I2C_MASTER_CMD_START},
+      {.command = I2C_MASTER_CMD_WRITE,
+       .write = {.ack_check = true, .data = write_data, .total_bytes = 3}},
+      {.command = I2C_MASTER_CMD_STOP},
+  };
+
+  esp_err_t err =
+      i2c_master_execute_defined_operations(_device_handle, write, 3, 5000);
+  if (err != ESP_OK) {
+    ESP_LOGE(TAG, "Failed to write register 0x%02X: %s", reg,
+             esp_err_to_name(err));
+  }
+  return err;
 }
 
 esp_err_t BatteryManager::read_register(uint8_t reg, uint16_t *data) {
@@ -53,15 +73,82 @@ esp_err_t BatteryManager::read_register(uint8_t reg, uint16_t *data) {
     return ESP_ERR_INVALID_STATE;
   }
 
-  uint8_t read_buf[2];
-  uint8_t write_buf = reg;
+  uint8_t read_address = (BQ25622_ADDR << 1 | 1); // LSB = 1 for read
+  uint8_t write_address = (BQ25622_ADDR << 1);    // LSB = 0 for write
+
+  uint8_t write_data[2] = {write_address, reg};
+  uint8_t read_data[2] = {};
+  *data = 0;
+
+  i2c_operation_job_t read[] = {
+      // write register address
+      {.command = I2C_MASTER_CMD_START},
+      {.command = I2C_MASTER_CMD_WRITE,
+       .write = {.ack_check = true, .data = write_data, .total_bytes = 2}},
+
+      // write read command
+      {.command = I2C_MASTER_CMD_START},
+      {.command = I2C_MASTER_CMD_WRITE,
+       .write = {.ack_check = true, .data = &read_address, .total_bytes = 1}},
+
+      // read data
+      {.command = I2C_MASTER_CMD_READ,
+       .read = {.ack_value = I2C_ACK_VAL,
+                .data = &read_data[0],
+                .total_bytes = 1}},
+      {.command = I2C_MASTER_CMD_READ,
+       // after last byte there is NACK
+       .read = {.ack_value = I2C_NACK_VAL,
+                .data = &read_data[1],
+                .total_bytes = 1}},
+      {.command = I2C_MASTER_CMD_STOP},
+  };
+
   esp_err_t err =
-      _i2c.write_and_read(_device_handle, &write_buf, 1, read_buf, 2);
-  if (err == ESP_OK) {
-    *data = (read_buf[1] << 8) | read_buf[0]; // Little-endian format
+      i2c_master_execute_defined_operations(_device_handle, read, 7, 5000);
+
+  if (err != ESP_OK) {
+    ESP_LOGE(TAG, "Failed to read register 0x%02X: %s", reg,
+             esp_err_to_name(err));
+    return err;
   }
+
+  // Combine the two bytes into a single 16-bit value
+  *data = (read_data[1] << 8) | read_data[0]; // little endian
   return err;
 }
+
+void BatteryManager::enable_ADC() {
+  uint16_t adc_control = 0;
+  esp_err_t err = read_register(REG_ADC_CONTROL, &adc_control);
+  if (err != ESP_OK) {
+    ESP_LOGE(TAG, "Failed to read the ADC register: %s", esp_err_to_name(err));
+    return;
+  }
+
+  adc_control =
+      (adc_control | ADC_ENABLE | ADC_AVG | ADC_AVG_INIT) & ADC_SAMPLE;
+  err = write_register(REG_ADC_CONTROL, adc_control);
+  if (err != ESP_OK) {
+    ESP_LOGE(TAG, "Failed to write the ADC control register: %s",
+             esp_err_to_name(err));
+  }
+}
+
+void BatteryManager::disable_ADC() {
+  uint16_t adc_control = 0;
+  esp_err_t err = read_register(REG_ADC_CONTROL, &adc_control);
+  if (err == ESP_OK) {
+    adc_control &= ~ADC_ENABLE;
+    err = write_register(REG_ADC_CONTROL, adc_control);
+  }
+
+  if (err != ESP_OK) {
+    ESP_LOGE(TAG, "Failed to disable ADC: %s", esp_err_to_name(err));
+  }
+}
+
+// ---------------------------- Sensor Functions -----------------------
 
 esp_err_t BatteryManager::get_battery_voltage(float *voltage) {
   uint16_t raw_value;

@@ -16,6 +16,7 @@ esp_err_t BatteryTemp::read() {
   }
 
   _temperature = convert_to_degrees(_temperature);
+  ESP_LOGI(TAG, "Battery temperature: %.1f °C", _temperature);
   return ESP_OK;
 }
 
@@ -28,6 +29,7 @@ float BatteryTemp::convert_to_degrees(float percentage) {
     return max_temp;
   }
 
+  // TODO: Calculate this more accurately
   // Linear interpolation
   float temperature =
       min_temp + ((percentage - min_percent) * (max_temp - min_temp)) /

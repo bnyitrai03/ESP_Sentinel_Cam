@@ -55,6 +55,11 @@ public:
    */
   esp_err_t get_charge_current(int16_t *current);
 
+  /**
+   * @brief Disable the ADC in the BQ25622
+   */
+  void disable_ADC();
+
 private:
   /**
    * @brief Read a register from the BQ25622
@@ -74,15 +79,28 @@ private:
    */
   esp_err_t write_register(uint8_t reg, uint8_t data);
 
+  /**
+   * @brief Enable the ADC in the BQ25622
+   */
+  void enable_ADC();
+
   I2CManager &_i2c;
   i2c_master_dev_handle_t _device_handle;
   bool _initialized;
 
   // BQ25622 I2C Address
-  const uint16_t BQ25622_ADDR = 0x6B;
+  const uint8_t BQ25622_ADDR = 0x6B;
 
   // BQ25622 Register Map
-  const uint16_t REG_VBAT_READ = 0x30;
-  const uint16_t REG_TEMP_READ = 0x34;
-  const uint16_t REG_CHARGE_CURRENT = 0x2A;
+  const uint8_t REG_ADC_CONTROL = 0x26;
+  const uint8_t REG_VBAT_READ = 0x30;
+  const uint8_t REG_TEMP_READ = 0x34;
+  const uint8_t REG_CHARGE_CURRENT = 0x2A;
+
+  // ADC config bits
+  const uint8_t ADC_ENABLE = 0x80;
+  const uint8_t ADC_AVG = 0x08;
+  const uint8_t ADC_AVG_INIT = 0x04;
+  const uint8_t ADC_SAMPLE = 0xDF; // 11 bit effective resolution
+  const uint8_t ADC_RATE = 0x40;   // one shot mode
 };

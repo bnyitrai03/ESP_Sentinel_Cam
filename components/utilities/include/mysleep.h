@@ -57,3 +57,10 @@ void button_press_sleep();
  * deep sleep.
  */
 void isolate_gpio();
+
+/**
+ * @brief Configures the button wake-up source.
+ *
+ * This function configures the button as a wake-up source for deep sleep.
+ */
+void configure_button_wake_up();

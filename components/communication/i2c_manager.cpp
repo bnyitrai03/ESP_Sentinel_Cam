@@ -97,9 +97,11 @@ void I2CManager::probe(uint16_t address, int timeout) {
 
   case ESP_ERR_TIMEOUT:
     ESP_LOGE(TAG, "The I2C bus is busy or crashed");
+    break;
 
   case ESP_OK:
     ESP_LOGI(TAG, "Device 0x%02X connected!", address);
+    break;
 
   default:
     ESP_LOGE(TAG, "Unknown error!");

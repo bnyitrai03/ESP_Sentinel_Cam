@@ -10,6 +10,8 @@ esp_err_t ChargeCurrent::init() { return _battery_manager.init(); }
 
 esp_err_t ChargeCurrent::read() {
   esp_err_t err = _battery_manager.get_charge_current(&_charge_current);
+  ESP_LOGI(TAG, "Charge current: %d mA", _charge_current);
+
   if (err != ESP_OK) {
     ESP_LOGE(TAG, "Failed to read charge current: %d", err);
     return err;
