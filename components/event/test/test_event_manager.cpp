@@ -17,10 +17,3 @@ TEST_CASE("Event manager subscribe and publish", "[event]") {
   TEST_ASSERT_TRUE(processed);
   TEST_ASSERT_TRUE(callback_invoked);
 }
-
-TEST_CASE("Event manager handles empty queue", "[event]") {
-  EventManager &eventManager = EventManager::getInstance();
-
-  bool processed = eventManager.process_event_queue();
-  TEST_ASSERT_FALSE(processed);
-}

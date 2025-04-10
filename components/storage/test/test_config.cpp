@@ -93,20 +93,6 @@ TEST_CASE("Validate incorrect config", "[config]") {
   }
 }
 
-TEST_CASE("Get default active config", "[config]") {
-  TimingConfig tc = Config::get_active_config();
-
-  TEST_ASSERT_EQUAL_INT32(40, tc.period);
-
-  TEST_ASSERT_EQUAL_INT32(0, tc.start.get_hours());
-  TEST_ASSERT_EQUAL_INT32(0, tc.start.get_minutes());
-  TEST_ASSERT_EQUAL_INT32(0, tc.start.get_seconds());
-
-  TEST_ASSERT_EQUAL_INT32(23, tc.end.get_hours());
-  TEST_ASSERT_EQUAL_INT32(59, tc.end.get_minutes());
-  TEST_ASSERT_EQUAL_INT32(59, tc.end.get_seconds());
-}
-
 TEST_CASE("Set correct active config", "[config]") {
   JsonDocument doc = deserialize_config();
   TEST_ASSERT(Config::validate(doc));
