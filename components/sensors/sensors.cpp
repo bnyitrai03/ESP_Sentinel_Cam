@@ -16,7 +16,7 @@ Sensors::Sensors()
   _sensors["chargeCurrent"] = std::make_unique<ChargeCurrent>(_battery_manager);
   _sensors["batteryTemp"] = std::make_unique<BatteryTemp>(_battery_manager);
   _sensors["cpuTemp"] = std::make_unique<CpuTemp>();
-  //_sensors["luminosity"] = std::make_unique<LightSensor>(_i2c_manager);
+  _sensors["luminosity"] = std::make_unique<LightSensor>(_i2c_manager);
 }
 
 esp_err_t Sensors::init() {
@@ -35,13 +35,7 @@ esp_err_t Sensors::init() {
     esp_err_t err = sensor->init();
     if (err != ESP_OK) {
       ESP_LOGE(TAG, "Failed to initialize sensor: %s", name.c_str());
-      sensors_to_remove.push_back(name);
     }
-  }
-
-  for (const auto &name : sensors_to_remove) {
-    _sensors.erase(name);
-    ESP_LOGW(TAG, "Removing sensor: %s", name.c_str());
   }
 
   return ESP_OK;

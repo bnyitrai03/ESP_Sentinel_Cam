@@ -4,7 +4,9 @@
 constexpr auto *TAG = "BatteryTemp";
 
 BatteryTemp::BatteryTemp(BatteryManager &battery_manager)
-    : _battery_manager(battery_manager), _temperature(0.0f) {}
+    : _battery_manager(battery_manager), _temperature(0.0f) {
+  esp_log_level_set("temperature_sensor", ESP_LOG_WARN);
+}
 
 esp_err_t BatteryTemp::init() { return _battery_manager.init(); }
 

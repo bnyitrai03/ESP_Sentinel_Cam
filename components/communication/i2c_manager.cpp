@@ -3,7 +3,9 @@
 
 constexpr auto *TAG = "I2C Manager";
 
-I2CManager::I2CManager() : _initialized(false) {}
+I2CManager::I2CManager() : _initialized(false) {
+  esp_log_level_set("sccb-ng", ESP_LOG_WARN);
+}
 
 I2CManager::~I2CManager() {
   if (_initialized) {

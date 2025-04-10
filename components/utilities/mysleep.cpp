@@ -81,6 +81,7 @@ void isolate_gpio() {
   rtc_gpio_isolate(GPIO_NUM_12); // CAM_PIN_PCLK
 
   // Isolate LED pin
-  gpio_set_level(LED_PIN, 0);
-  gpio_hold_en(LED_PIN);
+  gpio_set_direction(LED_PIN, GPIO_MODE_INPUT);
+  gpio_pullup_dis(LED_PIN);
+  gpio_pulldown_dis(LED_PIN);
 }

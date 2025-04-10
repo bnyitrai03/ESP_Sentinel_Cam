@@ -10,10 +10,6 @@ Led::Pattern Led::current_pattern = Led::Pattern::OFF;
 SemaphoreHandle_t Led::pattern_mutex = xSemaphoreCreateMutex();
 
 Led::Led() {
-  if (esp_reset_reason() == ESP_RST_DEEPSLEEP) {
-    gpio_hold_dis(LED_PIN);
-  }
-
   gpio_config_t io_conf = {};
   io_conf.intr_type = GPIO_INTR_DISABLE;
   io_conf.mode = GPIO_MODE_OUTPUT;

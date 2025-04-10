@@ -38,7 +38,6 @@ esp_err_t BatteryManager::init() {
   // Enable ADC
   _initialized = true;
   this->enable_ADC();
-  ESP_LOGI(TAG, "BatteryManager initialized successfully");
   return ESP_OK;
 }
 

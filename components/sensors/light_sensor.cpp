@@ -5,8 +5,6 @@
 
 constexpr auto *TAG = "Light Sensor";
 
-// TODO: might need to change measurement time to 100 ms
-
 LightSensor::LightSensor(I2CManager &i2c)
     : _i2c(i2c), _device_handle(nullptr) {}
 
@@ -31,43 +29,99 @@ esp_err_t LightSensor::init() {
     return err;
   }
 
-  // Configure sensor for single shot mode with auto range and 800ms conversion
-  uint16_t config = OPT3005_CONFIG_RANGE_AUTO | OPT3005_CONFIG_CONV_TIME_800MS |
-                    OPT3005_CONFIG_SINGLE_SHOT;
-  err = write_register(OPT3005_CONFIG_REG, config);
-  if (err != ESP_OK) {
-    ESP_LOGE(TAG, "Failed to configure sensor: %s", esp_err_to_name(err));
-    return err;
-  }
-
   _i2c.probe(OPT3005_ADDRESS);
+
+  this->configure_sensor();
 
   ESP_LOGI(TAG, "OPT3005 light sensor initialized successfully");
   return ESP_OK;
 }
 
 esp_err_t LightSensor::read_register(uint8_t reg, uint16_t *value) {
-  esp_err_t err;
-  uint8_t write_buf = reg;
-  uint8_t read_buf[2];
+  uint8_t write_address = (OPT3005_ADDRESS << 1);    // LSB = 0 for write
+  uint8_t read_address = (OPT3005_ADDRESS << 1) | 1; // LSB = 1 for read
 
-  err = _i2c.write_and_read(_device_handle, &write_buf, 1, read_buf, 2);
+  uint8_t write_data[2] = {write_address, reg};
+  uint8_t read_data[2] = {};
+  *value = 0;
+
+  i2c_operation_job_t read[] = {
+      // write register address
+      {.command = I2C_MASTER_CMD_START},
+      {.command = I2C_MASTER_CMD_WRITE,
+       .write = {.ack_check = true, .data = write_data, .total_bytes = 2}},
+      {.command = I2C_MASTER_CMD_STOP},
+
+      // send read command
+      {.command = I2C_MASTER_CMD_START},
+      {.command = I2C_MASTER_CMD_WRITE,
+       .write = {.ack_check = true, .data = &read_address, .total_bytes = 1}},
+
+      // read data
+      {.command = I2C_MASTER_CMD_READ,
+       .read = {.ack_value = I2C_ACK_VAL,
+                .data = &read_data[0],
+                .total_bytes = 1}},
+      {.command = I2C_MASTER_CMD_READ,
+       // after last byte there is NACK
+       .read = {.ack_value = I2C_NACK_VAL,
+                .data = &read_data[1],
+                .total_bytes = 1}},
+  };
+
+  esp_err_t err =
+      i2c_master_execute_defined_operations(_device_handle, read, 7, 5000);
   if (err != ESP_OK) {
+    ESP_LOGE(TAG, "Failed to read register 0x%02X: %s", reg,
+             esp_err_to_name(err));
     return err;
   }
 
-  // OPT3005 uses MSB first format
-  *value = (read_buf[0] << 8) | read_buf[1];
-  return ESP_OK;
+  // Combine the two bytes into a single 16-bit value
+  *value = (read_data[0] << 8) | read_data[1]; // big endian
+  return err;
 }
 
 esp_err_t LightSensor::write_register(uint8_t reg, uint16_t value) {
-  uint8_t write_buf[3];
-  write_buf[0] = reg;
-  write_buf[1] = (value >> 8) & 0xFF; // MSB
-  write_buf[2] = value & 0xFF;        // LSB
+  // Prepare the I2C data to write
+  uint8_t address = OPT3005_ADDRESS << 1; // LSB = 0 for write
+  uint8_t data_low = value & 0xFF;
+  uint8_t data_high = (value >> 8) & 0xFF;
+  uint8_t write_data[4] = {address, reg, data_high, data_low};
 
-  return _i2c.write(_device_handle, write_buf, 3);
+  // OPT3005 single register write operation sequence
+  i2c_operation_job_t write[] = {
+      {.command = I2C_MASTER_CMD_START},
+      {.command = I2C_MASTER_CMD_WRITE,
+       .write = {.ack_check = true, .data = write_data, .total_bytes = 4}},
+      {.command = I2C_MASTER_CMD_STOP},
+  };
+
+  esp_err_t err =
+      i2c_master_execute_defined_operations(_device_handle, write, 4, 5000);
+  if (err != ESP_OK) {
+    ESP_LOGE(TAG, "Failed to write register 0x%02X: %s", reg,
+             esp_err_to_name(err));
+  }
+  return err;
+}
+
+void LightSensor::configure_sensor() {
+  uint16_t config;
+  esp_err_t err = read_register(OPT3005_CONFIG_REG, &config);
+  if (err != ESP_OK) {
+    ESP_LOGE(TAG, "Failed to read config register: %s", esp_err_to_name(err));
+    return;
+  }
+
+  // Configure sensor for single shot mode with auto range and 100ms conversion
+  config = (OPT3005_CONFIG_RANGE_AUTO | OPT3005_CONFIG_SINGLE_SHOT) &
+           OPT3005_CONFIG_CONV_TIME_100MS;
+
+  err = write_register(OPT3005_CONFIG_REG, config);
+  if (err != ESP_OK) {
+    ESP_LOGE(TAG, "Failed to write config values: %s", esp_err_to_name(err));
+  }
 }
 
 esp_err_t LightSensor::read() {
@@ -84,7 +138,7 @@ esp_err_t LightSensor::read() {
 
   if (!(config_reg & OPT3005_CONFIG_CONV_READY)) {
     ESP_LOGW(TAG, "Conversion not ready");
-    vTaskDelay(pdMS_TO_TICKS(800)); // Max conversion time
+    vTaskDelay(pdMS_TO_TICKS(100)); // Max conversion time
   }
 
   err = read_register(OPT3005_RESULT_REG, &result_reg);
