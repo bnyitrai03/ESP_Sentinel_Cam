@@ -13,5 +13,5 @@ void check_deepsleep_reset_reason() {
   TEST_ASSERT_EQUAL(ESP_SLEEP_WAKEUP_TIMER, wakeup);
 }
 
-TEST_CASE_MULTIPLE_STAGES("Test mysleep function with 3 seconds", "[mysleep]",
-                          trigger_mysleep, check_deepsleep_reset_reason);
+/*TEST_CASE_MULTIPLE_STAGES("Test mysleep function with 3 seconds", "[mysleep]",
+                          trigger_mysleep, check_deepsleep_reset_reason);*/

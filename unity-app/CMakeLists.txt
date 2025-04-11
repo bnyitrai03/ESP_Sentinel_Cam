@@ -10,4 +10,4 @@ set(EXTRA_COMPONENT_DIRS "$ENV{IDF_PATH}/tools/unit-test-app/components" "../com
 set(TEST_COMPONENTS "button" "camera" "communication" "event" "led" "mytime" "qr" "sensors" "storage" "utilities")
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
-project(example_test_app)
+project(sentinel_cam_test_app)

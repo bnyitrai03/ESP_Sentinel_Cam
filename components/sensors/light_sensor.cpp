@@ -33,8 +33,7 @@ esp_err_t LightSensor::init() {
 
   this->configure_sensor();
 
-  ESP_LOGI(TAG, "OPT3005 light sensor initialized successfully");
-  return ESP_OK;
+  return err;
 }
 
 esp_err_t LightSensor::read_register(uint8_t reg, uint16_t *value) {
