@@ -29,7 +29,7 @@ The following flowchart represents the main logic of the application:
 .. figure:: ../../../_static/qr_app_flowchart.png
         :align: center
         :scale: 80%
-        :alt: Flowchart depicting the ``QR Reader App``
+        :alt: Image missing
 
         Flowchart depicting the ``QR Reader App``
 

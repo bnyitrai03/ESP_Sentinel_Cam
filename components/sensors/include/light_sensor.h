@@ -57,20 +57,27 @@ private:
    */
   esp_err_t write_register(uint8_t reg, uint16_t value);
 
+  /**
+   * @brief Configures the sensor settings.
+   * Sets the sensor to single-shot mode with auto range and 100ms conversion
+   * time.
+   */
+  void configure_sensor();
+
   I2CManager &_i2c;
   i2c_master_dev_handle_t _device_handle;
   float _light_value = -1.0f;
 
-  // OPT3005 I2C address (0x45)
-  const uint16_t OPT3005_ADDRESS = 0x45;
+  // OPT3005 I2C address
+  const uint8_t OPT3005_ADDRESS = 0x45;
 
   // OPT3005 register addresses
-  const uint16_t OPT3005_RESULT_REG = 0x00;
-  const uint16_t OPT3005_CONFIG_REG = 0x01;
+  const uint8_t OPT3005_RESULT_REG = 0x00;
+  const uint8_t OPT3005_CONFIG_REG = 0x01;
 
   // OPT3005 configuration bits
   const uint16_t OPT3005_CONFIG_RANGE_AUTO = 0xC000;
-  const uint16_t OPT3005_CONFIG_CONV_TIME_800MS = 0x0800;
+  const uint16_t OPT3005_CONFIG_CONV_TIME_100MS = 0xF7FF;
   const uint16_t OPT3005_CONFIG_SINGLE_SHOT = 0x0100;
   const uint16_t OPT3005_CONFIG_OVF = 0x0100;
   const uint16_t OPT3005_CONFIG_CONV_READY = 0x0080;

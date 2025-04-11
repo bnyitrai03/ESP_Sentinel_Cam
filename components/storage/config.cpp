@@ -10,7 +10,7 @@
 constexpr auto *TAG = "Config";
 
 std::vector<TimingConfig> Config::_timing;
-std::vector<TimingConfig>::iterator Config::_active;
+std::vector<TimingConfig>::iterator Config::_active = Config::_timing.end();
 char Config::_uuid[40] = {0};
 
 void Config::load_config(JsonDocument &doc) {
@@ -96,7 +96,7 @@ TimingConfig Config::get_default_active_config() {
 }
 
 TimingConfig Config::get_active_config() {
-  if (_active != _timing.end()) {
+  if (!_timing.empty() && _active != _timing.end()) {
     return *_active;
   } else {
     ESP_LOGE(TAG, "No active config found!");

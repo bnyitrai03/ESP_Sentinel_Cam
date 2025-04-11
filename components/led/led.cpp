@@ -1,5 +1,5 @@
 #include "led.h"
-#include "driver/rtc_io.h"
+#include "driver/gpio.h"
 #include "esp_log.h"
 #include "esp_system.h"
 
@@ -10,11 +10,6 @@ Led::Pattern Led::current_pattern = Led::Pattern::OFF;
 SemaphoreHandle_t Led::pattern_mutex = xSemaphoreCreateMutex();
 
 Led::Led() {
-  // Reset the LED state if the device is waking up from deep sleep
-  if (esp_reset_reason() == ESP_RST_DEEPSLEEP) {
-    rtc_gpio_hold_dis(LED_PIN);
-  }
-
   gpio_config_t io_conf = {};
   io_conf.intr_type = GPIO_INTR_DISABLE;
   io_conf.mode = GPIO_MODE_OUTPUT;

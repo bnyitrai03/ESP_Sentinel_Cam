@@ -11,7 +11,7 @@ void app_main(void)
     printf("Total test count: %d\n\n", unity_get_test_count());
 
     UNITY_BEGIN();
-    unity_run_menu();
+    unity_run_all_tests();
     UNITY_END();
 
 }

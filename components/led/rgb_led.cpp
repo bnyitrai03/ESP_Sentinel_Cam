@@ -30,9 +30,9 @@ RGBLed::RGBLed() {
 
   // Reset the LED states if the device is waking up from deep sleep
   if (esp_reset_reason() == ESP_RST_DEEPSLEEP) {
-    rtc_gpio_hold_dis(RED_PIN);
-    rtc_gpio_hold_dis(GREEN_PIN);
-    rtc_gpio_hold_dis(BLUE_PIN);
+    gpio_hold_dis(RED_PIN);
+    gpio_hold_dis(GREEN_PIN);
+    gpio_hold_dis(BLUE_PIN);
   }
 
   // Initialize LEDC for PWM control

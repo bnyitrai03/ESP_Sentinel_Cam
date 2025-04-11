@@ -4,7 +4,7 @@ The camera device communicates with the **Sentinel system** using this MQTT comp
 
 .. figure:: ../../../_static/mqtt_comms.png
         :align: center
-        :alt: MQTT communication with the **Sentinel system**
+        :alt: Image missing
 
         MQTT communication with the **Sentinel system**
 

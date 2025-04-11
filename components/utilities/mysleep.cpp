@@ -21,6 +21,7 @@ void mysleep(Time wake_up) {
   } else {
     isolate_gpio();
     esp_sleep_enable_timer_wakeup(sleep_time_us);
+    configure_button_wake_up();
     esp_deep_sleep_start();
   }
 }
@@ -36,15 +37,27 @@ void mysleep(uint64_t period) {
     ESP_LOGW(TAG, "Deep sleep %lld seconds", sleep_time_us / 1000000);
     isolate_gpio();
     esp_sleep_enable_timer_wakeup(sleep_time_us);
+    configure_button_wake_up();
     esp_deep_sleep_start();
   }
 }
 
 void button_press_sleep() {
   isolate_gpio();
-  esp_sleep_disable_wakeup_source(ESP_SLEEP_WAKEUP_TIMER);
-  esp_sleep_enable_ext0_wakeup(GPIO_NUM_21, 0);
+
+  esp_sleep_disable_wakeup_source(ESP_SLEEP_WAKEUP_ALL);
+  configure_button_wake_up();
+
   esp_deep_sleep_start();
+}
+
+void configure_button_wake_up() {
+  // Configure GPIO21 as RTC IO for wakeup
+  rtc_gpio_init(GPIO_NUM_21);
+  rtc_gpio_set_direction(GPIO_NUM_21, RTC_GPIO_MODE_INPUT_ONLY);
+  rtc_gpio_pullup_en(GPIO_NUM_21);
+  rtc_gpio_pulldown_dis(GPIO_NUM_21);
+  esp_sleep_enable_ext0_wakeup(GPIO_NUM_21, 0);
 }
 
 void isolate_gpio() {
@@ -66,8 +79,9 @@ void isolate_gpio() {
   rtc_gpio_isolate(GPIO_NUM_13); // CAM_PIN_VSYNC
   rtc_gpio_isolate(GPIO_NUM_6);  // CAM_PIN_HREF
   rtc_gpio_isolate(GPIO_NUM_12); // CAM_PIN_PCLK
-  
+
   // Isolate LED pin
-  gpio_set_level(LED_PIN, 0);
-  rtc_gpio_isolate(LED_PIN);
+  gpio_set_direction(LED_PIN, GPIO_MODE_INPUT);
+  gpio_pullup_dis(LED_PIN);
+  gpio_pulldown_dis(LED_PIN);
 }

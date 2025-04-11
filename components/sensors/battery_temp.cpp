@@ -4,7 +4,9 @@
 constexpr auto *TAG = "BatteryTemp";
 
 BatteryTemp::BatteryTemp(BatteryManager &battery_manager)
-    : _battery_manager(battery_manager), _temperature(0.0f) {}
+    : _battery_manager(battery_manager), _temperature(0.0f) {
+  esp_log_level_set("temperature_sensor", ESP_LOG_WARN);
+}
 
 esp_err_t BatteryTemp::init() { return _battery_manager.init(); }
 
@@ -16,6 +18,7 @@ esp_err_t BatteryTemp::read() {
   }
 
   _temperature = convert_to_degrees(_temperature);
+  ESP_LOGI(TAG, "Battery temperature: %.1f °C", _temperature);
   return ESP_OK;
 }
 
@@ -28,6 +31,7 @@ float BatteryTemp::convert_to_degrees(float percentage) {
     return max_temp;
   }
 
+  // TODO: Calculate this more accurately
   // Linear interpolation
   float temperature =
       min_temp + ((percentage - min_percent) * (max_temp - min_temp)) /

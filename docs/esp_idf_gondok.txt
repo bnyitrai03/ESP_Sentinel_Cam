@@ -1,0 +1,3 @@
+Ha ez van az I2C-vel: https://github.com/espressif/esp-idf/issues/15599
+Akkor ez a megoldás:
+https://github.com/xiv3r/esp-idf/commit/757f776f9e4d43eb67f819823a1c0f4ab1f2c5fb

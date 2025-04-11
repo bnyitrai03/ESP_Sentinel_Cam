@@ -5,6 +5,7 @@
 #include "cpu_temp.h"
 #include "light_sensor.h"
 #include <esp_log.h>
+#include <vector>
 
 constexpr auto *TAG = "Sensors";
 
@@ -19,13 +20,24 @@ Sensors::Sensors()
 }
 
 esp_err_t Sensors::init() {
+  if (_i2c_manager.init() != ESP_OK) {
+    ESP_LOGE(TAG, "Failed to initialize I2C bus!");
+    return ESP_FAIL;
+  }
+
+  if (_battery_manager.init() != ESP_OK) {
+    ESP_LOGE(TAG, "Failed to initialize BatteryManager!");
+    return ESP_FAIL;
+  }
+
+  std::vector<std::string> sensors_to_remove;
   for (auto &[name, sensor] : _sensors) {
     esp_err_t err = sensor->init();
     if (err != ESP_OK) {
       ESP_LOGE(TAG, "Failed to initialize sensor: %s", name.c_str());
-      return err;
     }
   }
+
   return ESP_OK;
 }
 
@@ -39,5 +51,7 @@ esp_err_t Sensors::read_sensors(JsonDocument &doc) {
       doc[name] = 0;
     }
   }
+
+  _battery_manager.disable_ADC();
   return ESP_OK;
 }

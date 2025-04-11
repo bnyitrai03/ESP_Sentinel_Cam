@@ -18,6 +18,8 @@ esp_err_t BatteryCharge::read() {
   }
 
   _charge_percentage = calculate_percentage_from_voltage(voltage);
+  ESP_LOGI(TAG, "Battery voltage: %.2f V, Charge percentage: %.2f%%", voltage,
+           _charge_percentage);
   return ESP_OK;
 }
 
@@ -42,8 +44,6 @@ float BatteryCharge::calculate_percentage_from_voltage(float voltage) {
           _percentages[i + 1] + (position_in_range * percentage_range);
       float rounded_percentage =
           std::round(interpolated_percentage * 100) / 100;
-
-      ESP_LOGI(TAG, "Battery: %.1f%%", rounded_percentage);
       return rounded_percentage;
     }
   }
