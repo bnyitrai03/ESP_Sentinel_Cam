@@ -30,7 +30,7 @@ The following flowchart represents the main logic of the application:
 
 .. figure:: ../../../_static/camera_app_flowchart.png
         :align: center
-        :alt: Flowchart depicting the ``Camera App``
+        :alt: Image missing
 
         Flowchart depicting the ``Camera App``
 
@@ -73,7 +73,7 @@ An example image is:
 
 .. figure:: ../../../_static/GRAYSCALE.jpg
         :align: center
-        :alt: **GRAYSCALE** image
+        :alt: Image missing
 
         **GRAYSCALE** image
 
@@ -83,7 +83,7 @@ An example image is:
 
 .. figure:: ../../../_static/COLOR.jpg
         :align: center
-        :alt: **JPEG** image
+        :alt: Image missing
 
         **JPEG** image
 

@@ -5,7 +5,7 @@ The camera component uses the `esp32-camera <https://github.com/espressif/esp32-
 
 .. figure:: ../../../_static/OV5640.png
         :align: center
-        :alt: The `OV5640 <https://www.adafruit.com/product/5840>`_ camera board
+        :alt: Image missing
 
         The `OV5640 <https://www.adafruit.com/product/5840>`_ camera board
 
