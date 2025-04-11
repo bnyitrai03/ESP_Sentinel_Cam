@@ -28,7 +28,7 @@ INPUT = \
     $(PROJECT_PATH)/components/communication/include/mqtt.h \
     $(PROJECT_PATH)/components/communication/include/wifi.h \
     $(PROJECT_PATH)/components/communication/include/http_client.h \
-    $(PROJECT_PATH)/components/communication/include/i2c_manager \
+    $(PROJECT_PATH)/components/communication/include/i2c_manager.h \
     $(PROJECT_PATH)/components/utilities/include/mysleep.h \
     $(PROJECT_PATH)/components/utilities/include/error_handler.h \
     $(PROJECT_PATH)/components/event/include/event_manager.h \
