@@ -12,6 +12,8 @@ class ChargeCurrent : public ISensor {
 public:
   /**
    * @brief Construct a new ChargeCurrent object
+   *
+   * @param battery_manager Reference to the BatteryManager instance
    */
   ChargeCurrent(BatteryManager &battery_manager);
 

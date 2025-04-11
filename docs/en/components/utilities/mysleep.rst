@@ -20,6 +20,7 @@ Battery Voltage Current Drawn
 3.8 V           460 mA
 3.6 V           500 mA
 3.3 V           560 mA
+
 =============== ==============
 
 .. note:: 

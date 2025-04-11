@@ -3,7 +3,7 @@ Camera
 
 The camera component uses the `esp32-camera <https://github.com/espressif/esp32-camera>`_ driver to capture images using the `Adafruit OV5640 Camera Board <https://www.adafruit.com/product/5840>`_.
 
-.. figure:: ../../../_static/OV5640.png
+.. figure:: ../../_static/OV5640.png
         :align: center
         :alt: Image missing
 
@@ -30,6 +30,7 @@ D8              GPIO 10
 D9              GPIO 16
 PWDN            GPIO 14
 RESET           GPIO 42
+
 =============== ==============
 
 The camera in ``QR Reader mode`` takes 640x480 **Grayscale** images.
