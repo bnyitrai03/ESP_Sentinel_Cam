@@ -41,16 +41,16 @@ The health report JSON contains these key-value pairs:
 
 .. code-block:: json
 
-{
-    "timestamp": "2025-02-26T10:05:11Z",
-    "configId": "8D8AC610-566D-4EF0-9C22-186B2A5ED793",
-    "period": 40,
-    "batteryCharge": 90,
-    "batteryTemp": 25,
-    "cpuTemp": 30,
-    "luminosity": 3000,
-    "chargeCurrent": 400
-}
+        {
+        "timestamp": "2025-02-26T10:05:11Z",
+        "configId": "8D8AC610-566D-4EF0-9C22-186B2A5ED793",
+        "period": 40,
+        "batteryCharge": 90,
+        "batteryTemp": 25,
+        "cpuTemp": 30,
+        "luminosity": 3000,
+        "chargeCurrent": 400
+        }
 
 Image Header 
 -------------
@@ -58,11 +58,12 @@ Image Header
 The image header is sent before the image, the JSON is structured like:
 
 .. code-block:: json
-{
-    "timestamp": "2025-02-24T13:07:06Z",
-    "size": 4096000,
-    "mode": "GRAY"
-}
+        
+        {
+        "timestamp": "2025-02-24T13:07:06Z",
+        "size": 4096000,
+        "mode": "GRAY"
+        }
 
 Image
 ------
