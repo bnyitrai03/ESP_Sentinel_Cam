@@ -61,11 +61,14 @@ private:
    * @brief Configures the sensor settings.
    * Sets the sensor to single-shot mode with auto range and 100ms conversion
    * time.
+   *
+   * @return esp_err_t ESP_OK on success, error code otherwise.
    */
-  void configure_sensor();
+  esp_err_t configure_sensor();
 
   I2CManager &_i2c;
   i2c_master_dev_handle_t _device_handle;
+  bool _initialized;
   float _light_value = -1.0f;
 
   // OPT3005 I2C address

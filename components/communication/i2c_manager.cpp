@@ -39,10 +39,10 @@ esp_err_t I2CManager::init() {
   return err;
 }
 
-void I2CManager::probe(uint16_t address, int timeout) {
+esp_err_t I2CManager::probe(uint16_t address, int timeout) {
   if (!_initialized) {
     ESP_LOGE(TAG, "I2C manager not initialized");
-    return;
+    return ESP_FAIL;
   }
 
   esp_err_t err = i2c_master_probe(_bus_handle, address, timeout);
@@ -64,4 +64,6 @@ void I2CManager::probe(uint16_t address, int timeout) {
     ESP_LOGE(TAG, "Unknown error!");
     break;
   }
+
+  return err;
 }

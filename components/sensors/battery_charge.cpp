@@ -49,5 +49,6 @@ float BatteryCharge::calculate_percentage_from_voltage(float voltage) {
   }
 
   // This line should theoretically never be reached due to edge case checks
+  ESP_LOGE(TAG, "Voltage conversion error!");
   return -1.0f;
 }

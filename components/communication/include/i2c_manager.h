@@ -44,8 +44,10 @@ public:
    *
    * @param address The 7-bit I2C address of the device to probe.
    * @param timeout Operation timeout in milliseconds (default: 5000ms).
+   *
+   * @return ESP_OK if the device is found, otherwise an error code
    */
-  void probe(uint16_t address, int timeout = 5000);
+  esp_err_t probe(uint16_t address, int timeout = 5000);
 
 private:
   i2c_master_bus_handle_t _bus_handle;

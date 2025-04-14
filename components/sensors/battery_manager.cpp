@@ -7,9 +7,10 @@ BatteryManager::BatteryManager(I2CManager &i2c)
     : _i2c(i2c), _initialized(false) {}
 
 BatteryManager::~BatteryManager() {
+  i2c_master_bus_rm_device(_device_handle);
+
   if (_initialized) {
     this->disable_ADC();
-    i2c_master_bus_rm_device(_device_handle);
   }
 }
 
@@ -33,7 +34,9 @@ esp_err_t BatteryManager::init() {
   }
 
   // Probe device to check if it's connected
-  _i2c.probe(BQ25622_ADDR);
+  if (_i2c.probe(BQ25622_ADDR) != ESP_OK) {
+    return ESP_ERR_NOT_FOUND;
+  }
 
   // Enable ADC
   _initialized = true;
@@ -59,7 +62,7 @@ esp_err_t BatteryManager::write_register(uint8_t reg, uint8_t data) {
   };
 
   esp_err_t err =
-      i2c_master_execute_defined_operations(_device_handle, write, 3, 5000);
+      i2c_master_execute_defined_operations(_device_handle, write, 3, 1000);
   if (err != ESP_OK) {
     ESP_LOGE(TAG, "Failed to write register 0x%02X: %s", reg,
              esp_err_to_name(err));
@@ -104,7 +107,7 @@ esp_err_t BatteryManager::read_register(uint8_t reg, uint16_t *data) {
   };
 
   esp_err_t err =
-      i2c_master_execute_defined_operations(_device_handle, read, 7, 5000);
+      i2c_master_execute_defined_operations(_device_handle, read, 7, 1000);
 
   if (err != ESP_OK) {
     ESP_LOGE(TAG, "Failed to read register 0x%02X: %s", reg,
@@ -135,6 +138,10 @@ void BatteryManager::enable_ADC() {
 }
 
 void BatteryManager::disable_ADC() {
+  if (!_initialized) {
+    return;
+  }
+
   uint16_t adc_control = 0;
   esp_err_t err = read_register(REG_ADC_CONTROL, &adc_control);
   if (err == ESP_OK) {
@@ -150,6 +157,11 @@ void BatteryManager::disable_ADC() {
 // ---------------------------- Sensor Functions -----------------------
 
 esp_err_t BatteryManager::get_battery_voltage(float *voltage) {
+  *voltage = 0.0f;
+  if (!_initialized) {
+    return ESP_ERR_INVALID_STATE;
+  }
+
   uint16_t raw_value;
   esp_err_t err = read_register(REG_VBAT_READ, &raw_value);
   if (err != ESP_OK) {
@@ -165,6 +177,11 @@ esp_err_t BatteryManager::get_battery_voltage(float *voltage) {
 }
 
 esp_err_t BatteryManager::get_battery_temperature(float *percentage) {
+  *percentage = 0.0f;
+  if (!_initialized) {
+    return ESP_ERR_INVALID_STATE;
+  }
+
   uint16_t raw_value;
   esp_err_t err = read_register(REG_TEMP_READ, &raw_value);
   if (err != ESP_OK) {
@@ -179,6 +196,11 @@ esp_err_t BatteryManager::get_battery_temperature(float *percentage) {
 }
 
 esp_err_t BatteryManager::get_charge_current(int16_t *current) {
+  *current = 0;
+  if (!_initialized) {
+    return ESP_ERR_INVALID_STATE;
+  }
+
   uint16_t raw_value;
   esp_err_t err = read_register(REG_CHARGE_CURRENT, &raw_value);
   if (err != ESP_OK) {

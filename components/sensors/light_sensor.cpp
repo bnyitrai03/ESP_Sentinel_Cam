@@ -6,7 +6,7 @@
 constexpr auto *TAG = "Light Sensor";
 
 LightSensor::LightSensor(I2CManager &i2c)
-    : _i2c(i2c), _device_handle(nullptr) {}
+    : _i2c(i2c), _device_handle(nullptr), _initialized(false) {}
 
 LightSensor::~LightSensor() {
   if (_device_handle) {
@@ -19,7 +19,7 @@ esp_err_t LightSensor::init() {
 
   i2c_device_config_t dev_cfg = {
       .dev_addr_length = I2C_ADDR_BIT_LEN_7,
-      .device_address = OPT3005_ADDRESS,
+      .device_address = I2C_DEVICE_ADDRESS_NOT_USED,
       .scl_speed_hz = 400000,
   };
   err = i2c_master_bus_add_device(_i2c.get_bus_handle(), &dev_cfg,
@@ -29,10 +29,16 @@ esp_err_t LightSensor::init() {
     return err;
   }
 
-  _i2c.probe(OPT3005_ADDRESS);
+  if (_i2c.probe(OPT3005_ADDRESS) != ESP_OK) {
+    return ESP_ERR_NOT_FOUND;
+  }
 
-  this->configure_sensor();
+  if (this->configure_sensor() != ESP_OK) {
+    ESP_LOGE(TAG, "Failed to configure sensor");
+    return ESP_FAIL;
+  }
 
+  _initialized = true;
   return err;
 }
 
@@ -69,7 +75,7 @@ esp_err_t LightSensor::read_register(uint8_t reg, uint16_t *value) {
   };
 
   esp_err_t err =
-      i2c_master_execute_defined_operations(_device_handle, read, 7, 5000);
+      i2c_master_execute_defined_operations(_device_handle, read, 7, 1000);
   if (err != ESP_OK) {
     ESP_LOGE(TAG, "Failed to read register 0x%02X: %s", reg,
              esp_err_to_name(err));
@@ -97,7 +103,7 @@ esp_err_t LightSensor::write_register(uint8_t reg, uint16_t value) {
   };
 
   esp_err_t err =
-      i2c_master_execute_defined_operations(_device_handle, write, 4, 5000);
+      i2c_master_execute_defined_operations(_device_handle, write, 4, 1000);
   if (err != ESP_OK) {
     ESP_LOGE(TAG, "Failed to write register 0x%02X: %s", reg,
              esp_err_to_name(err));
@@ -105,12 +111,12 @@ esp_err_t LightSensor::write_register(uint8_t reg, uint16_t value) {
   return err;
 }
 
-void LightSensor::configure_sensor() {
+esp_err_t LightSensor::configure_sensor() {
   uint16_t config;
   esp_err_t err = read_register(OPT3005_CONFIG_REG, &config);
   if (err != ESP_OK) {
     ESP_LOGE(TAG, "Failed to read config register: %s", esp_err_to_name(err));
-    return;
+    return err;
   }
 
   // Configure sensor for single shot mode with auto range and 100ms conversion
@@ -121,9 +127,14 @@ void LightSensor::configure_sensor() {
   if (err != ESP_OK) {
     ESP_LOGE(TAG, "Failed to write config values: %s", esp_err_to_name(err));
   }
+  return err;
 }
 
 esp_err_t LightSensor::read() {
+  if (!_initialized) {
+    return ESP_FAIL;
+  }
+
   uint16_t result_reg;
   uint16_t config_reg;
   esp_err_t err;
