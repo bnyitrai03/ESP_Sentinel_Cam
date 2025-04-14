@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Led -  -  &mdash; ESP SENTINEL CAM Documentation main documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=a60756f2" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=949a1ff5" />
+      <link rel="stylesheet" type="text/css" href="../_static/theme_overrides.css?v=851bd809" />
+
+  
+    <link rel="canonical" href="https://bnyitrai03.github.io/ESP_Sentinel_Cam/components/led.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=d01aebe5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../_static/copybutton.js?v=ff8fa330"></script>
+    <script src="../_static/js/theme.js"></script>
+
+    
+        
+
+    <script type="text/javascript">
+        DOCUMENTATION_OPTIONS.PAGENAME = 'components/led';
+        DOCUMENTATION_OPTIONS.PROJECT_SLUG = '';
+        DOCUMENTATION_OPTIONS.LATEST_BRANCH_NAME = 'master';
+        DOCUMENTATION_OPTIONS.LANGUAGES = ["en"];
+        DOCUMENTATION_OPTIONS.RELEASE = 'main';
+        DOCUMENTATION_OPTIONS.LANGUAGE_URL = 'en';
+
+    </script>
+
+    <script type="text/javascript" src=""></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="QR Code Decoder" href="qr.html" />
+    <link rel="prev" title="Event Manager" href="event.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            ESP SENTINEL CAM Documentation
+              <img src="../_static/espressif-logo.svg" class="logo" alt="Logo"/>
+          </a>
+
+          
+
+          <div class="selectors">
+            <select id="version-select" style="width: 150px;" hidden>
+              <option value="" disabled selected>Choose version...</option>
+            </select>
+          </div>
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../documentation/index.html">Documentation tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Software Components</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="main/index.html">Main</a></li>
+<li class="toctree-l2"><a class="reference internal" href="communication/index.html">Communication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sensors/index.html">Sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="camera.html">Camera</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mytime.html">Time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="button.html">Button</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event.html">Event Manager</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Led</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#header-file">Header File</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#classes">Classes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qr.html">QR Code Decoder</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../todolist.html">TODO list</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ESP SENTINEL CAM Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Software Components</a></li>
+      <li class="breadcrumb-item active">Led</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/bnyitrai03/ESP_Sentinel_Cam/blob/main/docs/en/components/led.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="led">
+<h1>Led<a class="headerlink" href="#led" title="Permalink to this heading"></a></h1>
+<p>The LED is connected to <strong>GPIO48</strong> on the ESP32-S3. It is used to indicate the state of the software.</p>
+<div class="align-default"><img height="1000" src="../_images/blockdiag-a013c30cdb358a669f101f36f6fa0091dde90059.png" width="378" /></div>
+<section id="header-file">
+<h2>Header File<a class="headerlink" href="#header-file" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/ESP_Sentinel_Cam/blob/b0624cd/components/led/include/led.h">components/led/include/led.h</a></p></li>
+</ul>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv43Led">
+<span id="_CPPv33Led"></span><span id="_CPPv23Led"></span><span id="Led"></span><span class="target" id="classLed"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Led</span></span></span><a class="headerlink" href="#_CPPv43Led" title="Permalink to this definition"></a><br /></dt>
+<dd><p><a class="reference internal" href="#classLed"><span class="std std-ref">Led</span></a> class is responsible for controlling the LED on the device. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp enum-class">
+<dt class="sig sig-object cpp" id="_CPPv4N3Led7PatternE">
+<span id="_CPPv3N3Led7PatternE"></span><span id="_CPPv2N3Led7PatternE"></span><span class="target" id="classLed_1a198c17b7e398b68cafcff8d980d9494d"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Pattern</span></span></span><a class="headerlink" href="#_CPPv4N3Led7PatternE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>The pattern of the LED blinking. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3Led7Pattern3OFFE">
+<span id="_CPPv3N3Led7Pattern3OFFE"></span><span id="_CPPv2N3Led7Pattern3OFFE"></span><span class="target" id="classLed_1a198c17b7e398b68cafcff8d980d9494da88559a0cfd8250c9d65970cc145c92d4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OFF</span></span></span><a class="headerlink" href="#_CPPv4N3Led7Pattern3OFFE" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3Led7Pattern2ONE">
+<span id="_CPPv3N3Led7Pattern2ONE"></span><span id="_CPPv2N3Led7Pattern2ONE"></span><span class="target" id="classLed_1a198c17b7e398b68cafcff8d980d9494da90651ebea9a35ec4e018c8157492e17c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ON</span></span></span><a class="headerlink" href="#_CPPv4N3Led7Pattern2ONE" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3Led7Pattern16NO_QR_CODE_BLINKE">
+<span id="_CPPv3N3Led7Pattern16NO_QR_CODE_BLINKE"></span><span id="_CPPv2N3Led7Pattern16NO_QR_CODE_BLINKE"></span><span class="target" id="classLed_1a198c17b7e398b68cafcff8d980d9494dadf770a61ea8d82e25cc387b37b2b9651"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NO_QR_CODE_BLINK</span></span></span><a class="headerlink" href="#_CPPv4N3Led7Pattern16NO_QR_CODE_BLINKE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>1Hz = 1000 ms </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3Led7Pattern25STATIC_CONFIG_SAVED_BLINKE">
+<span id="_CPPv3N3Led7Pattern25STATIC_CONFIG_SAVED_BLINKE"></span><span id="_CPPv2N3Led7Pattern25STATIC_CONFIG_SAVED_BLINKE"></span><span class="target" id="classLed_1a198c17b7e398b68cafcff8d980d9494da49aadd41db98f1ca5990494268f18fcd"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">STATIC_CONFIG_SAVED_BLINK</span></span></span><a class="headerlink" href="#_CPPv4N3Led7Pattern25STATIC_CONFIG_SAVED_BLINKE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>2Hz = 500 ms </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3Led7Pattern20MQTT_CONNECTED_BLINKE">
+<span id="_CPPv3N3Led7Pattern20MQTT_CONNECTED_BLINKE"></span><span id="_CPPv2N3Led7Pattern20MQTT_CONNECTED_BLINKE"></span><span class="target" id="classLed_1a198c17b7e398b68cafcff8d980d9494dae6f17df43826211afbf7a48e45087ec6"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MQTT_CONNECTED_BLINK</span></span></span><a class="headerlink" href="#_CPPv4N3Led7Pattern20MQTT_CONNECTED_BLINKE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>2Hz = 500 ms </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3Led7Pattern11ERROR_BLINKE">
+<span id="_CPPv3N3Led7Pattern11ERROR_BLINKE"></span><span id="_CPPv2N3Led7Pattern11ERROR_BLINKE"></span><span class="target" id="classLed_1a198c17b7e398b68cafcff8d980d9494daa2dae09b2274f7684aa19dacaa233495"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ERROR_BLINK</span></span></span><a class="headerlink" href="#_CPPv4N3Led7Pattern11ERROR_BLINKE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>4Hz = 250 ms </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3Led3LedEv">
+<span id="_CPPv3N3Led3LedEv"></span><span id="_CPPv2N3Led3LedEv"></span><span id="Led::Led"></span><span class="target" id="classLed_1a13f58f691eaa4b8b964a2b245e8dc1af"></span><span class="sig-name descname"><span class="n"><span class="pre">Led</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3Led3LedEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Init the LED and start the task. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3LedD0Ev">
+<span id="_CPPv3N3LedD0Ev"></span><span id="_CPPv2N3LedD0Ev"></span><span id="Led::~Led"></span><span class="target" id="classLed_1a9685f23dc5ca68091579ab621c44753a"></span><span class="sig-name descname"><span class="n"><span class="pre">~Led</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3LedD0Ev" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Stop the LED task. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3Led4stopEv">
+<span id="_CPPv3N3Led4stopEv"></span><span id="_CPPv2N3Led4stopEv"></span><span id="Led::stop"></span><span class="target" id="classLed_1a366275d9f177f324adaa747cfa2f643f"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stop</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3Led4stopEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Stop the LED task. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3Led11set_patternE7Pattern">
+<span id="_CPPv3N3Led11set_patternE7Pattern"></span><span id="_CPPv2N3Led11set_patternE7Pattern"></span><span id="Led::set_pattern__Pattern"></span><span class="target" id="classLed_1a03515ff957bc65ca649c9f4ad4484364"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_pattern</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3Led7PatternE" title="Led::Pattern"><span class="n"><span class="pre">Pattern</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">pattern</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3Led11set_patternE7Pattern" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Set the blinking pattern of the LED </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pattern</strong> – The pattern to set </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="event.html" class="btn btn-neutral float-left" title="Event Manager" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="qr.html" class="btn btn-neutral float-right" title="QR Code Decoder" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, AITIA International, Inc.</p>
+  </div>
+
+  <ul class="footer">
+        <li>
+	    
+            
+            Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/espressif/sphinx_idf_theme">theme</a>  based on <a href="https://github.com/readthedocs/sphinx_rtd_theme">Read the Docs Sphinx Theme</a>.
+         </li>
+
+  </ul> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

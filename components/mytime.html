@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Time -  -  &mdash; ESP SENTINEL CAM Documentation main documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=a60756f2" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=949a1ff5" />
+      <link rel="stylesheet" type="text/css" href="../_static/theme_overrides.css?v=851bd809" />
+
+  
+    <link rel="canonical" href="https://bnyitrai03.github.io/ESP_Sentinel_Cam/components/mytime.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=d01aebe5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../_static/copybutton.js?v=ff8fa330"></script>
+    <script src="../_static/js/theme.js"></script>
+
+    
+        
+
+    <script type="text/javascript">
+        DOCUMENTATION_OPTIONS.PAGENAME = 'components/mytime';
+        DOCUMENTATION_OPTIONS.PROJECT_SLUG = '';
+        DOCUMENTATION_OPTIONS.LATEST_BRANCH_NAME = 'master';
+        DOCUMENTATION_OPTIONS.LANGUAGES = ["en"];
+        DOCUMENTATION_OPTIONS.RELEASE = 'main';
+        DOCUMENTATION_OPTIONS.LANGUAGE_URL = 'en';
+
+    </script>
+
+    <script type="text/javascript" src=""></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Button" href="button.html" />
+    <link rel="prev" title="Camera" href="camera.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            ESP SENTINEL CAM Documentation
+              <img src="../_static/espressif-logo.svg" class="logo" alt="Logo"/>
+          </a>
+
+          
+
+          <div class="selectors">
+            <select id="version-select" style="width: 150px;" hidden>
+              <option value="" disabled selected>Choose version...</option>
+            </select>
+          </div>
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../documentation/index.html">Documentation tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Software Components</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="main/index.html">Main</a></li>
+<li class="toctree-l2"><a class="reference internal" href="communication/index.html">Communication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sensors/index.html">Sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="camera.html">Camera</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Time</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#header-file">Header File</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#classes">Classes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="button.html">Button</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event.html">Event Manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="led.html">Led</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qr.html">QR Code Decoder</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../todolist.html">TODO list</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ESP SENTINEL CAM Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Software Components</a></li>
+      <li class="breadcrumb-item active">Time</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/bnyitrai03/ESP_Sentinel_Cam/blob/main/docs/en/components/mytime.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="time">
+<h1>Time<a class="headerlink" href="#time" title="Permalink to this heading"></a></h1>
+<section id="header-file">
+<h2>Header File<a class="headerlink" href="#header-file" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/ESP_Sentinel_Cam/blob/b0624cd/components/mytime/include/mytime.h">components/mytime/include/mytime.h</a></p></li>
+</ul>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv44Time">
+<span id="_CPPv34Time"></span><span id="_CPPv24Time"></span><span id="Time"></span><span class="target" id="classTime"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Time</span></span></span><a class="headerlink" href="#_CPPv44Time" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Manages time operations. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4Time4TimeEv">
+<span id="_CPPv3N4Time4TimeEv"></span><span id="_CPPv2N4Time4TimeEv"></span><span id="Time::Time"></span><span class="target" id="classTime_1a4245e409c7347d1d671858962c2ca3b5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Time</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4Time4TimeEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Default constructor for <a class="reference internal" href="#classTime"><span class="std std-ref">Time</span></a> class. </p>
+<p>Initializes time with invalid values. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4Time4TimeEiii">
+<span id="_CPPv3N4Time4TimeEiii"></span><span id="_CPPv2N4Time4TimeEiii"></span><span id="Time::Time__i.i.i"></span><span class="target" id="classTime_1afd509c92e2301dabb939742f9ab0dfd2"></span><span class="sig-name descname"><span class="n"><span class="pre">Time</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">hour</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">minute</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">second</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4Time4TimeEiii" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Constructor for <a class="reference internal" href="#classTime"><span class="std std-ref">Time</span></a> class. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hour</strong> – Hour value </p></li>
+<li><p><strong>minute</strong> – Minute value </p></li>
+<li><p><strong>second</strong> – Second value </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4Time4TimeERKNSt6stringE">
+<span id="_CPPv3N4Time4TimeERKNSt6stringE"></span><span id="_CPPv2N4Time4TimeERKNSt6stringE"></span><span id="Time::Time__ssCR"></span><span class="target" id="classTime_1aae406a75577b4f455be63d6e51fedce9"></span><span class="sig-name descname"><span class="n"><span class="pre">Time</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timestamp</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4Time4TimeERKNSt6stringE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Constructor for <a class="reference internal" href="#classTime"><span class="std std-ref">Time</span></a> class. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>timestamp</strong> – Timestamp string in the format HH:MM:SS </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4Time9get_hoursEv">
+<span id="_CPPv3NK4Time9get_hoursEv"></span><span id="_CPPv2NK4Time9get_hoursEv"></span><span id="Time::get_hoursC"></span><span class="target" id="classTime_1aed9cd0fb016c08564a11e0ce6782d717"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_hours</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4Time9get_hoursEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Gets the hour value. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Hour value </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4Time11get_minutesEv">
+<span id="_CPPv3NK4Time11get_minutesEv"></span><span id="_CPPv2NK4Time11get_minutesEv"></span><span id="Time::get_minutesC"></span><span class="target" id="classTime_1a76bf4c28455e3c5d605b8afb29b7bfca"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_minutes</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4Time11get_minutesEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Gets the minute value. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Minute value </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4Time11get_secondsEv">
+<span id="_CPPv3NK4Time11get_secondsEv"></span><span id="_CPPv2NK4Time11get_secondsEv"></span><span id="Time::get_secondsC"></span><span class="target" id="classTime_1a7c82ce2386f29b9a44428d9476b70497"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_seconds</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4Time11get_secondsEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Gets the second value. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Second value </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4TimeltERK4Time">
+<span id="_CPPv3NK4TimeltERK4Time"></span><span id="_CPPv2NK4TimeltERK4Time"></span><span id="Time::lt-operator__TimeCRC"></span><span class="target" id="classTime_1a59a0b94a48a14950cca38b29c78c5ebd"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv44Time" title="Time"><span class="n"><span class="pre">Time</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4TimeltERK4Time" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Less than operator for <a class="reference internal" href="#classTime"><span class="std std-ref">Time</span></a> class. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – The other <a class="reference internal" href="#classTime"><span class="std std-ref">Time</span></a> object to compare. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if this time is less than the other time. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4TimegtERK4Time">
+<span id="_CPPv3NK4TimegtERK4Time"></span><span id="_CPPv2NK4TimegtERK4Time"></span><span id="Time::gt-operator__TimeCRC"></span><span class="target" id="classTime_1a4838503f3fd5f3e0247f5776977e39a7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&gt;</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv44Time" title="Time"><span class="n"><span class="pre">Time</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4TimegtERK4Time" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Greater than operator for <a class="reference internal" href="#classTime"><span class="std std-ref">Time</span></a> class. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – The other <a class="reference internal" href="#classTime"><span class="std std-ref">Time</span></a> object to compare. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if this time is greater than the other time. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4TimeeqERK4Time">
+<span id="_CPPv3NK4TimeeqERK4Time"></span><span id="_CPPv2NK4TimeeqERK4Time"></span><span id="Time::eq-operator__TimeCRC"></span><span class="target" id="classTime_1a6641072fd269c2d810b98956f80dacd3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">==</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv44Time" title="Time"><span class="n"><span class="pre">Time</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4TimeeqERK4Time" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Equality operator for <a class="reference internal" href="#classTime"><span class="std std-ref">Time</span></a> class. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – The other <a class="reference internal" href="#classTime"><span class="std std-ref">Time</span></a> object to compare. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if this time is equal to the other time. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4TimeleERK4Time">
+<span id="_CPPv3NK4TimeleERK4Time"></span><span id="_CPPv2NK4TimeleERK4Time"></span><span id="Time::lte-operator__TimeCRC"></span><span class="target" id="classTime_1a429e31172b1abb3978c520abb1294b89"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv44Time" title="Time"><span class="n"><span class="pre">Time</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4TimeleERK4Time" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Less than or equal to operator for <a class="reference internal" href="#classTime"><span class="std std-ref">Time</span></a> class. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – The other <a class="reference internal" href="#classTime"><span class="std std-ref">Time</span></a> object to compare. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if this time is less than or equal to the other time. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4TimegeERK4Time">
+<span id="_CPPv3NK4TimegeERK4Time"></span><span id="_CPPv2NK4TimegeERK4Time"></span><span id="Time::gte-operator__TimeCRC"></span><span class="target" id="classTime_1a5ba0751f4e73911d5c9e7cb03e79cde9"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&gt;=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv44Time" title="Time"><span class="n"><span class="pre">Time</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4TimegeERK4Time" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Greater than or equal to operator for <a class="reference internal" href="#classTime"><span class="std std-ref">Time</span></a> class. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – The other <a class="reference internal" href="#classTime"><span class="std std-ref">Time</span></a> object to compare. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if this time is greater than or equal to the other time. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4Time9toSecondsEv">
+<span id="_CPPv3NK4Time9toSecondsEv"></span><span id="_CPPv2NK4Time9toSecondsEv"></span><span id="Time::toSecondsC"></span><span class="target" id="classTime_1ab2c4b0ad511fbfacc6b0a01d10505e6a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">toSeconds</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4Time9toSecondsEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Converts time to seconds. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#classTime"><span class="std std-ref">Time</span></a> in seconds </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4Time8get_timeEPc8uint32_t">
+<span id="_CPPv3N4Time8get_timeEPc8uint32_t"></span><span id="_CPPv2N4Time8get_timeEPc8uint32_t"></span><span id="Time::get_time__cP.uint32_t"></span><span class="target" id="classTime_1ad4a309431819b3b4f6084121e3df6626"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">esp_err_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_time</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">timestamp</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4Time8get_timeEPc8uint32_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Gets the current UTC time in H:M:S format. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timestamp</strong> – <ul>
+<li><p>The buffer to store the current utc time </p></li>
+</ul>
+</p></li>
+<li><p><strong>size</strong> – <ul>
+<li><p>The size of the buffer</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>ESP_OK on success</p></li>
+<li><p>ESP_FAIL on error </p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4Time8get_dateEPc8uint32_t">
+<span id="_CPPv3N4Time8get_dateEPc8uint32_t"></span><span id="_CPPv2N4Time8get_dateEPc8uint32_t"></span><span id="Time::get_date__cP.uint32_t"></span><span class="target" id="classTime_1a67d162c1c17cc3f3dfe34313a6295d08"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">esp_err_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_date</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">timestamp</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4Time8get_dateEPc8uint32_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Gets the current UTC timestamp in Y-m-dTH:M:SZ format. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timestamp</strong> – <ul>
+<li><p>The buffer to store the current UTC datetime </p></li>
+</ul>
+</p></li>
+<li><p><strong>size</strong> – <ul>
+<li><p>The size of the buffer</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>ESP_OK on success</p></li>
+<li><p>ESP_FAIL on error </p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="camera.html" class="btn btn-neutral float-left" title="Camera" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="button.html" class="btn btn-neutral float-right" title="Button" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, AITIA International, Inc.</p>
+  </div>
+
+  <ul class="footer">
+        <li>
+	    
+            
+            Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/espressif/sphinx_idf_theme">theme</a>  based on <a href="https://github.com/readthedocs/sphinx_rtd_theme">Read the Docs Sphinx Theme</a>.
+         </li>
+
+  </ul> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

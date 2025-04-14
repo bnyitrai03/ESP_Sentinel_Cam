@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HTTP Client -  -  &mdash; ESP SENTINEL CAM Documentation main documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=a60756f2" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=949a1ff5" />
+      <link rel="stylesheet" type="text/css" href="../../_static/theme_overrides.css?v=851bd809" />
+
+  
+    <link rel="canonical" href="https://bnyitrai03.github.io/ESP_Sentinel_Cam/components/communication/http_client.html" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=d01aebe5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=ff8fa330"></script>
+    <script src="../../_static/js/theme.js"></script>
+
+    
+        
+
+    <script type="text/javascript">
+        DOCUMENTATION_OPTIONS.PAGENAME = 'components/communication/http_client';
+        DOCUMENTATION_OPTIONS.PROJECT_SLUG = '';
+        DOCUMENTATION_OPTIONS.LATEST_BRANCH_NAME = 'master';
+        DOCUMENTATION_OPTIONS.LANGUAGES = ["en"];
+        DOCUMENTATION_OPTIONS.RELEASE = 'main';
+        DOCUMENTATION_OPTIONS.LANGUAGE_URL = 'en';
+
+    </script>
+
+    <script type="text/javascript" src=""></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="I2C Manager" href="i2c_manager.html" />
+    <link rel="prev" title="WiFi" href="wifi.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ESP SENTINEL CAM Documentation
+              <img src="../../_static/espressif-logo.svg" class="logo" alt="Logo"/>
+          </a>
+
+          
+
+          <div class="selectors">
+            <select id="version-select" style="width: 150px;" hidden>
+              <option value="" disabled selected>Choose version...</option>
+            </select>
+          </div>
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../documentation/index.html">Documentation tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Software Components</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main/index.html">Main</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Communication</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="mqtt.html">MQTT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="wifi.html">WiFi</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">HTTP Client</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#header-file">Header File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#classes">Classes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="i2c_manager.html">I2C Manager</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../sensors/index.html">Sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../camera.html">Camera</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mytime.html">Time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../button.html">Button</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../event.html">Event Manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../led.html">Led</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../qr.html">QR Code Decoder</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../todolist.html">TODO list</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ESP SENTINEL CAM Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Software Components</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Communication</a></li>
+      <li class="breadcrumb-item active">HTTP Client</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/bnyitrai03/ESP_Sentinel_Cam/blob/main/docs/en/components/communication/http_client.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="http-client">
+<h1>HTTP Client<a class="headerlink" href="#http-client" title="Permalink to this heading"></a></h1>
+<p>This component implements the <strong>HTTP client</strong> responsible for sending a GET request to the <code class="docutils literal notranslate"><span class="pre">config</span> <span class="pre">server</span></code>, to acquire the device’s <code class="docutils literal notranslate"><span class="pre">static</span> <span class="pre">configuration</span></code>.</p>
+<p>The response <code class="docutils literal notranslate"><span class="pre">static</span> <span class="pre">config</span></code> JSON can be seen in the <code class="docutils literal notranslate"><span class="pre">Config</span></code> component.</p>
+<section id="header-file">
+<h2>Header File<a class="headerlink" href="#header-file" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/ESP_Sentinel_Cam/blob/b0624cd/components/communication/include/http_client.h">components/communication/include/http_client.h</a></p></li>
+</ul>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv410HTTPClient">
+<span id="_CPPv310HTTPClient"></span><span id="_CPPv210HTTPClient"></span><span id="HTTPClient"></span><span class="target" id="classHTTPClient"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HTTPClient</span></span></span><a class="headerlink" href="#_CPPv410HTTPClient" title="Permalink to this definition"></a><br /></dt>
+<dd><p>HTTP client class for sending GET request. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10HTTPClient10get_configEPKcR12JsonDocument">
+<span id="_CPPv3N10HTTPClient10get_configEPKcR12JsonDocument"></span><span id="_CPPv2N10HTTPClient10get_configEPKcR12JsonDocument"></span><span id="HTTPClient::get_config__cCP.JsonDocumentR"></span><span class="target" id="classHTTPClient_1a9b7fd4526d4025c00c7b136e33198644"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">esp_err_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_config</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">url</span></span>, <span class="n"><span class="pre">JsonDocument</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">response</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10HTTPClient10get_configEPKcR12JsonDocument" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Sends a GET request to the specified URL and returns the static config as a JSON. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> – The URL to send the request to </p></li>
+<li><p><strong>response</strong> – JSON document to store the response </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>ESP_OK on success</p></li>
+<li><p>ESP_FAIL on failure </p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="wifi.html" class="btn btn-neutral float-left" title="WiFi" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="i2c_manager.html" class="btn btn-neutral float-right" title="I2C Manager" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, AITIA International, Inc.</p>
+  </div>
+
+  <ul class="footer">
+        <li>
+	    
+            
+            Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/espressif/sphinx_idf_theme">theme</a>  based on <a href="https://github.com/readthedocs/sphinx_rtd_theme">Read the Docs Sphinx Theme</a>.
+         </li>
+
+  </ul> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Battery Temperature Sensor -  -  &mdash; ESP SENTINEL CAM Documentation main documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=a60756f2" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=949a1ff5" />
+      <link rel="stylesheet" type="text/css" href="../../_static/theme_overrides.css?v=851bd809" />
+
+  
+    <link rel="canonical" href="https://bnyitrai03.github.io/ESP_Sentinel_Cam/components/sensors/battery_temp.html" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=d01aebe5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=ff8fa330"></script>
+    <script src="../../_static/js/theme.js"></script>
+
+    
+        
+
+    <script type="text/javascript">
+        DOCUMENTATION_OPTIONS.PAGENAME = 'components/sensors/battery_temp';
+        DOCUMENTATION_OPTIONS.PROJECT_SLUG = '';
+        DOCUMENTATION_OPTIONS.LATEST_BRANCH_NAME = 'master';
+        DOCUMENTATION_OPTIONS.LANGUAGES = ["en"];
+        DOCUMENTATION_OPTIONS.RELEASE = 'main';
+        DOCUMENTATION_OPTIONS.LANGUAGE_URL = 'en';
+
+    </script>
+
+    <script type="text/javascript" src=""></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Light Level Sensor" href="light_sensor.html" />
+    <link rel="prev" title="Battery Charge Sensor" href="battery_charge.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ESP SENTINEL CAM Documentation
+              <img src="../../_static/espressif-logo.svg" class="logo" alt="Logo"/>
+          </a>
+
+          
+
+          <div class="selectors">
+            <select id="version-select" style="width: 150px;" hidden>
+              <option value="" disabled selected>Choose version...</option>
+            </select>
+          </div>
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../documentation/index.html">Documentation tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Software Components</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main/index.html">Main</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../communication/index.html">Communication</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Sensors</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="isensor.html">Sensor Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sensors.html">Collection of the sensors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="charge_current.html">Battery Charge Current Sensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cpu_temp.html">CPU Temperature Sensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="battery_manager.html">Battery Manager</a></li>
+<li class="toctree-l3"><a class="reference internal" href="battery_charge.html">Battery Charge Sensor</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Battery Temperature Sensor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#header-file">Header File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#classes">Classes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="light_sensor.html">Light Level Sensor</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../camera.html">Camera</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mytime.html">Time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../button.html">Button</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../event.html">Event Manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../led.html">Led</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../qr.html">QR Code Decoder</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../todolist.html">TODO list</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ESP SENTINEL CAM Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Software Components</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Sensors</a></li>
+      <li class="breadcrumb-item active">Battery Temperature Sensor</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/bnyitrai03/ESP_Sentinel_Cam/blob/main/docs/en/components/sensors/battery_temp.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="battery-temperature-sensor">
+<h1>Battery Temperature Sensor<a class="headerlink" href="#battery-temperature-sensor" title="Permalink to this heading"></a></h1>
+<p>This class converts the percentage value received from the BQ25622 into a Celsius temperature value. This temperature will then be sent in the health report JSON.
+The temperature is calculated using the following formula:</p>
+<div class="admonition-todo admonition" id="id1">
+<p class="admonition-title">Todo</p>
+<p>Implement the temperature calculation formula.</p>
+</div>
+<section id="header-file">
+<h2>Header File<a class="headerlink" href="#header-file" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/ESP_Sentinel_Cam/blob/b0624cd/components/sensors/include/battery_temp.h">components/sensors/include/battery_temp.h</a></p></li>
+</ul>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv411BatteryTemp">
+<span id="_CPPv311BatteryTemp"></span><span id="_CPPv211BatteryTemp"></span><span id="BatteryTemp"></span><span class="target" id="classBatteryTemp"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BatteryTemp</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="isensor.html#_CPPv47ISensor" title="ISensor"><span class="n"><span class="pre">ISensor</span></span></a><a class="headerlink" href="#_CPPv411BatteryTemp" title="Permalink to this definition"></a><br /></dt>
+<dd><p><a class="reference internal" href="#classBatteryTemp"><span class="std std-ref">BatteryTemp</span></a> class for reading battery temperature. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11BatteryTemp11BatteryTempER14BatteryManager">
+<span id="_CPPv3N11BatteryTemp11BatteryTempER14BatteryManager"></span><span id="_CPPv2N11BatteryTemp11BatteryTempER14BatteryManager"></span><span id="BatteryTemp::BatteryTemp__BatteryManagerR"></span><span class="target" id="classBatteryTemp_1a75e7f2c2950ed284ce7b1d845d657314"></span><span class="sig-name descname"><span class="n"><span class="pre">BatteryTemp</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="battery_manager.html#_CPPv414BatteryManager" title="BatteryManager"><span class="n"><span class="pre">BatteryManager</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">battery_manager</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11BatteryTemp11BatteryTempER14BatteryManager" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Construct a new <a class="reference internal" href="#classBatteryTemp"><span class="std std-ref">BatteryTemp</span></a> object. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>battery_manager</strong> – Reference to the <a class="reference internal" href="battery_manager.html#classBatteryManager"><span class="std std-ref">BatteryManager</span></a> instance </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11BatteryTemp4initEv">
+<span id="_CPPv3N11BatteryTemp4initEv"></span><span id="_CPPv2N11BatteryTemp4initEv"></span><span id="BatteryTemp::init"></span><span class="target" id="classBatteryTemp_1a1ba2b58ef468d6a69a153b74d286f10e"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">esp_err_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">init</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N11BatteryTemp4initEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Initialize the sensor. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ESP_OK if successful, otherwise an error code </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11BatteryTemp4readEv">
+<span id="_CPPv3N11BatteryTemp4readEv"></span><span id="_CPPv2N11BatteryTemp4readEv"></span><span id="BatteryTemp::read"></span><span class="target" id="classBatteryTemp_1af1b67c48c9cb5ca5c1364f3bbefdaabe"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">esp_err_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">read</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N11BatteryTemp4readEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Read the battery temperature. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ESP_OK if successful, otherwise an error code </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK11BatteryTemp9get_valueEv">
+<span id="_CPPv3NK11BatteryTemp9get_valueEv"></span><span id="_CPPv2NK11BatteryTemp9get_valueEv"></span><span id="BatteryTemp::get_valueC"></span><span class="target" id="classBatteryTemp_1ad7eeaafe6d1a0a34191923592305155f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_value</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK11BatteryTemp9get_valueEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Get the battery temperature value in degrees Celsius. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float Battery temperature in degrees Celsius </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="battery_charge.html" class="btn btn-neutral float-left" title="Battery Charge Sensor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="light_sensor.html" class="btn btn-neutral float-right" title="Light Level Sensor" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, AITIA International, Inc.</p>
+  </div>
+
+  <ul class="footer">
+        <li>
+	    
+            
+            Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/espressif/sphinx_idf_theme">theme</a>  based on <a href="https://github.com/readthedocs/sphinx_rtd_theme">Read the Docs Sphinx Theme</a>.
+         </li>
+
+  </ul> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

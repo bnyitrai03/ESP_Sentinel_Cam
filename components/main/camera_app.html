@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Camera App -  -  &mdash; ESP SENTINEL CAM Documentation main documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=a60756f2" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=949a1ff5" />
+      <link rel="stylesheet" type="text/css" href="../../_static/theme_overrides.css?v=851bd809" />
+
+  
+    <link rel="canonical" href="https://bnyitrai03.github.io/ESP_Sentinel_Cam/components/main/camera_app.html" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=d01aebe5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=ff8fa330"></script>
+    <script src="../../_static/js/theme.js"></script>
+
+    
+        
+
+    <script type="text/javascript">
+        DOCUMENTATION_OPTIONS.PAGENAME = 'components/main/camera_app';
+        DOCUMENTATION_OPTIONS.PROJECT_SLUG = '';
+        DOCUMENTATION_OPTIONS.LATEST_BRANCH_NAME = 'master';
+        DOCUMENTATION_OPTIONS.LANGUAGES = ["en"];
+        DOCUMENTATION_OPTIONS.RELEASE = 'main';
+        DOCUMENTATION_OPTIONS.LANGUAGE_URL = 'en';
+
+    </script>
+
+    <script type="text/javascript" src=""></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="QR Code Reader App" href="qr_reader_app.html" />
+    <link rel="prev" title="Main" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ESP SENTINEL CAM Documentation
+              <img src="../../_static/espressif-logo.svg" class="logo" alt="Logo"/>
+          </a>
+
+          
+
+          <div class="selectors">
+            <select id="version-select" style="width: 150px;" hidden>
+              <option value="" disabled selected>Choose version...</option>
+            </select>
+          </div>
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../documentation/index.html">Documentation tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Software Components</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Main</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Camera App</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#components">Components</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flowchart">Flowchart</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#health-report">Health Report</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#image-header">Image Header</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#image">Image</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#external-dependencies">External Dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="qr_reader_app.html">QR Code Reader App</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../communication/index.html">Communication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sensors/index.html">Sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../camera.html">Camera</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mytime.html">Time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../button.html">Button</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../event.html">Event Manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../led.html">Led</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../qr.html">QR Code Decoder</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../todolist.html">TODO list</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ESP SENTINEL CAM Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Software Components</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Main</a></li>
+      <li class="breadcrumb-item active">Camera App</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/bnyitrai03/ESP_Sentinel_Cam/blob/main/docs/en/components/main/camera_app.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="camera-app">
+<h1>Camera App<a class="headerlink" href="#camera-app" title="Permalink to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">Camera</span> <span class="pre">App</span></code> is responsible for running the image capturing application on the ESP32-S3 device. It handles:</p>
+<ul class="simple">
+<li><p>Initializing all necessary components (WiFi, MQTT, sensors, camera)</p></li>
+<li><p>Managing configuration updates</p></li>
+<li><p>Capturing and sending images to an MQTT broker</p></li>
+<li><p>Health reporting</p></li>
+</ul>
+<section id="components">
+<h2>Components<a class="headerlink" href="#components" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Camera</strong>: Handles image capture, also manages the camera hardware initialization and image buffer storage.</p></li>
+<li><p><strong>WiFi</strong>: Manages network connection and time synchronization. Handles connection establishment, maintenance, and automatic reconnection logic.</p></li>
+<li><p><strong>MQTT</strong>: Facilitates communication with the MQTT broker for health reports, images, and configuration updates. Implements topic management and message acknowledgment.</p></li>
+<li><p><strong>Config</strong>:  Stores and manages the <code class="docutils literal notranslate"><span class="pre">dynamic</span> <span class="pre">configuration</span></code>, handles it’s loading, validation and update.</p></li>
+<li><p><strong>Sensors</strong>:  Interfaces with sensors to collect data like battery temperature and charge. Formats sensor readings for inclusion in health reports.</p></li>
+</ul>
+</section>
+<section id="flowchart">
+<h2>Flowchart<a class="headerlink" href="#flowchart" title="Permalink to this heading"></a></h2>
+<p>The following flowchart represents the main logic of the application:</p>
+<figure class="align-center" id="id1">
+<img alt="Image missing" src="../../_images/camera_app_flowchart.png" />
+<figcaption>
+<p><span class="caption-text">Flowchart depicting the <code class="docutils literal notranslate"><span class="pre">Camera</span> <span class="pre">App</span></code></span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="health-report">
+<h2>Health Report<a class="headerlink" href="#health-report" title="Permalink to this heading"></a></h2>
+<p>The health report JSON contains these key-value pairs:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-02-26T10:05:11Z&quot;</span><span class="p">,</span>
+<span class="nt">&quot;configId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;8D8AC610-566D-4EF0-9C22-186B2A5ED793&quot;</span><span class="p">,</span>
+<span class="nt">&quot;period&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">40</span><span class="p">,</span>
+<span class="nt">&quot;batteryCharge&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">90</span><span class="p">,</span>
+<span class="nt">&quot;batteryTemp&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">25</span><span class="p">,</span>
+<span class="nt">&quot;cpuTemp&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span>
+<span class="nt">&quot;luminosity&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3000</span><span class="p">,</span>
+<span class="nt">&quot;chargeCurrent&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">400</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="image-header">
+<h2>Image Header<a class="headerlink" href="#image-header" title="Permalink to this heading"></a></h2>
+<p>The image header is sent before the image, the JSON is structured like:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-02-24T13:07:06Z&quot;</span><span class="p">,</span>
+<span class="nt">&quot;size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4096000</span><span class="p">,</span>
+<span class="nt">&quot;mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GRAY&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="image">
+<h2>Image<a class="headerlink" href="#image" title="Permalink to this heading"></a></h2>
+<p>The image format is given in the <code class="docutils literal notranslate"><span class="pre">static</span> <span class="pre">configuration</span></code>, if the <code class="docutils literal notranslate"><span class="pre">cameraMode</span></code> is set to <strong>GRAY</strong> the image will be <strong>1BPP/GRAYSCALE</strong> format.</p>
+<p>An example image is:</p>
+<figure class="align-center" id="id2">
+<img alt="Image missing" src="../../_images/GRAYSCALE.jpg" />
+<figcaption>
+<p><span class="caption-text"><strong>GRAYSCALE</strong> image</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>When the <code class="docutils literal notranslate"><span class="pre">cameraMode</span></code> is set to <strong>COLOR</strong> the image is <strong>JPEG</strong> encoded.</p>
+<p>An example image is:</p>
+<figure class="align-center" id="id3">
+<img alt="Image missing" src="../../_images/COLOR.jpg" />
+<figcaption>
+<p><span class="caption-text"><strong>JPEG</strong> image</span><a class="headerlink" href="#id3" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="external-dependencies">
+<h2>External Dependencies<a class="headerlink" href="#external-dependencies" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/bblanchon/ArduinoJson">ArduinoJson</a></p></li>
+<li><p><a class="reference external" href="https://github.com/espressif/esp32-camera">esp32-camera</a></p></li>
+</ul>
+<section id="header-file">
+<h3>Header File<a class="headerlink" href="#header-file" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/ESP_Sentinel_Cam/blob/b0624cd/main/include/camera_app.h">main/include/camera_app.h</a></p></li>
+</ul>
+</section>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h3>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv49CameraApp">
+<span id="_CPPv39CameraApp"></span><span id="_CPPv29CameraApp"></span><span id="CameraApp"></span><span class="target" id="classCameraApp"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CameraApp</span></span></span><a class="headerlink" href="#_CPPv49CameraApp" title="Permalink to this definition"></a><br /></dt>
+<dd><p><a class="reference internal" href="#classCameraApp"><span class="std std-ref">CameraApp</span></a> class is a singleton class that is responsible for running the camera application. It initializes and runs the camera application. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9CameraApp9CameraAppERK9CameraApp">
+<span id="_CPPv3N9CameraApp9CameraAppERK9CameraApp"></span><span id="_CPPv2N9CameraApp9CameraAppERK9CameraApp"></span><span id="CameraApp::CameraApp__CameraAppCR"></span><span class="target" id="classCameraApp_1aed5a23af63c63623cd823cdbede63977"></span><span class="sig-name descname"><span class="n"><span class="pre">CameraApp</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9CameraApp9CameraAppERK9CameraApp" title="CameraApp::CameraApp"><span class="n"><span class="pre">CameraApp</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N9CameraApp9CameraAppERK9CameraApp" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Delete copy constructor and assignment operator. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9CameraApp5startEv">
+<span id="_CPPv3N9CameraApp5startEv"></span><span id="_CPPv2N9CameraApp5startEv"></span><span id="CameraApp::start"></span><span class="target" id="classCameraApp_1ab1297c457276f629e859f247c50f46e1"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">start</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9CameraApp5startEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Creates the camera task and starts the camera application. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9CameraApp4stopEv">
+<span id="_CPPv3N9CameraApp4stopEv"></span><span id="_CPPv2N9CameraApp4stopEv"></span><span id="CameraApp::stop"></span><span class="target" id="classCameraApp_1a864a8545d6eb47a41ccb4ba93a3c22e2"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stop</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9CameraApp4stopEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Stops the camera task and the camera application. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9CameraApp11getInstanceEv">
+<span id="_CPPv3N9CameraApp11getInstanceEv"></span><span id="_CPPv2N9CameraApp11getInstanceEv"></span><span id="CameraApp::getInstance"></span><span class="target" id="classCameraApp_1af376e501c0da5bd7a09d63e2bd0537d3"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv49CameraApp" title="CameraApp"><span class="n"><span class="pre">CameraApp</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">getInstance</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9CameraApp11getInstanceEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Returns the singleton instance of the <a class="reference internal" href="#classCameraApp"><span class="std std-ref">CameraApp</span></a> class. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#classCameraApp"><span class="std std-ref">CameraApp</span></a> class instance. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Main" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="qr_reader_app.html" class="btn btn-neutral float-right" title="QR Code Reader App" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, AITIA International, Inc.</p>
+  </div>
+
+  <ul class="footer">
+        <li>
+	    
+            
+            Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/espressif/sphinx_idf_theme">theme</a>  based on <a href="https://github.com/readthedocs/sphinx_rtd_theme">Read the Docs Sphinx Theme</a>.
+         </li>
+
+  </ul> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

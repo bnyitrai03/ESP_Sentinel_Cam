@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Error handler -  -  &mdash; ESP SENTINEL CAM Documentation main documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=a60756f2" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=949a1ff5" />
+      <link rel="stylesheet" type="text/css" href="../../_static/theme_overrides.css?v=851bd809" />
+
+  
+    <link rel="canonical" href="https://bnyitrai03.github.io/ESP_Sentinel_Cam/components/utilities/error_handler.html" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=d01aebe5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=ff8fa330"></script>
+    <script src="../../_static/js/theme.js"></script>
+
+    
+        
+
+    <script type="text/javascript">
+        DOCUMENTATION_OPTIONS.PAGENAME = 'components/utilities/error_handler';
+        DOCUMENTATION_OPTIONS.PROJECT_SLUG = '';
+        DOCUMENTATION_OPTIONS.LATEST_BRANCH_NAME = 'master';
+        DOCUMENTATION_OPTIONS.LANGUAGES = ["en"];
+        DOCUMENTATION_OPTIONS.RELEASE = 'main';
+        DOCUMENTATION_OPTIONS.LANGUAGE_URL = 'en';
+
+    </script>
+
+    <script type="text/javascript" src=""></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Sleep" href="mysleep.html" />
+    <link rel="prev" title="Utilities" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ESP SENTINEL CAM Documentation
+              <img src="../../_static/espressif-logo.svg" class="logo" alt="Logo"/>
+          </a>
+
+          
+
+          <div class="selectors">
+            <select id="version-select" style="width: 150px;" hidden>
+              <option value="" disabled selected>Choose version...</option>
+            </select>
+          </div>
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../documentation/index.html">Documentation tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Software Components</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main/index.html">Main</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../communication/index.html">Communication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sensors/index.html">Sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Utilities</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Error handler</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#header-file">Header File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#functions">Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#type-definitions">Type Definitions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mysleep.html">Sleep</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../camera.html">Camera</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mytime.html">Time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../button.html">Button</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../event.html">Event Manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../led.html">Led</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../qr.html">QR Code Decoder</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../todolist.html">TODO list</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ESP SENTINEL CAM Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Software Components</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Utilities</a></li>
+      <li class="breadcrumb-item active">Error handler</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/bnyitrai03/ESP_Sentinel_Cam/blob/main/docs/en/components/utilities/error_handler.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="error-handler">
+<h1>Error handler<a class="headerlink" href="#error-handler" title="Permalink to this heading"></a></h1>
+<p>This component provides a way to handle errors in a consistent manner across the application.</p>
+<section id="header-file">
+<h2>Header File<a class="headerlink" href="#header-file" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/ESP_Sentinel_Cam/blob/b0624cd/components/utilities/include/error_handler.h">components/utilities/include/error_handler.h</a></p></li>
+</ul>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this heading"></a></h2>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv424set_wifi_deinit_callback14DeinitCallback">
+<span id="_CPPv324set_wifi_deinit_callback14DeinitCallback"></span><span id="_CPPv224set_wifi_deinit_callback14DeinitCallback"></span><span id="set_wifi_deinit_callback__DeinitCallback"></span><span class="target" id="error__handler_8h_1a3c5e726fe4a578d6d40174029a4cdb79"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_wifi_deinit_callback</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv414DeinitCallback" title="DeinitCallback"><span class="n"><span class="pre">DeinitCallback</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv424set_wifi_deinit_callback14DeinitCallback" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Sets the callback function for WiFi deinitialization. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>callback</strong> – Function to be called for WiFi deinitialization </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv424set_mqtt_deinit_callback14DeinitCallback">
+<span id="_CPPv324set_mqtt_deinit_callback14DeinitCallback"></span><span id="_CPPv224set_mqtt_deinit_callback14DeinitCallback"></span><span id="set_mqtt_deinit_callback__DeinitCallback"></span><span class="target" id="error__handler_8h_1adc420d8509b378f4beb297646b3fd426"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_mqtt_deinit_callback</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv414DeinitCallback" title="DeinitCallback"><span class="n"><span class="pre">DeinitCallback</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv424set_mqtt_deinit_callback14DeinitCallback" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Sets the callback function for <a class="reference internal" href="../communication/mqtt.html#classMQTT"><span class="std std-ref">MQTT</span></a> deinitialization. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>callback</strong> – Function to be called for <a class="reference internal" href="../communication/mqtt.html#classMQTT"><span class="std std-ref">MQTT</span></a> deinitialization </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv426set_camera_deinit_callback14DeinitCallback">
+<span id="_CPPv326set_camera_deinit_callback14DeinitCallback"></span><span id="_CPPv226set_camera_deinit_callback14DeinitCallback"></span><span id="set_camera_deinit_callback__DeinitCallback"></span><span class="target" id="error__handler_8h_1a2bedc0f55d2485d137dd7bc39bcaadbd"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_camera_deinit_callback</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv414DeinitCallback" title="DeinitCallback"><span class="n"><span class="pre">DeinitCallback</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv426set_camera_deinit_callback14DeinitCallback" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Sets the callback function for camera deinitialization. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>callback</strong> – Function to be called for camera deinitialization </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv47restartv">
+<span id="_CPPv37restartv"></span><span id="_CPPv27restartv"></span><span id="restart"></span><span class="target" id="error__handler_8h_1a22ee094ca3f45aa4156b97d34fe678bf"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">restart</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv47restartv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Handles an error by restarting the device. </p>
+<p>This function blinks the error LED pattern, then deinitializes the camera, <a class="reference internal" href="../communication/mqtt.html#classMQTT"><span class="std std-ref">MQTT</span></a>, and Wi-Fi drivers. If the error_count is 15, the device will sleep for 10 minutes before restarting. Otherwise, the device will restart immediately. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv412reset_devicev">
+<span id="_CPPv312reset_devicev"></span><span id="_CPPv212reset_devicev"></span><span id="reset_device"></span><span class="target" id="error__handler_8h_1a99ecd64ace3a2da5deb6872c73c058ea"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reset_device</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv412reset_devicev" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Resets the device. </p>
+<p>This function erases the NVS and restarts the device. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv417deinit_componentsv">
+<span id="_CPPv317deinit_componentsv"></span><span id="_CPPv217deinit_componentsv"></span><span id="deinit_components"></span><span class="target" id="error__handler_8h_1aa8cb5e4ee95b293d865bb2986373e35e"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">deinit_components</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv417deinit_componentsv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Deinitializes all components. </p>
+<p>This function deinitializes the camera, <a class="reference internal" href="../communication/mqtt.html#classMQTT"><span class="std std-ref">MQTT</span></a>, and Wi-Fi drivers. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415get_error_countv">
+<span id="_CPPv315get_error_countv"></span><span id="_CPPv215get_error_countv"></span><span id="get_error_count"></span><span class="target" id="error__handler_8h_1a655d0cc2e85c636a6f93f0f4f527be52"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_error_count</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415get_error_countv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This function increases and returns the error count stored in the NVS. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The error count </p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="type-definitions">
+<h2>Type Definitions<a class="headerlink" href="#type-definitions" title="Permalink to this heading"></a></h2>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv414DeinitCallback">
+<span id="_CPPv314DeinitCallback"></span><span id="_CPPv214DeinitCallback"></span><span id="DeinitCallback"></span><span class="target" id="error__handler_8h_1ac9b806d3d55bb2c5fe3ffbe849e7b1ab"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">DeinitCallback</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv414DeinitCallback" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Utilities" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mysleep.html" class="btn btn-neutral float-right" title="Sleep" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, AITIA International, Inc.</p>
+  </div>
+
+  <ul class="footer">
+        <li>
+	    
+            
+            Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/espressif/sphinx_idf_theme">theme</a>  based on <a href="https://github.com/readthedocs/sphinx_rtd_theme">Read the Docs Sphinx Theme</a>.
+         </li>
+
+  </ul> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

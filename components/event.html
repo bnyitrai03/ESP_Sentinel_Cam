@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Event Manager -  -  &mdash; ESP SENTINEL CAM Documentation main documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=a60756f2" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=949a1ff5" />
+      <link rel="stylesheet" type="text/css" href="../_static/theme_overrides.css?v=851bd809" />
+
+  
+    <link rel="canonical" href="https://bnyitrai03.github.io/ESP_Sentinel_Cam/components/event.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=d01aebe5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../_static/copybutton.js?v=ff8fa330"></script>
+    <script src="../_static/js/theme.js"></script>
+
+    
+        
+
+    <script type="text/javascript">
+        DOCUMENTATION_OPTIONS.PAGENAME = 'components/event';
+        DOCUMENTATION_OPTIONS.PROJECT_SLUG = '';
+        DOCUMENTATION_OPTIONS.LATEST_BRANCH_NAME = 'master';
+        DOCUMENTATION_OPTIONS.LANGUAGES = ["en"];
+        DOCUMENTATION_OPTIONS.RELEASE = 'main';
+        DOCUMENTATION_OPTIONS.LANGUAGE_URL = 'en';
+
+    </script>
+
+    <script type="text/javascript" src=""></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Led" href="led.html" />
+    <link rel="prev" title="Button" href="button.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            ESP SENTINEL CAM Documentation
+              <img src="../_static/espressif-logo.svg" class="logo" alt="Logo"/>
+          </a>
+
+          
+
+          <div class="selectors">
+            <select id="version-select" style="width: 150px;" hidden>
+              <option value="" disabled selected>Choose version...</option>
+            </select>
+          </div>
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../documentation/index.html">Documentation tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Software Components</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="main/index.html">Main</a></li>
+<li class="toctree-l2"><a class="reference internal" href="communication/index.html">Communication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sensors/index.html">Sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="camera.html">Camera</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mytime.html">Time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="button.html">Button</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Event Manager</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#header-file">Header File</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#macros">Macros</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#type-definitions">Type Definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#classes">Classes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="led.html">Led</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qr.html">QR Code Decoder</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../todolist.html">TODO list</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ESP SENTINEL CAM Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Software Components</a></li>
+      <li class="breadcrumb-item active">Event Manager</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/bnyitrai03/ESP_Sentinel_Cam/blob/main/docs/en/components/event.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="event-manager">
+<h1>Event Manager<a class="headerlink" href="#event-manager" title="Permalink to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">Event</span> <span class="pre">Manager</span></code> is responsible for inter-task communication. The event queue operates within the <strong>main task</strong>,
+while other tasks publish their events to this queue.</p>
+<p>The main task processes events from the queue and invokes the corresponding event handler.
+An event handler is a function that must be registered with the <code class="docutils literal notranslate"><span class="pre">Event</span> <span class="pre">Manager</span></code>.</p>
+<section id="header-file">
+<h2>Header File<a class="headerlink" href="#header-file" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/ESP_Sentinel_Cam/blob/b0624cd/components/event/include/event_manager.h">components/event/include/event_manager.h</a></p></li>
+</ul>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this heading"></a></h2>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv420event_type_to_string9EventType">
+<span id="_CPPv320event_type_to_string9EventType"></span><span id="_CPPv220event_type_to_string9EventType"></span><span id="event_type_to_string__EventType"></span><span class="target" id="event__manager_8h_1a3fd7f5fa8d9e5f8fa0efa8f47ea3d93e"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">event_type_to_string</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv49EventType" title="EventType"><span class="n"><span class="pre">EventType</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">type</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv420event_type_to_string9EventType" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Utility function to convert EventType to string. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>type</strong> – The EventType to convert </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>const char* String representation of the EventType </p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="macros">
+<h2>Macros<a class="headerlink" href="#macros" title="Permalink to this heading"></a></h2>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.SUBSCRIBE">
+<span class="target" id="event__manager_8h_1a420989a81c9eb8fdfd99bcb1610f912e"></span><span class="sig-name descname"><span class="n"><span class="pre">SUBSCRIBE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">type</span></span>, <span class="n"><span class="pre">code</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.SUBSCRIBE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Macro definitions for simplifying event handling. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.PUBLISH">
+<span class="target" id="event__manager_8h_1a18ccd344a34211c42f63f8eb9a24a0ba"></span><span class="sig-name descname"><span class="n"><span class="pre">PUBLISH</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">type</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.PUBLISH" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</section>
+<section id="type-definitions">
+<h2>Type Definitions<a class="headerlink" href="#type-definitions" title="Permalink to this heading"></a></h2>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv413EventCallback">
+<span id="_CPPv313EventCallback"></span><span id="_CPPv213EventCallback"></span><span class="target" id="event__manager_8h_1a9de309ac16b9dd121b41628d3c2cec11"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EventCallback</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv49EventType" title="EventType"><span class="n"><span class="pre">EventType</span></span></a><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv413EventCallback" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Callback function type for event handlers. </p>
+</dd></dl>
+
+</section>
+<section id="enumerations">
+<h2>Enumerations<a class="headerlink" href="#enumerations" title="Permalink to this heading"></a></h2>
+<dl class="cpp enum-class">
+<dt class="sig sig-object cpp" id="_CPPv49EventType">
+<span id="_CPPv39EventType"></span><span id="_CPPv29EventType"></span><span class="target" id="event__manager_8h_1a2628ea8d12e8b2563c32f05dc7fff6fa"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EventType</span></span></span><a class="headerlink" href="#_CPPv49EventType" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Enum of event types in the system. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9EventType14BUTTON_PRESSEDE">
+<span id="_CPPv3N9EventType14BUTTON_PRESSEDE"></span><span id="_CPPv2N9EventType14BUTTON_PRESSEDE"></span><span class="target" id="event__manager_8h_1a2628ea8d12e8b2563c32f05dc7fff6faa09672dcde3827a4181fa8dd1808ab78f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BUTTON_PRESSED</span></span></span><a class="headerlink" href="#_CPPv4N9EventType14BUTTON_PRESSEDE" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9EventType11STOP_BUTTONE">
+<span id="_CPPv3N9EventType11STOP_BUTTONE"></span><span id="_CPPv2N9EventType11STOP_BUTTONE"></span><span class="target" id="event__manager_8h_1a2628ea8d12e8b2563c32f05dc7fff6faa4782599033e09c9aaf78fe5fbceff27a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">STOP_BUTTON</span></span></span><a class="headerlink" href="#_CPPv4N9EventType11STOP_BUTTONE" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9EventType5RESETE">
+<span id="_CPPv3N9EventType5RESETE"></span><span id="_CPPv2N9EventType5RESETE"></span><span class="target" id="event__manager_8h_1a2628ea8d12e8b2563c32f05dc7fff6faab5859d8721cfdc0312b2838b9c985bc1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RESET</span></span></span><a class="headerlink" href="#_CPPv4N9EventType5RESETE" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9EventType24SLEEP_UNTIL_BUTTON_PRESSE">
+<span id="_CPPv3N9EventType24SLEEP_UNTIL_BUTTON_PRESSE"></span><span id="_CPPv2N9EventType24SLEEP_UNTIL_BUTTON_PRESSE"></span><span class="target" id="event__manager_8h_1a2628ea8d12e8b2563c32f05dc7fff6faab54381049ce137c5d585e3f9a9b3d599"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SLEEP_UNTIL_BUTTON_PRESS</span></span></span><a class="headerlink" href="#_CPPv4N9EventType24SLEEP_UNTIL_BUTTON_PRESSE" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9EventType23SLEEP_UNTIL_NEXT_PERIODE">
+<span id="_CPPv3N9EventType23SLEEP_UNTIL_NEXT_PERIODE"></span><span id="_CPPv2N9EventType23SLEEP_UNTIL_NEXT_PERIODE"></span><span class="target" id="event__manager_8h_1a2628ea8d12e8b2563c32f05dc7fff6faa0f505ef525b5c5d0d234538837f011c2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SLEEP_UNTIL_NEXT_PERIOD</span></span></span><a class="headerlink" href="#_CPPv4N9EventType23SLEEP_UNTIL_NEXT_PERIODE" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9EventType23SLEEP_UNTIL_NEXT_TIMINGE">
+<span id="_CPPv3N9EventType23SLEEP_UNTIL_NEXT_TIMINGE"></span><span id="_CPPv2N9EventType23SLEEP_UNTIL_NEXT_TIMINGE"></span><span class="target" id="event__manager_8h_1a2628ea8d12e8b2563c32f05dc7fff6faa099af58f9b27069f207b3daef4b0f90c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SLEEP_UNTIL_NEXT_TIMING</span></span></span><a class="headerlink" href="#_CPPv4N9EventType23SLEEP_UNTIL_NEXT_TIMINGE" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv412EventManager">
+<span id="_CPPv312EventManager"></span><span id="_CPPv212EventManager"></span><span id="EventManager"></span><span class="target" id="classEventManager"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EventManager</span></span></span><a class="headerlink" href="#_CPPv412EventManager" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Singleton class for managing events in the system. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N12EventManager9subscribeE9EventType13EventCallback">
+<span id="_CPPv3N12EventManager9subscribeE9EventType13EventCallback"></span><span id="_CPPv2N12EventManager9subscribeE9EventType13EventCallback"></span><span id="EventManager::subscribe__EventType.EventCallback"></span><span class="target" id="classEventManager_1a9b08d55351b8cb5bb1cb58c7713a8369"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">subscribe</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv49EventType" title="EventType"><span class="n"><span class="pre">EventType</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">type</span></span>, <a class="reference internal" href="#_CPPv413EventCallback" title="EventCallback"><span class="n"><span class="pre">EventCallback</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12EventManager9subscribeE9EventType13EventCallback" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Subscribe to an event type. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>type</strong> – The event type to subscribe to </p></li>
+<li><p><strong>callback</strong> – The callback function to be called when the event occurs </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Subscription ID that can be used to unsubscribe </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N12EventManager7publishE9EventType">
+<span id="_CPPv3N12EventManager7publishE9EventType"></span><span id="_CPPv2N12EventManager7publishE9EventType"></span><span id="EventManager::publish__EventType"></span><span class="target" id="classEventManager_1ac31038c402c237880020249434a69697"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">publish</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv49EventType" title="EventType"><span class="n"><span class="pre">EventType</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">type</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12EventManager7publishE9EventType" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Helper method to publish an event by type. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>type</strong> – The event type to publish </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N12EventManager19process_event_queueEv">
+<span id="_CPPv3N12EventManager19process_event_queueEv"></span><span id="_CPPv2N12EventManager19process_event_queueEv"></span><span id="EventManager::process_event_queue"></span><span class="target" id="classEventManager_1a2c685491a60ed2397e7816af98581150"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">process_event_queue</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12EventManager19process_event_queueEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Wait for and process the next event from the queue. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>true if an event was processed, false if timeout occurred </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N12EventManager11getInstanceEv">
+<span id="_CPPv3N12EventManager11getInstanceEv"></span><span id="_CPPv2N12EventManager11getInstanceEv"></span><span id="EventManager::getInstance"></span><span class="target" id="classEventManager_1ad18a9d920d310bdd0b1a5e1562a8cba6"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv412EventManager" title="EventManager"><span class="n"><span class="pre">EventManager</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">getInstance</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12EventManager11getInstanceEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Get the singleton instance of <a class="reference internal" href="#classEventManager"><span class="std std-ref">EventManager</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Reference to the <a class="reference internal" href="#classEventManager"><span class="std std-ref">EventManager</span></a> instance </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="button.html" class="btn btn-neutral float-left" title="Button" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="led.html" class="btn btn-neutral float-right" title="Led" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, AITIA International, Inc.</p>
+  </div>
+
+  <ul class="footer">
+        <li>
+	    
+            
+            Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/espressif/sphinx_idf_theme">theme</a>  based on <a href="https://github.com/readthedocs/sphinx_rtd_theme">Read the Docs Sphinx Theme</a>.
+         </li>
+
+  </ul> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

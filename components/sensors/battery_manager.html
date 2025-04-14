@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Battery Manager -  -  &mdash; ESP SENTINEL CAM Documentation main documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=a60756f2" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=949a1ff5" />
+      <link rel="stylesheet" type="text/css" href="../../_static/theme_overrides.css?v=851bd809" />
+
+  
+    <link rel="canonical" href="https://bnyitrai03.github.io/ESP_Sentinel_Cam/components/sensors/battery_manager.html" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=d01aebe5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=ff8fa330"></script>
+    <script src="../../_static/js/theme.js"></script>
+
+    
+        
+
+    <script type="text/javascript">
+        DOCUMENTATION_OPTIONS.PAGENAME = 'components/sensors/battery_manager';
+        DOCUMENTATION_OPTIONS.PROJECT_SLUG = '';
+        DOCUMENTATION_OPTIONS.LATEST_BRANCH_NAME = 'master';
+        DOCUMENTATION_OPTIONS.LANGUAGES = ["en"];
+        DOCUMENTATION_OPTIONS.RELEASE = 'main';
+        DOCUMENTATION_OPTIONS.LANGUAGE_URL = 'en';
+
+    </script>
+
+    <script type="text/javascript" src=""></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Battery Charge Sensor" href="battery_charge.html" />
+    <link rel="prev" title="CPU Temperature Sensor" href="cpu_temp.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ESP SENTINEL CAM Documentation
+              <img src="../../_static/espressif-logo.svg" class="logo" alt="Logo"/>
+          </a>
+
+          
+
+          <div class="selectors">
+            <select id="version-select" style="width: 150px;" hidden>
+              <option value="" disabled selected>Choose version...</option>
+            </select>
+          </div>
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../documentation/index.html">Documentation tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Software Components</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main/index.html">Main</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../communication/index.html">Communication</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Sensors</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="isensor.html">Sensor Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sensors.html">Collection of the sensors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="charge_current.html">Battery Charge Current Sensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cpu_temp.html">CPU Temperature Sensor</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Battery Manager</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#battery">Battery</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#i2c-communication">I2C Communication</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#constants">Constants</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="battery_charge.html">Battery Charge Sensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="battery_temp.html">Battery Temperature Sensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="light_sensor.html">Light Level Sensor</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../camera.html">Camera</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mytime.html">Time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../button.html">Button</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../event.html">Event Manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../led.html">Led</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../qr.html">QR Code Decoder</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../todolist.html">TODO list</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ESP SENTINEL CAM Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Software Components</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Sensors</a></li>
+      <li class="breadcrumb-item active">Battery Manager</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/bnyitrai03/ESP_Sentinel_Cam/blob/main/docs/en/components/sensors/battery_manager.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="battery-manager">
+<h1>Battery Manager<a class="headerlink" href="#battery-manager" title="Permalink to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">BatteryManager</span></code> class provides an interface for controlling and monitoring the <a class="reference external" href="https://www.ti.com/product/BQ25622">BQ25622</a> battery charging IC.
+It utilizes I2C communication to read battery voltage, temperature, and battery current parameters. These parameters are then forwarded to the corresponding sensor classes for further processing.</p>
+<figure class="align-center" id="id1">
+<img alt="Image missing" src="../../_images/BQ25622.png" />
+<figcaption>
+<p><span class="caption-text">The BQ25622 battery charger IC</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>The BQ25622 manages the charging process autonomously, thus requiring no intervention from the ESP32-S3, when it is in deep sleep mode.</p>
+<section id="battery">
+<h2>Battery<a class="headerlink" href="#battery" title="Permalink to this heading"></a></h2>
+<p>The battery used to power the system is a <a class="reference external" href="https://thebatteryshop.eu/hu/Samsung-INR21700-53G-Li-Ion-akkumulator-cella?srsltid=AfmBOor2efUYfIvtGgnrTgcHRJNBeFCJHUbnHE9f6jeoKRS1kgvuOMz9">Samsung INR21700-53G</a>
+lithium-ion cell with a nominal voltage of 3.6V and a capacity of 5300mAh.</p>
+<figure class="align-center" id="id2">
+<img alt="Image missing" src="../../_images/battery.png" />
+<figcaption>
+<p><span class="caption-text">The Samsung INR21700-53G lithium-ion cell</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="i2c-communication">
+<h2>I2C Communication<a class="headerlink" href="#i2c-communication" title="Permalink to this heading"></a></h2>
+<p>The driver implements the BQ25622’s custom I2C communication protocol:</p>
+<figure class="align-center" id="id3">
+<img alt="Image missing" src="../../_images/BQ25622_i2c.png" />
+<figcaption>
+<p><span class="caption-text">The read and write I2C communication protocol</span><a class="headerlink" href="#id3" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="constants">
+<h2>Constants<a class="headerlink" href="#constants" title="Permalink to this heading"></a></h2>
+<p>The following constants are used for configuring and managing the BQ25622:</p>
+<p><strong>I2C Address</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">BQ25622_ADDR</span> <span class="pre">=</span> <span class="pre">0x6B</span></code> — I2C address of the BQ25622.</p></li>
+</ul>
+<p><strong>Register Map</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">REG_ADC_CONTROL</span> <span class="pre">=</span> <span class="pre">0x26</span></code> — Controls ADC operation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">REG_VBAT_READ</span> <span class="pre">=</span> <span class="pre">0x30</span></code> — Contains battery voltage reading.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">REG_TEMP_READ</span> <span class="pre">=</span> <span class="pre">0x34</span></code> — Contains temperature sensor reading.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">REG_CHARGE_CURRENT</span> <span class="pre">=</span> <span class="pre">0x2A</span></code> — Contains charge current reading.</p></li>
+</ul>
+<p><strong>ADC Configuration Bits</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ADC_ENABLE</span> <span class="pre">=</span> <span class="pre">0x80</span></code> — Enables the ADC.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ADC_AVG</span> <span class="pre">=</span> <span class="pre">0x08</span></code> — Enables ADC averaging.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ADC_AVG_INIT</span> <span class="pre">=</span> <span class="pre">0x04</span></code> — Initializes ADC averaging.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ADC_SAMPLE</span> <span class="pre">=</span> <span class="pre">0xDF</span></code> — Sets 11-bit effective resolution.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ADC_RATE</span> <span class="pre">=</span> <span class="pre">0x40</span></code> — Enables one-shot mode.</p></li>
+</ul>
+<section id="header-file">
+<h3>Header File<a class="headerlink" href="#header-file" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/ESP_Sentinel_Cam/blob/b0624cd/components/sensors/include/battery_manager.h">components/sensors/include/battery_manager.h</a></p></li>
+</ul>
+</section>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h3>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv414BatteryManager">
+<span id="_CPPv314BatteryManager"></span><span id="_CPPv214BatteryManager"></span><span id="BatteryManager"></span><span class="target" id="classBatteryManager"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BatteryManager</span></span></span><a class="headerlink" href="#_CPPv414BatteryManager" title="Permalink to this definition"></a><br /></dt>
+<dd><p><a class="reference internal" href="#classBatteryManager"><span class="std std-ref">BatteryManager</span></a> class for managing the bq25622 battery charging IC. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14BatteryManager14BatteryManagerER10I2CManager">
+<span id="_CPPv3N14BatteryManager14BatteryManagerER10I2CManager"></span><span id="_CPPv2N14BatteryManager14BatteryManagerER10I2CManager"></span><span id="BatteryManager::BatteryManager__I2CManagerR"></span><span class="target" id="classBatteryManager_1a741453b0c4c0e66f4ce110cfb10bc492"></span><span class="sig-name descname"><span class="n"><span class="pre">BatteryManager</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../communication/i2c_manager.html#_CPPv410I2CManager" title="I2CManager"><span class="n"><span class="pre">I2CManager</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">i2c</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14BatteryManager14BatteryManagerER10I2CManager" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Constructor that takes an <a class="reference internal" href="../communication/i2c_manager.html#classI2CManager"><span class="std std-ref">I2CManager</span></a> reference for dependency injection. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>i2c</strong> – Reference to an <a class="reference internal" href="../communication/i2c_manager.html#classI2CManager"><span class="std std-ref">I2CManager</span></a> instance </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14BatteryManagerD0Ev">
+<span id="_CPPv3N14BatteryManagerD0Ev"></span><span id="_CPPv2N14BatteryManagerD0Ev"></span><span id="BatteryManager::~BatteryManager"></span><span class="target" id="classBatteryManager_1a2b148b3ddb405b7a323fc3314facf2ad"></span><span class="sig-name descname"><span class="n"><span class="pre">~BatteryManager</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14BatteryManagerD0Ev" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Destructor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14BatteryManager4initEv">
+<span id="_CPPv3N14BatteryManager4initEv"></span><span id="_CPPv2N14BatteryManager4initEv"></span><span id="BatteryManager::init"></span><span class="target" id="classBatteryManager_1a7c0e050f01d9587ddf1c863060a2e4a8"></span><span class="n"><span class="pre">esp_err_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">init</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14BatteryManager4initEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Initialize the <a class="reference internal" href="#classBatteryManager"><span class="std std-ref">BatteryManager</span></a> and setup I2C communication. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ESP_OK if successful, otherwise an error code </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14BatteryManager19get_battery_voltageEPf">
+<span id="_CPPv3N14BatteryManager19get_battery_voltageEPf"></span><span id="_CPPv2N14BatteryManager19get_battery_voltageEPf"></span><span id="BatteryManager::get_battery_voltage__floatP"></span><span class="target" id="classBatteryManager_1a8dcea34155d90835fe1c8bfac27965e5"></span><span class="n"><span class="pre">esp_err_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_battery_voltage</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">voltage</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14BatteryManager19get_battery_voltageEPf" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Get the battery voltage in Volts. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>voltage</strong> – Pointer to store the battery voltage </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>ESP_OK if successful, otherwise an error code </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14BatteryManager23get_battery_temperatureEPf">
+<span id="_CPPv3N14BatteryManager23get_battery_temperatureEPf"></span><span id="_CPPv2N14BatteryManager23get_battery_temperatureEPf"></span><span id="BatteryManager::get_battery_temperature__floatP"></span><span class="target" id="classBatteryManager_1aea2c21bab37fb97e64d79916bf0362a2"></span><span class="n"><span class="pre">esp_err_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_battery_temperature</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">temperature</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14BatteryManager23get_battery_temperatureEPf" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Get the battery temperature in percentage of bias reference. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>temperature</strong> – Pointer to store the battery temperature </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>ESP_OK if successful, otherwise an error code </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14BatteryManager18get_charge_currentEP7int16_t">
+<span id="_CPPv3N14BatteryManager18get_charge_currentEP7int16_t"></span><span id="_CPPv2N14BatteryManager18get_charge_currentEP7int16_t"></span><span id="BatteryManager::get_charge_current__int16_tP"></span><span class="target" id="classBatteryManager_1a9f60726ecc3c06e07e28e3a2b99b0306"></span><span class="n"><span class="pre">esp_err_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_charge_current</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">int16_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">current</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14BatteryManager18get_charge_currentEP7int16_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Get the charge current in milliamps. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>current</strong> – Pointer to store the charge current </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>ESP_OK if successful, otherwise an error code </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14BatteryManager11disable_ADCEv">
+<span id="_CPPv3N14BatteryManager11disable_ADCEv"></span><span id="_CPPv2N14BatteryManager11disable_ADCEv"></span><span id="BatteryManager::disable_ADC"></span><span class="target" id="classBatteryManager_1aa4fc1c9a370bd4d59ee77106f4115df8"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">disable_ADC</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14BatteryManager11disable_ADCEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Disable the ADC in the BQ25622. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="cpu_temp.html" class="btn btn-neutral float-left" title="CPU Temperature Sensor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="battery_charge.html" class="btn btn-neutral float-right" title="Battery Charge Sensor" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, AITIA International, Inc.</p>
+  </div>
+
+  <ul class="footer">
+        <li>
+	    
+            
+            Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/espressif/sphinx_idf_theme">theme</a>  based on <a href="https://github.com/readthedocs/sphinx_rtd_theme">Read the Docs Sphinx Theme</a>.
+         </li>
+
+  </ul> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Config -  -  &mdash; ESP SENTINEL CAM Documentation main documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=a60756f2" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=949a1ff5" />
+      <link rel="stylesheet" type="text/css" href="../../_static/theme_overrides.css?v=851bd809" />
+
+  
+    <link rel="canonical" href="https://bnyitrai03.github.io/ESP_Sentinel_Cam/components/storage/config.html" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=d01aebe5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=ff8fa330"></script>
+    <script src="../../_static/js/theme.js"></script>
+
+    
+        
+
+    <script type="text/javascript">
+        DOCUMENTATION_OPTIONS.PAGENAME = 'components/storage/config';
+        DOCUMENTATION_OPTIONS.PROJECT_SLUG = '';
+        DOCUMENTATION_OPTIONS.LATEST_BRANCH_NAME = 'master';
+        DOCUMENTATION_OPTIONS.LANGUAGES = ["en"];
+        DOCUMENTATION_OPTIONS.RELEASE = 'main';
+        DOCUMENTATION_OPTIONS.LANGUAGE_URL = 'en';
+
+    </script>
+
+    <script type="text/javascript" src=""></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Utilities" href="../utilities/index.html" />
+    <link rel="prev" title="Storage" href="storage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ESP SENTINEL CAM Documentation
+              <img src="../../_static/espressif-logo.svg" class="logo" alt="Logo"/>
+          </a>
+
+          
+
+          <div class="selectors">
+            <select id="version-select" style="width: 150px;" hidden>
+              <option value="" disabled selected>Choose version...</option>
+            </select>
+          </div>
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../documentation/index.html">Documentation tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Software Components</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main/index.html">Main</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../communication/index.html">Communication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sensors/index.html">Sensors</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Storage</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="storage.html">Storage</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Config</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#static-configuration">Static Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dynamic-configuration">Dynamic Configuration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../camera.html">Camera</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mytime.html">Time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../button.html">Button</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../event.html">Event Manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../led.html">Led</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../qr.html">QR Code Decoder</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../todolist.html">TODO list</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ESP SENTINEL CAM Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Software Components</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Storage</a></li>
+      <li class="breadcrumb-item active">Config</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/bnyitrai03/ESP_Sentinel_Cam/blob/main/docs/en/components/storage/config.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="config">
+<h1>Config<a class="headerlink" href="#config" title="Permalink to this heading"></a></h1>
+<p>The device operates using two types of configurations: a <code class="docutils literal notranslate"><span class="pre">static</span></code> and a <code class="docutils literal notranslate"><span class="pre">dynamic</span></code> configuration.</p>
+<section id="static-configuration">
+<h2>Static Configuration<a class="headerlink" href="#static-configuration" title="Permalink to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">static</span> <span class="pre">configuration</span></code> is obtained through a GET request to the <code class="docutils literal notranslate"><span class="pre">config</span> <span class="pre">server</span></code>.</p>
+<p>An example of the <code class="docutils literal notranslate"><span class="pre">static</span> <span class="pre">configuration</span></code> is as follows:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;uuid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1ddffcf8-a60c-489b-860e-1c4cb13048c1&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;mqttAddress&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mqtt://00.111.22.33:1234&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;mqttUser&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;testuser&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;mqttPassword&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;123456&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;imageTopic&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/cam1/image&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;imageAckTopic&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/cam1/image_ack&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;healthReportTopic&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/cam1/health&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;healthReportRespTopic&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/cam1/health_resp&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;logTopic&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/cam1/log&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;cameraMode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GRAY&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">uuid</span></code>: Unique identifier for the device (read from the QR code)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mqttAddress</span></code>: MQTT broker connection url</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mqttUser</span></code>: Username for MQTT authentication</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mqttPassword</span></code>: Password for MQTT authentication</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">imageTopic</span></code>: MQTT topic for image transmission</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">imageAckTopic</span></code>: MQTT topic for image header acknowledgment</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">healthReportTopic</span></code>: MQTT topic for sending the sensor data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">healthReportRespTopic</span></code>: MQTT topic for receiving the <code class="docutils literal notranslate"><span class="pre">dynamic</span> <span class="pre">config</span></code> acknowledgment</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logTopic</span></code>: MQTT topic for logging</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cameraMode</span></code>: Camera operating mode (<strong>GRAY</strong> or <strong>COLOR</strong>)</p></li>
+</ul>
+</section>
+<section id="dynamic-configuration">
+<h2>Dynamic Configuration<a class="headerlink" href="#dynamic-configuration" title="Permalink to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">dynamic</span> <span class="pre">configuration</span></code> is received through the <code class="docutils literal notranslate"><span class="pre">healthReportRespTopic</span></code>.</p>
+<p>An example of the <code class="docutils literal notranslate"><span class="pre">dynamic</span> <span class="pre">configuration</span></code> is as follows:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">     </span><span class="nt">&quot;configId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;8D8AC610-566D-4EF0-9C22-186B&quot;</span><span class="p">,</span>
+<span class="w">     </span><span class="nt">&quot;timing&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">         </span><span class="p">{</span>
+<span class="w">             </span><span class="nt">&quot;period&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">&quot;start&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;00:00:00&quot;</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">&quot;end&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;07:00:00&quot;</span>
+<span class="w">         </span><span class="p">},</span>
+<span class="w">         </span><span class="p">{</span>
+<span class="w">             </span><span class="nt">&quot;period&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">&quot;start&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;07:00:00&quot;</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">&quot;end&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;12:00:00&quot;</span>
+<span class="w">         </span><span class="p">},</span>
+<span class="w">         </span><span class="p">{</span>
+<span class="w">             </span><span class="nt">&quot;period&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">40</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">&quot;start&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;12:00:00&quot;</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">&quot;end&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;15:00:00&quot;</span>
+<span class="w">         </span><span class="p">},</span>
+<span class="w">         </span><span class="p">{</span>
+<span class="w">             </span><span class="nt">&quot;period&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">&quot;start&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;15:00:00&quot;</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">&quot;end&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;17:00:00&quot;</span>
+<span class="w">         </span><span class="p">},</span>
+<span class="w">         </span><span class="p">{</span>
+<span class="w">             </span><span class="nt">&quot;period&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">40</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">&quot;start&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;17:00:00&quot;</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">&quot;end&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;22:00:00&quot;</span>
+<span class="w">         </span><span class="p">},</span>
+<span class="w">         </span><span class="p">{</span>
+<span class="w">             </span><span class="nt">&quot;period&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">&quot;start&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;22:00:00&quot;</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">&quot;end&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;23:59:59&quot;</span>
+<span class="w">         </span><span class="p">}</span>
+<span class="w">     </span><span class="p">]</span>
+<span class="w"> </span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">configId</span></code>: Unique identifier for the configuration</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timing</span></code>: Array of working hours with the following keys:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">period</span></code>: Period of the image capture in seconds. If the value is <strong>-1</strong>, the camera is turned off.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">start</span></code>: Start time for the period in <cite>HH:MM:SS</cite> format</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">end</span></code>: End time for the period in <cite>HH:MM:SS</cite> format</p></li>
+</ul>
+</li>
+</ul>
+<section id="header-file">
+<h3>Header File<a class="headerlink" href="#header-file" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/ESP_Sentinel_Cam/blob/b0624cd/components/storage/include/config.h">components/storage/include/config.h</a></p></li>
+</ul>
+</section>
+<section id="structures">
+<h3>Structures<a class="headerlink" href="#structures" title="Permalink to this heading"></a></h3>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv412TimingConfig">
+<span id="_CPPv312TimingConfig"></span><span id="_CPPv212TimingConfig"></span><span id="TimingConfig"></span><span class="target" id="structTimingConfig"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TimingConfig</span></span></span><a class="headerlink" href="#_CPPv412TimingConfig" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Structure to hold timing configuration. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N12TimingConfig6periodE">
+<span id="_CPPv3N12TimingConfig6periodE"></span><span id="_CPPv2N12TimingConfig6periodE"></span><span id="TimingConfig::period__int64_t"></span><span class="target" id="structTimingConfig_1aed15714a8261004848336d6c485a2f4f"></span><span class="n"><span class="pre">int64_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">period</span></span></span><a class="headerlink" href="#_CPPv4N12TimingConfig6periodE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>working period of the device, -1: sleeping </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N12TimingConfig5startE">
+<span id="_CPPv3N12TimingConfig5startE"></span><span id="_CPPv2N12TimingConfig5startE"></span><span id="TimingConfig::start__Time"></span><span class="target" id="structTimingConfig_1ad475ff8343773dae892b5a9eb5dbf6f2"></span><a class="reference internal" href="../mytime.html#_CPPv44Time" title="Time"><span class="n"><span class="pre">Time</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">start</span></span></span><a class="headerlink" href="#_CPPv4N12TimingConfig5startE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>HH:MM:SS </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N12TimingConfig3endE">
+<span id="_CPPv3N12TimingConfig3endE"></span><span id="_CPPv2N12TimingConfig3endE"></span><span id="TimingConfig::end__Time"></span><span class="target" id="structTimingConfig_1a42df10aefbbe15f8f8514bea2f0b81ff"></span><a class="reference internal" href="../mytime.html#_CPPv44Time" title="Time"><span class="n"><span class="pre">Time</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">end</span></span></span><a class="headerlink" href="#_CPPv4N12TimingConfig3endE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>HH:MM:SS </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h3>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv46Config">
+<span id="_CPPv36Config"></span><span id="_CPPv26Config"></span><span id="Config"></span><span class="target" id="classConfig"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Config</span></span></span><a class="headerlink" href="#_CPPv46Config" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Manages configuration settings. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Config11load_configER12JsonDocument">
+<span id="_CPPv3N6Config11load_configER12JsonDocument"></span><span id="_CPPv2N6Config11load_configER12JsonDocument"></span><span id="Config::load_config__JsonDocumentR"></span><span class="target" id="classConfig_1a03e8a29486b5b60bebd2a24db93e3a50"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">load_config</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">JsonDocument</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">config</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Config11load_configER12JsonDocument" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Loads the dynamic configuration from a JSON document. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config</strong> – The new configuration as a JSON document </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Config17load_from_storageEv">
+<span id="_CPPv3N6Config17load_from_storageEv"></span><span id="_CPPv2N6Config17load_from_storageEv"></span><span id="Config::load_from_storage"></span><span class="target" id="classConfig_1aafcf21bd84eacbadf5d2a400373dadb2"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">load_from_storage</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Config17load_from_storageEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Loads the dynamic configuration from the NVS storage, also handles validation. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function will restart the device if the configuration is invalid </p>
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Config8validateER12JsonDocument">
+<span id="_CPPv3N6Config8validateER12JsonDocument"></span><span id="_CPPv2N6Config8validateER12JsonDocument"></span><span id="Config::validate__JsonDocumentR"></span><span class="target" id="classConfig_1a39f2c6b0fd2b8f64dbc287bb4ea054fb"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">validate</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">JsonDocument</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">config</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Config8validateER12JsonDocument" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Validates the configuration. </p>
+<p><ul class="simple">
+<li><p>The UUID is not empty</p></li>
+<li><p>The UUID is a string</p></li>
+<li><p>The UUID is not too long</p></li>
+<li><p>The timing array is not missing</p></li>
+<li><p>The period is an integer and not less than -1</p></li>
+<li><p>The start and end times are in the format HH:MM:SS</p></li>
+</ul>
+</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The configuration is valid if:</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config</strong> – The new configuration as a string</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>True if the configuration is valid</p></li>
+<li><p>False if the configuration is invalid </p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Config17get_active_configEv">
+<span id="_CPPv3N6Config17get_active_configEv"></span><span id="_CPPv2N6Config17get_active_configEv"></span><span id="Config::get_active_config"></span><span class="target" id="classConfig_1a86d57fbf06b676a944c03f7dd5f2cad2"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv412TimingConfig" title="TimingConfig"><span class="n"><span class="pre">TimingConfig</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_active_config</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Config17get_active_configEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Gets the active configuration. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the active config is not found, the default config is returned</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>The active configuration </p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Config17set_active_configEv">
+<span id="_CPPv3N6Config17set_active_configEv"></span><span id="_CPPv2N6Config17set_active_configEv"></span><span id="Config::set_active_config"></span><span class="target" id="classConfig_1ade438a0424c71dc4e67817166aeedd6f"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_active_config</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Config17set_active_configEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Sets the active configuration based on the current time. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the active config is not found, the default config is set</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>-1 if the active config period is -1 (sleeping), else 0 </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Config8get_uuidEv">
+<span id="_CPPv3N6Config8get_uuidEv"></span><span id="_CPPv2N6Config8get_uuidEv"></span><span id="Config::get_uuid"></span><span class="target" id="classConfig_1ad18d4e4adcc044b6408113480232656a"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">get_uuid</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Config8get_uuidEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Gets the UUID. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>The active configuration UUID </p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Config10get_periodEv">
+<span id="_CPPv3N6Config10get_periodEv"></span><span id="_CPPv2N6Config10get_periodEv"></span><span id="Config::get_period"></span><span class="target" id="classConfig_1a6f4727e152d542b1774f187194392145"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">int64_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_period</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Config10get_periodEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Gets the period of the active configuration. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>The active configuration period in seconds </p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="storage.html" class="btn btn-neutral float-left" title="Storage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../utilities/index.html" class="btn btn-neutral float-right" title="Utilities" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, AITIA International, Inc.</p>
+  </div>
+
+  <ul class="footer">
+        <li>
+	    
+            
+            Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/espressif/sphinx_idf_theme">theme</a>  based on <a href="https://github.com/readthedocs/sphinx_rtd_theme">Read the Docs Sphinx Theme</a>.
+         </li>
+
+  </ul> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

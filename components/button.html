@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Button -  -  &mdash; ESP SENTINEL CAM Documentation main documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=a60756f2" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=949a1ff5" />
+      <link rel="stylesheet" type="text/css" href="../_static/theme_overrides.css?v=851bd809" />
+
+  
+    <link rel="canonical" href="https://bnyitrai03.github.io/ESP_Sentinel_Cam/components/button.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=d01aebe5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../_static/copybutton.js?v=ff8fa330"></script>
+    <script src="../_static/js/theme.js"></script>
+
+    
+        
+
+    <script type="text/javascript">
+        DOCUMENTATION_OPTIONS.PAGENAME = 'components/button';
+        DOCUMENTATION_OPTIONS.PROJECT_SLUG = '';
+        DOCUMENTATION_OPTIONS.LATEST_BRANCH_NAME = 'master';
+        DOCUMENTATION_OPTIONS.LANGUAGES = ["en"];
+        DOCUMENTATION_OPTIONS.RELEASE = 'main';
+        DOCUMENTATION_OPTIONS.LANGUAGE_URL = 'en';
+
+    </script>
+
+    <script type="text/javascript" src=""></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Event Manager" href="event.html" />
+    <link rel="prev" title="Time" href="mytime.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            ESP SENTINEL CAM Documentation
+              <img src="../_static/espressif-logo.svg" class="logo" alt="Logo"/>
+          </a>
+
+          
+
+          <div class="selectors">
+            <select id="version-select" style="width: 150px;" hidden>
+              <option value="" disabled selected>Choose version...</option>
+            </select>
+          </div>
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../documentation/index.html">Documentation tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Software Components</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="main/index.html">Main</a></li>
+<li class="toctree-l2"><a class="reference internal" href="communication/index.html">Communication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sensors/index.html">Sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="camera.html">Camera</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mytime.html">Time</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Button</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#header-file">Header File</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#classes">Classes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="event.html">Event Manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="led.html">Led</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qr.html">QR Code Decoder</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../todolist.html">TODO list</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ESP SENTINEL CAM Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Software Components</a></li>
+      <li class="breadcrumb-item active">Button</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/bnyitrai03/ESP_Sentinel_Cam/blob/main/docs/en/components/button.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="button">
+<h1>Button<a class="headerlink" href="#button" title="Permalink to this heading"></a></h1>
+<p>In deep sleep mode, the button serves as a wake-up trigger for the device.</p>
+<p>During normal operation, a short button press (less than 2.5 seconds) transitions the device into deep sleep mode. The device exits deep sleep and resumes operation upon the next button press.</p>
+<p>In normal operation mode, a long button press initiates a system reset, after which the device boots into <code class="docutils literal notranslate"><span class="pre">QR</span> <span class="pre">Reader</span> <span class="pre">mode</span></code>.</p>
+<p>The button is interfaced with <strong>GPIO21</strong> on the ESP32-S3 microcontroller.</p>
+<p>Hardware-based debouncing is implemented for the button, and it operates in an active-low configuration.</p>
+<div class="admonition-todo admonition" id="id1">
+<p class="admonition-title">Todo</p>
+<p>Add test for button wake up from deep sleep.</p>
+</div>
+<section id="header-file">
+<h2>Header File<a class="headerlink" href="#header-file" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/ESP_Sentinel_Cam/blob/b0624cd/components/button/include/button.h">components/button/include/button.h</a></p></li>
+</ul>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv46Button">
+<span id="_CPPv36Button"></span><span id="_CPPv26Button"></span><span id="Button"></span><span class="target" id="classButton"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Button</span></span></span><a class="headerlink" href="#_CPPv46Button" title="Permalink to this definition"></a><br /></dt>
+<dd><p><a class="reference internal" href="#classButton"><span class="std std-ref">Button</span></a> class that handles button press and release events. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Button6ButtonEv">
+<span id="_CPPv3N6Button6ButtonEv"></span><span id="_CPPv2N6Button6ButtonEv"></span><span id="Button::Button"></span><span class="target" id="classButton_1a3b36df1ae23c58aedb9e15a713159459"></span><span class="sig-name descname"><span class="n"><span class="pre">Button</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Button6ButtonEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Install the button ISR and start the button task. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Button4stopEv">
+<span id="_CPPv3N6Button4stopEv"></span><span id="_CPPv2N6Button4stopEv"></span><span id="Button::stop"></span><span class="target" id="classButton_1a9246026d4e5e46486e86911944e7a239"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stop</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Button4stopEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Stop the button task. </p>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N6Button11ButtonStateE">
+<span id="_CPPv3N6Button11ButtonStateE"></span><span id="_CPPv2N6Button11ButtonStateE"></span><span id="Button::ButtonState"></span><span class="target" id="structButton_1_1ButtonState"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ButtonState</span></span></span><a class="headerlink" href="#_CPPv4N6Button11ButtonStateE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>State of the button. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Button11ButtonState16press_start_timeE">
+<span id="_CPPv3N6Button11ButtonState16press_start_timeE"></span><span id="_CPPv2N6Button11ButtonState16press_start_timeE"></span><span id="Button::ButtonState::press_start_time__uint32_t"></span><span class="target" id="structButton_1_1ButtonState_1afe1e58a9c0da832ee0fac7ba3080ad27"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">press_start_time</span></span></span><a class="headerlink" href="#_CPPv4N6Button11ButtonState16press_start_timeE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>When the button was pressed </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Button11ButtonState10last_stateE">
+<span id="_CPPv3N6Button11ButtonState10last_stateE"></span><span id="_CPPv2N6Button11ButtonState10last_stateE"></span><span id="Button::ButtonState::last_state__i"></span><span class="target" id="structButton_1_1ButtonState_1a1d0e2e889a04a1c26e0b92fb44d4334f"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">last_state</span></span></span><a class="headerlink" href="#_CPPv4N6Button11ButtonState10last_stateE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Last state of the button </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Button11ButtonState10is_pressedE">
+<span id="_CPPv3N6Button11ButtonState10is_pressedE"></span><span id="_CPPv2N6Button11ButtonState10is_pressedE"></span><span id="Button::ButtonState::is_pressed__b"></span><span class="target" id="structButton_1_1ButtonState_1a66e4eb79340eea825452e7e740fa45bf"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_pressed</span></span></span><a class="headerlink" href="#_CPPv4N6Button11ButtonState10is_pressedE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Whether the button is pressed </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mytime.html" class="btn btn-neutral float-left" title="Time" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="event.html" class="btn btn-neutral float-right" title="Event Manager" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, AITIA International, Inc.</p>
+  </div>
+
+  <ul class="footer">
+        <li>
+	    
+            
+            Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/espressif/sphinx_idf_theme">theme</a>  based on <a href="https://github.com/readthedocs/sphinx_rtd_theme">Read the Docs Sphinx Theme</a>.
+         </li>
+
+  </ul> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
