@@ -74,6 +74,12 @@ private:
   static void set_rgb(uint8_t r, uint8_t g, uint8_t b);
 
   /**
+   * @brief Initialize the LED hardware
+   * @return true if initialization successful, false otherwise
+   */
+  bool init_hardware();
+
+  /**
    * @brief Set the LED to the color associated with the given pattern
    * @param pattern The pattern whose color to use
    */
@@ -82,15 +88,14 @@ private:
   /**
    * @brief Toggle the LED between off and the color associated with the pattern
    * @param pattern The pattern whose color to use when turning on
-   * @return Current LED state after toggling (true = on, false = off)
    */
-  static bool blink_led(Pattern pattern);
+  static void blink_led(Pattern pattern);
 
   static const RGBColor PATTERN_COLORS[];
 
-  static Pattern current_pattern;
-  static SemaphoreHandle_t led_mutex;
-  static SemaphoreHandle_t pattern_mutex;
-  bool running = false;
-  static bool led_state;
+  static Pattern _current_pattern;
+  static SemaphoreHandle_t _led_mutex;
+  static SemaphoreHandle_t _pattern_mutex;
+  bool _running = false;
+  static bool _led_state;
 };

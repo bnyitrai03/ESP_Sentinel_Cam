@@ -11,21 +11,6 @@ The `LightSensor` class provides an interface for interacting with the `Texas In
 
 This sensor measures ambient light levels in lux. It implements the `ISensor` interface, allowing it to be used polymorphically.
 
-Example
--------
-
-.. code-block:: cpp
-
-   I2CManager i2c_mgr;
-   LightSensor sensor(i2c_mgr);
-
-   if (sensor.init() == ESP_OK) {
-       if (sensor.read() == ESP_OK) {
-           float lux = sensor.get_value();
-           printf("Ambient light: %.2f lux\n", lux);
-       }
-   }
-
 I2C Communication
 ------------------
 The driver implements the OPT3005's custom I2C communication protocol:

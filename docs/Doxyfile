@@ -32,7 +32,7 @@ INPUT = \
     $(PROJECT_PATH)/components/utilities/include/mysleep.h \
     $(PROJECT_PATH)/components/utilities/include/error_handler.h \
     $(PROJECT_PATH)/components/event/include/event_manager.h \
-    $(PROJECT_PATH)/components/led/include/led.h \
+    $(PROJECT_PATH)/components/led/include/rgb_led.h \
     $(PROJECT_PATH)/components/button/include/button.h \
     $(PROJECT_PATH)/components/qr/include/qr_decoder.h \
     $(PROJECT_PATH)/components/sensors/include/sensors.h \
