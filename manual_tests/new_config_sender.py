@@ -10,6 +10,7 @@ port = 1883
 health_rep_topic = "health"
 config_topic = "health_resp"
 config_path = "test_dynamic_config.json"
+battery_data_path = "battery_data.csv"
 
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -34,10 +35,15 @@ def subscribe(client):
     def on_message(client, userdata, msg):
         try:
             # Decode message and load new config
-            payload = msg.payload.decode()
-            old_config = json.loads(payload)
+            health_report = msg.payload.decode()
+            old_config = json.loads(health_report)
             with open(config_path, 'r') as file:
                 new_config = json.load(file)
+
+            # Save battery percenatge and charge
+            with open(battery_data_path, 'a') as file:
+                file.write(
+                    f"{old_config['timestamp']}, {old_config['batteryCharge']}, {old_config['chargeCurrent']}\n")
 
             # Compare old and new config
             if old_config['configId'] == new_config['configId']:

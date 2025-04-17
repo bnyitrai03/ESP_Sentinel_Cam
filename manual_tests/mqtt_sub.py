@@ -62,8 +62,9 @@ def subscribe(client: mqtt_client.Client):
                 output_path = f"images/image_{safe_timestamp}.jpg"
 
                 image = Image.frombytes("L", (2560, 1600), msg.payload)
-                image.save(output_path)
-                logging.info(f"Saved image to {output_path}")
+                logging.info("Image decoded successfully")
+                # image.save(output_path)
+                # logging.info(f"Saved image to {output_path}")
                 expecting_image = False
                 last_timestamp = None
             except Exception as e:
