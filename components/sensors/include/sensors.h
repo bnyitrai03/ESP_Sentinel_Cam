@@ -44,6 +44,12 @@ public:
    */
   esp_err_t read_sensors(JsonDocument &doc);
 
+  esp_err_t read_battery_after_cam_start(int16_t *current);
+
+  void reset_i2c_and_bq();
+
+  void enable_ADC() { _battery_manager.enable_ADC(); }
+
 private:
   std::map<std::string, std::unique_ptr<ISensor>> _sensors;
   I2CManager _i2c_manager;

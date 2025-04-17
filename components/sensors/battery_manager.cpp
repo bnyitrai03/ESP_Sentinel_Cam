@@ -4,7 +4,7 @@
 constexpr auto *TAG = "BatteryManager";
 
 BatteryManager::BatteryManager(I2CManager &i2c)
-    : _i2c(i2c), _initialized(false) {}
+    : _initialized(false), _i2c(i2c) {}
 
 BatteryManager::~BatteryManager() {
   i2c_master_bus_rm_device(_device_handle);
@@ -40,7 +40,9 @@ esp_err_t BatteryManager::init() {
 
   // Enable ADC
   _initialized = true;
-  this->enable_ADC();
+  if (measure_adc_enabled) {
+    this->enable_ADC();
+  }
   return ESP_OK;
 }
 

@@ -24,9 +24,9 @@ public:
 
   /**
    * @brief Initialize the I2C driver.
-   * Sets up the I2C bus with default configuration (I2C_NUM_0, GPIO 4/5).
+   * Sets up the I2C bus with default configuration (I2C_NUM_0, GPIO 4 and 5).
    *
-   * @return ESP_OK if successful, otherwise an error code from the ESP-IDF
+   * @return ESP_OK if successful, otherwise an error code
    * framework.
    */
   esp_err_t init();
@@ -48,6 +48,14 @@ public:
    * @return ESP_OK if the device is found, otherwise an error code
    */
   esp_err_t probe(uint16_t address, int timeout = 5000);
+
+  /**
+   * @brief Reset the I2C bus.
+   * Resets the I2C bus to a known state.
+   *
+   * @return ESP_OK if successful, otherwise an error code
+   */
+  esp_err_t reset();
 
 private:
   i2c_master_bus_handle_t _bus_handle;

@@ -55,3 +55,29 @@ esp_err_t Sensors::read_sensors(JsonDocument &doc) {
   _battery_manager.disable_ADC();
   return ESP_OK;
 }
+
+esp_err_t Sensors::read_battery_after_cam_start(int16_t *current) {
+  esp_err_t err = _battery_manager.get_charge_current(current);
+  if (err != ESP_OK) {
+    ESP_LOGE(TAG, "Failed to read battery current after camera start!");
+  }
+  _battery_manager.disable_ADC();
+  return err;
+}
+
+void Sensors::reset_i2c_and_bq() {
+  // reinit the I2C bus
+  if (_i2c_manager.reset() != ESP_OK) {
+    ESP_LOGE(TAG, "Failed to reset the I2C bus!");
+    return;
+  }
+
+  // reinit the BQ25622
+  _battery_manager._initialized = false; // reset the initialized flag
+  _battery_manager.measure_adc_enabled =
+      false; // don't reset the measured value
+  if (_battery_manager.init() != ESP_OK) {
+    ESP_LOGE(TAG, "Failed to reinitialize BatteryManager!");
+    return;
+  }
+}

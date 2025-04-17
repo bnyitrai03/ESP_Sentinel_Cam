@@ -40,10 +40,10 @@ def subscribe(client):
             with open(config_path, 'r') as file:
                 new_config = json.load(file)
 
-            # Save battery percenatge and charge
+            # Save battery percentage, charge and uptime
             with open(battery_data_path, 'a') as file:
                 file.write(
-                    f"{old_config['timestamp']}, {old_config['batteryCharge']}, {old_config['chargeCurrent']}\n")
+                    f"{old_config['timestamp']}, {old_config['batteryCharge']}, {old_config['chargeCurrent']}, {old_config['uptime']}, ")
 
             # Compare old and new config
             if old_config['configId'] == new_config['configId']:

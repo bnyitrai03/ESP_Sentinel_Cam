@@ -14,9 +14,10 @@ I2CManager::~I2CManager() {
 }
 
 esp_err_t I2CManager::init() {
-  if (_initialized) {
+  // TODO: remove this
+  /*if (_initialized) {
     return ESP_OK;
-  }
+  }*/
 
   i2c_master_bus_config_t i2c_bus_config = {
       .i2c_port = I2C_NUM_0,
@@ -63,6 +64,26 @@ esp_err_t I2CManager::probe(uint16_t address, int timeout) {
   default:
     ESP_LOGE(TAG, "Unknown error!");
     break;
+  }
+
+  return err;
+}
+
+esp_err_t I2CManager::reset() {
+  if (!_initialized) {
+    ESP_LOGE(TAG, "I2C manager not initialized");
+    return ESP_FAIL;
+  }
+
+  esp_err_t err = i2c_del_master_bus(_bus_handle);
+  if (err != ESP_OK) {
+    ESP_LOGE(TAG, "Resetting I2C bus failed: %s", esp_err_to_name(err));
+    return err;
+  }
+
+  err = this->init();
+  if (err != ESP_OK) {
+    ESP_LOGE(TAG, "Reinitializing I2C bus failed: %s", esp_err_to_name(err));
   }
 
   return err;

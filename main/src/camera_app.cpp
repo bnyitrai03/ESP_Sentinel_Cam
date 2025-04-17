@@ -79,10 +79,12 @@ void CameraApp::run() {
 // ***************************   Helper functions   ******************** //
 
 bool CameraApp::initialize() {
+  _sensors.init();
   _wifi.connect();
   _wifi.sync_time();
   _mqtt.start();
-  _sensors.init();
+  vTaskDelay(500 / portTICK_RATE_MS); // wait for the MQTT client to start
+  //_sensors.init(); // TODO: put it back after mqtt.start
   _config.load_from_storage();
   Led::set_pattern(Led::Pattern::MQTT_CONNECTED_BLINK);
 
@@ -117,6 +119,9 @@ bool CameraApp::handle_config_update() {
 }
 
 bool CameraApp::capture_and_send_image() {
+  // TODO: remove this
+  _sensors.enable_ADC();
+
   _cam.start();
   _cam.take_image();
   char timestamp[TIMESTAMP_SIZE] = {0};
@@ -137,6 +142,26 @@ bool CameraApp::capture_and_send_image() {
     return false;
   }
 
+  // TODO: remove this
+  _sensors.reset_i2c_and_bq();
+
+  // TODO: remove this
+  int16_t current = 0;
+  if (_sensors.read_battery_after_cam_start(&current) != ESP_OK) {
+    ESP_LOGE(TAG, "Failed to read battery after camera start!");
+    return false;
+  }
+  int32_t elapsed_time = static_cast<int32_t>(esp_timer_get_time() / 1000);
+
+  JsonDocument doc;
+  doc["current"] = current;
+  doc["uptime"] = elapsed_time;
+
+  if (send_json(doc, "battery_current") != ESP_OK) {
+    ESP_LOGE(TAG, "Failed to publish battery current after camera start!");
+    return false;
+  }
+
   return true;
 }
 
@@ -150,6 +175,11 @@ esp_err_t CameraApp::send_health_report() {
   doc["configId"] = _config.get_uuid();
   doc["period"] = _config.get_period();
   _sensors.read_sensors(doc);
+
+  // TODO: remove this
+  // Get runtime so far in seconds for avg power consumption calculation
+  int32_t elapsed_time = static_cast<int32_t>(esp_timer_get_time() / 1000);
+  doc["uptime"] = elapsed_time;
 
   return send_json(doc, _mqtt.get_health_report_topic());
 }
@@ -185,7 +215,7 @@ esp_err_t CameraApp::send_image() {
 }
 
 uint32_t CameraApp::calculate_max_wait() {
-  int32_t elapsed_time = static_cast<int32_t>(esp_timer_get_time()) / 1000;
+  int32_t elapsed_time = static_cast<int32_t>(esp_timer_get_time() / 1000);
   int32_t max_wait = static_cast<int32_t>(_config.get_period() * 1000) -
                      elapsed_time - static_cast<int32_t>(OVERHEAD) / 1000;
   max_wait = MAX(max_wait, 0);

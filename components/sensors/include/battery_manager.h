@@ -60,6 +60,15 @@ public:
    */
   void disable_ADC();
 
+  /**
+   * @brief Enable the ADC in the BQ25622
+   */
+  void enable_ADC();
+
+  // TODO: remove this
+  bool _initialized;
+  bool measure_adc_enabled = true;
+
 private:
   /**
    * @brief Read a register from the BQ25622
@@ -79,14 +88,8 @@ private:
    */
   esp_err_t write_register(uint8_t reg, uint8_t data);
 
-  /**
-   * @brief Enable the ADC in the BQ25622
-   */
-  void enable_ADC();
-
   I2CManager &_i2c;
   i2c_master_dev_handle_t _device_handle;
-  bool _initialized;
 
   // BQ25622 I2C Address
   const uint8_t BQ25622_ADDR = 0x6B;
